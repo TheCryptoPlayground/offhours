@@ -46,6 +46,7 @@ jobs:
         run: python -m pytest -q
 
       - name: Pull new bars
+        if: github.event_name != 'push'
         env:
           ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
           ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
@@ -58,6 +59,7 @@ jobs:
         run: python -m pipeline build
 
       - name: Commit data
+        if: github.event_name != 'push'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
