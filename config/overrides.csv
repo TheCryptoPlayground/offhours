@@ -1,0 +1,8 @@
+# Manual fixes for the token universe. One row per CoinGecko coin id.
+#   family      issuer key (xstocks, ondo, bstocks, robinhood, coinbase, dinari, backpack, other); blank keeps the rule
+#   underlying  US ticker as Alpaca writes it (BRK.B, not BRK-B); blank keeps the rule
+#   exclude     1 to drop the token entirely
+# Find ids in data/universe/tokens.csv after a run. Example row:
+# some-coingecko-id,xstocks,BRK.B,,symbol lacks the share-class suffix
+cg_id,family,underlying,exclude,note
+berkshire-hathaway-bstocks-tokenized-stock,bstocks,BRK.B,,Class B ticker uses Alpaca's dotted form

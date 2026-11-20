@@ -1,0 +1,85 @@
+name: Update data and site
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/update.yml"
+      - "pipeline/**"
+      - "requirements.txt"
+      - "config/**"
+      - "site/index.html"
+      - "site/app.js"
+      - "site/style.css"
+      - "site/vendor/**"
+  schedule:
+    - cron: "20 7 * * *"   # daily, 07:20 UTC, after the US after-hours session and the Asian day
+  workflow_dispatch:
+    inputs:
+      args:
+        description: "Extra arguments for the update step, e.g. --refresh-universe or --rediscover"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest   # change to self-hosted if a venue blocks GitHub's US runners (see README)
+    timeout-minutes: 330
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+
+      - name: Verify calculations
+        run: python -m pytest -q
+
+      - name: Pull new bars
+        env:
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+          COINGECKO_DEMO_API_KEY: ${{ secrets.COINGECKO_DEMO_API_KEY }}
+          OFFHOURS_EXTRA_STOCKS: ${{ vars.OFFHOURS_EXTRA_STOCKS }}
+          EXTRA_ARGS: ${{ inputs.args }}
+        run: python -m pipeline update --only binance,kraken,bybit,stocks $EXTRA_ARGS
+
+      - name: Build site data
+        run: python -m pipeline build
+
+      - name: Commit data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data site/data
+          if git diff --cached --quiet; then
+            echo "No new data"
+          else
+            git commit -m "Data update $(date -u +%Y-%m-%d)"
+            git push
+          fi
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: update
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

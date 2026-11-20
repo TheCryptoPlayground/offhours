@@ -1,0 +1,15 @@
+{
+ "fetched_at": "2026-11-20T11:39:25+00:00",
+ "categories": [
+  "tokenized-stock",
+  "xstocks-ecosystem",
+  "ondo-tokenized-assets",
+  "bstocks-ecosystem",
+  "four-meme-tokenized-stocks-4stock"
+ ],
+ "missing_categories": [],
+ "tickers_checked": false,
+ "tokens": 1917,
+ "mapped": 1917,
+ "coingecko_vol24": 1422569722.2657943
+}
