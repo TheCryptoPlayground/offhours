@@ -67,6 +67,8 @@ a:hover { text-decoration-thickness: 0.14em; }
 }
 .lede { font-size: 1.125rem; line-height: 1.5; margin: 0 0 0.75rem; max-width: 38rem; }
 .stamp { color: var(--muted); font-size: 0.875rem; margin: 0; }
+.project-link { font-size: 0.9375rem; margin: 0.45rem 0 0; }
+.project-link a { font-weight: 500; }
 .jump { display: flex; flex-wrap: wrap; gap: 0.45rem 1.25rem; margin-top: 1.25rem; font-size: 0.9375rem; }
 .jump a { color: var(--muted); text-decoration-color: var(--rule); }
 
@@ -154,6 +156,7 @@ dl.stats dd small { font-weight: 400; color: var(--muted); }
 .method p, .method li { max-width: var(--measure); }
 .method ul { padding-left: 1.1rem; }
 footer { color: var(--muted); font-size: 0.875rem; border-top: 1px solid var(--rule); margin-top: 3rem; padding-top: 1.25rem; max-width: var(--wide); }
+footer p { max-width: var(--measure); }
 
 @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; transition: none !important; } }
 

@@ -6,7 +6,7 @@
 <title>Off-hours tape: tokenized stock trading outside US market hours</title>
 <meta name="description" content="Historical and daily market data for tokenized US stocks, split by US trading session, venue, issuer and underlying stock.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%2315212B'/%3E%3Crect x='3' y='3' width='4' height='10' fill='%235C8FC4'/%3E%3Crect x='9' y='3' width='4' height='10' fill='%23F0A23A'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="style.css?v=20261120-5">
+<link rel="stylesheet" href="style.css?v=20261120-6">
 <script src="vendor/chart.umd.js" defer></script>
 <script src="app.js?v=20261120-5" defer></script>
 </head>
@@ -17,6 +17,7 @@
   <h1>Off-hours tape</h1>
   <p class="lede">A historical market-data dashboard for tokenized US stocks: volume by session, venue, issuer and underlying, with the US stocks alongside them when available.</p>
   <p class="stamp" id="stamp">Loading data</p>
+  <p class="project-link"><a href="https://github.com/BusyApe201804930/offhours">Source code, methodology and data pipeline on GitHub</a></p>
   <nav class="jump" aria-label="Dashboard sections">
     <a href="#overview-h">Overview</a><a href="#daily-h">History</a><a href="#venue-h">Venues</a><a href="#stocks-h">Stocks</a><a href="#coverage-h">Coverage</a>
   </nav>
@@ -145,6 +146,7 @@
 
 <footer>
   <p>Data from the public market-data APIs of the exchanges listed above, <a href="https://www.geckoterminal.com">GeckoTerminal</a> and <a href="https://www.coingecko.com">CoinGecko</a> for on-chain pools and token lists, and Alpaca for the US consolidated tape.</p>
+  <p>This dashboard is open source. See the <a href="https://github.com/BusyApe201804930/offhours">GitHub repository</a> for its code, data pipeline, tests and methodology.</p>
 </footer>
 </div>
 </body>
