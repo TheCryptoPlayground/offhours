@@ -1,4 +1,4 @@
-# Off-hours tape
+# Tokenized Stock Observatory
 
 **Live website:** [thecryptoplayground.github.io/offhours](https://thecryptoplayground.github.io/offhours/)
 

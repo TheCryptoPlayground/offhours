@@ -29,7 +29,7 @@ tabular figures in tables.
 Single left-aligned column, prose capped near 70 characters, charts allowed wider.
 
 ```
-Off-hours tape
+Tokenized Stock Observatory
 How much tokenized-stock trading happens while US markets are shut ...
 [ week grid: Mon..Sun x 00:00..23:30 ET, colour = session, depth = volume ]
 [ legend doubles as the session definitions ]

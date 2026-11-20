@@ -1,4 +1,4 @@
-/* Off-hours tape: renders the files in site/data/. No build step; Chart.js is vendored. */
+/* Tokenized Stock Observatory: renders the files in site/data/. No build step; Chart.js is vendored. */
 "use strict";
 (() => {
   const SESS = ["RTH", "PRE", "POST", "OVERNIGHT", "CLOSED"];
