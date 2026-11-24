@@ -121,6 +121,23 @@
   "bybit:NVDAXUSDT": 1795176000,
   "bybit:SPCXXUSDT": 1795176000,
   "bybit:TSLAXUSDT": 1795176000,
+  "dex-base:0x0cabc1f570fc7e80af454b5bc839b4014b4acfd1": 1795545000,
+  "dex-base:0x16c70f04c3080a127486cdf5a4c33c066bbf47c3": 1795545000,
+  "dex-base:0x2740c0faab738f6e346e545fde02aef9b1a01ee7": 1795545000,
+  "dex-base:0x469337fdcc5e8f38e2e4b670b04f57865d13a7bb": 1795545000,
+  "dex-base:0x532e0f46d1e528507fc9454d5847c231f23bddf6": 1795545000,
+  "dex-base:0x7103eb3c9590d1281f7dc03b2a9ee27c39df5d54": 1795545000,
+  "dex-base:0x7a33000372f3f028f074182ccb9d16cbeefbf920": 1795545000,
+  "dex-base:0x97f35d1e92795327614be000cd18cba1be2c1931": 1795545000,
+  "dex-base:0xce56168c09f4b7fca30523822c48008705c01156": 1795545000,
+  "dex-base:0xd03bc8c7f2faedce2aac81bf0444aea08ea06e9b": 1795545000,
+  "dex-base:0xf5fcb9cdafce67d50afef298f88e709d2b946ba6": 1795545000,
+  "dex-base:0xf668e21993f0acd7ab00bb1cfbaed0df28a3c8ec": 1795545000,
+  "dex-eth:0x49b7b66457297f9e0e763bbb151b6db0c149e988": 1795545000,
+  "dex-eth:0x5638bbde046ec2efc7c8f3fd8dc5a9a1016f7eeb": 1795545000,
+  "dex-eth:0x6ee97dea63c77d1aee3f403bff4ad1def3fb6683": 1795545000,
+  "dex-eth:0xd79a68214bc04890bb23adae3a27c0f8f53fe02e": 1795545000,
+  "dex-eth:0xf2006d44339e5c2c479d450a97884d4e20d028ad": 1795545000,
   "kraken:AAPLSPVUSD": 1795460400,
   "kraken:AAPLxUSD": 1795460400,
   "kraken:ABBVSPVUSD": 1795460400,
@@ -503,10 +520,30 @@
   "stocks:XOM": 1795543200,
   "stocks:ZM": 1795543200
  },
+ "dex_active": [
+  "dex-base:0xf668e21993f0acd7ab00bb1cfbaed0df28a3c8ec",
+  "dex-base:0x532e0f46d1e528507fc9454d5847c231f23bddf6",
+  "dex-base:0x16c70f04c3080a127486cdf5a4c33c066bbf47c3",
+  "dex-base:0xf5fcb9cdafce67d50afef298f88e709d2b946ba6",
+  "dex-base:0x7a33000372f3f028f074182ccb9d16cbeefbf920",
+  "dex-base:0x2740c0faab738f6e346e545fde02aef9b1a01ee7",
+  "dex-base:0xce56168c09f4b7fca30523822c48008705c01156",
+  "dex-eth:0x6ee97dea63c77d1aee3f403bff4ad1def3fb6683",
+  "dex-base:0x0cabc1f570fc7e80af454b5bc839b4014b4acfd1",
+  "dex-base:0xd03bc8c7f2faedce2aac81bf0444aea08ea06e9b",
+  "dex-eth:0x49b7b66457297f9e0e763bbb151b6db0c149e988",
+  "dex-eth:0xf2006d44339e5c2c479d450a97884d4e20d028ad",
+  "dex-eth:0xd79a68214bc04890bb23adae3a27c0f8f53fe02e",
+  "dex-base:0x469337fdcc5e8f38e2e4b670b04f57865d13a7bb",
+  "dex-base:0x97f35d1e92795327614be000cd18cba1be2c1931",
+  "dex-eth:0x5638bbde046ec2efc7c8f3fd8dc5a9a1016f7eeb",
+  "dex-base:0x7103eb3c9590d1281f7dc03b2a9ee27c39df5d54"
+ ],
+ "dex_discovered_at": "2026-11-24T18:43:07+00:00",
  "last_run": {
-  "finished": "2026-11-24T18:22:26+00:00",
-  "http_calls": 29,
-  "seconds": 9
+  "finished": "2026-11-24T18:52:39+00:00",
+  "http_calls": 110,
+  "seconds": 712
  },
  "sources": {
   "binance": {
@@ -525,6 +562,15 @@
    "rows": 0,
    "started": "2026-11-23T19:22:36+00:00",
    "type": "cex"
+  },
+  "dex": {
+   "errors": 0,
+   "finished": "2026-11-24T18:52:39+00:00",
+   "markets": 17,
+   "ok": true,
+   "rows": 33694,
+   "started": "2026-11-24T18:40:46+00:00",
+   "type": "dex"
   },
   "kraken": {
    "errors": 0,
