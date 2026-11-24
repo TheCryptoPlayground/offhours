@@ -177,6 +177,31 @@ def test_dex_discovery_counterparts_and_floors():
     assert len(http.calls) == 1                   # TSLA sits under the discovery volume floor
 
 
+def test_focused_dex_panel_selects_two_liquid_unique_pools_per_issuer():
+    tokens = pd.DataFrame([
+        dict(cg_id="nvda-c", family="coinbase", underlying="NVDA", vol24=1e6),
+        dict(cg_id="nvda-on", family="ondo", underlying="NVDA", vol24=1e6),
+        dict(cg_id="nvda-x", family="xstocks", underlying="NVDA", vol24=1e6),
+    ])
+    addresses = pd.DataFrame([
+        ("nvda-c", "base", "0xc"), ("nvda-on", "eth", "0xo"), ("nvda-x", "eth", "0xx")
+    ], columns=["cg_id", "network", "address"])
+
+    class Pools:
+        def token_pools(self, network, address):
+            assert address in {"0xc", "0xo"}
+            return [dict(pool=p, vol24=v, base_addr=address, base_sym="NVDA", quote_addr="0x1",
+                         quote_sym=q) for p,v,q in [("p0", 1e6, "MEME"), ("p1", 3e3, "USDC"),
+                                                       ("p2", 4e3, "USDC"), ("p2", 4e3, "USDC"),
+                                                       ("p3", 5e3, "WETH")]]
+
+    assert universe.derive_ticker("NVDAc", "coinbase", None) == "NVDA"
+    result = dex.discover_pools(Pools(), addresses, tokens, "now", focused=True)
+    assert {(m.network, m.native, m.family) for m in result} == {
+        (net, pool, family) for net, family in [("base", "coinbase"), ("eth", "ondo")] for pool in ["p2", "p3"]}
+    assert len(result) == 4
+
+
 def test_dex_ohlcv_pages_backwards():
     start, end = T0, T0 + 1500 * 900
     def h(url, p):
