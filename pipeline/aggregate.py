@@ -60,7 +60,7 @@ def stock_facts() -> pd.DataFrame:
     return out.sort_values(STOCK_KEYS).reset_index(drop=True)
 
 
-def week_profile(markets: pd.DataFrame, end_ts: int, days: int = C.WEEK_PROFILE_DAYS) -> dict:
+def week_profile(markets: pd.DataFrame, end_ts: int, days: int) -> dict:
     """Average USD volume per New York half hour over the last `days` days (rows Mon..Sun)."""
     # Define the window in New York calendar days, not fixed 24-hour spans. A local day
     # is 23 or 25 hours at a DST transition; fixed subtraction otherwise drops or adds
@@ -69,7 +69,7 @@ def week_profile(markets: pd.DataFrame, end_ts: int, days: int = C.WEEK_PROFILE_
     local_start = local_end - timedelta(days=days - 1)
     local_days = pd.date_range(local_start, local_end, freq="D")
     start_ts = int(pd.Timestamp(local_start).tz_localize(C.MARKET_TZ).timestamp())
-    utc_days = pd.date_range(pd.Timestamp(start_ts, unit="s"), pd.Timestamp(end_ts, unit="s"), freq="D").strftime("%Y-%m-%d").tolist()
+    utc_days = pd.date_range(pd.Timestamp(start_ts, unit="s").normalize(), pd.Timestamp(end_ts - 1, unit="s").normalize(), freq="D").strftime("%Y-%m-%d").tolist()
     weekday_counts = np.bincount(local_days.dayofweek, minlength=7)
     weekday_counts = np.maximum(weekday_counts, 1)
     head = set(markets.market_id[markets.counterpart.isin(C.HEADLINE_COUNTERPARTS)])

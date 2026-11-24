@@ -113,9 +113,6 @@ CLOSURE_MIN_WINDOWS_PER_TICKER = 6
 # Extra US tickers to pull from Alpaca, e.g. stocks without tokens as a control group
 EXTRA_STOCKS = [t.strip().upper() for t in os.environ.get("OFFHOURS_EXTRA_STOCKS", "").split(",") if t.strip()]
 
-TICKER_WINDOW_DAYS = 30
-TICKER_SERIES_TOP = 100
-WEEK_PROFILE_DAYS = 28
 
 # --- Keys (all free) ----------------------------------------------------------------------
 ALPACA_KEY = os.environ.get("ALPACA_API_KEY_ID", "")

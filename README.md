@@ -13,7 +13,7 @@ GitHub Actions to run it daily, GitHub Pages to host the site.
 
 The [volume comparison](https://tianhaoyin1120.github.io/offhours/#compare-h) supports 7, 30 and 90 days,
 all archived history, and inclusive custom dates. Each ticker requires at least one date with volume on both sides.
-Matched-date and session views use only dates with positive volume on both sides. The adjacent half-hour price comparison uses the latest 30 days.
+Matched-date and session views use only dates with positive volume on both sides. The default for every analysis is the full archive, including stock rankings, the weekly heatmap and the adjacent half-hour price comparison. The daily, product and individual stock charts have independent range controls.
 [Data sources and APIs](https://tianhaoyin1120.github.io/offhours/#sources-h) lists upstream feeds and public JSON and CSV downloads.
 
 ## Preview in two minutes
@@ -45,7 +45,7 @@ Estimated run time is one to two hours the first time (backfill; GeckoTerminal's
 The first successful run backfills the configured history window (120 days for centralised
 exchanges, 30 days for DEX pools, and 120 days for stocks). Later runs resume from per-market
 cursors and fetch only new or recently amended bars, so the site keeps accumulating history.
-The dashboard offers 30-day, 90-day and all-history views; its source table distinguishes sources
+The dashboard opens on all history and offers optional shorter chart views; its source table distinguishes sources
 that are working, failing, or have not been run yet.
 
 **On GitHub:**

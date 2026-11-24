@@ -45,7 +45,7 @@ def _share(d: dict[str, float]) -> dict[str, float]:
 
 
 def last_full_date() -> pd.Timestamp:
-    return (pd.Timestamp.now(tz=C.MARKET_TZ).normalize() - pd.Timedelta(days=1)).tz_localize(None)
+    return pd.Timestamp.now(tz=C.MARKET_TZ).tz_localize(None).normalize() - pd.Timedelta(days=1)
 
 
 def build(demo: bool = False, end_date: str | None = None) -> dict:
@@ -56,21 +56,21 @@ def build(demo: bool = False, end_date: str | None = None) -> dict:
     for df in (tf, sf):
         if len(df):
             df["market_date"] = pd.to_datetime(df.market_date)
+    last_dates = [f.market_date.max() for f in (tf, sf) if len(f)]
     if end_date is not None:
         end = pd.Timestamp(end_date)
-    elif len(tf):
-        end = tf.market_date.max() if demo else min(last_full_date(), tf.market_date.max())
+    elif last_dates:
+        latest = max(last_dates)
+        end = latest if demo else min(last_full_date(), latest)
     else:
         end = last_full_date()
     tf = tf[tf.market_date <= end] if len(tf) else tf
     sf = sf[sf.market_date <= end] if len(sf) else sf
-    head = tf[tf.counterpart.isin(C.HEADLINE_COUNTERPARTS)] if len(tf) else tf
-    other = tf[tf.counterpart == "other"] if len(tf) else tf
-
-    if len(tf):
-        dates = pd.date_range(tf.market_date.min(), end, freq="D")
-    else:
-        dates = pd.DatetimeIndex([])
+    head = tf[tf.counterpart.isin(C.HEADLINE_COUNTERPARTS)]
+    other = tf[tf.counterpart == "other"]
+    starts = [f.market_date.min() for f in (tf, sf) if len(f)]
+    start = min(starts, default=end)
+    dates = pd.date_range(start, end, freq="D") if starts else pd.DatetimeIndex([])
     S = C.SESSIONS
     venues = sorted(head.source.unique()) if len(head) else []
     families = sorted(head.family.unique()) if len(head) else []
@@ -87,24 +87,17 @@ def build(demo: bool = False, end_date: str | None = None) -> dict:
         families=_series(head, dates, "family", families) if families else {},
     )
 
-    # last-N-days summaries
-    nominal_w0 = end - pd.Timedelta(days=C.TICKER_WINDOW_DAYS - 1)
-    available_starts = [d.market_date.min() for d in (head, sf) if len(d)]
-    w0 = max(nominal_w0, min(available_starts)) if available_starts else nominal_w0
-    window_days = int((end - w0).days + 1)
-    hw = head[head.market_date >= w0] if len(head) else head
-    sw = sf[sf.market_date >= w0] if len(sf) else sf
-    tok_s = {s: float(hw[hw.session == s].vol_usd.sum()) if len(hw) else 0.0 for s in S}
-    stk_s = {s: float(sw[sw.session == s].vol_usd.sum()) if len(sw) else 0.0 for s in S}
-    with_stock = set(sw.underlying) if len(sw) else set()
-    hw_mapped = hw[hw.underlying.isin(with_stock)] if len(hw) else hw
-    tok_m = {s: float(hw_mapped[hw_mapped.session == s].vol_usd.sum()) if len(hw_mapped) else 0.0 for s in S}
+    tok_s = {s: float(head[head.session == s].vol_usd.sum()) if len(head) else 0.0 for s in S}
+    stk_s = {s: float(sf[sf.session == s].vol_usd.sum()) if len(sf) else 0.0 for s in S}
+    with_stock = set(sf.underlying) if len(sf) else set()
+    mapped = head[head.underlying.isin(with_stock)] if len(head) else head
+    tok_m = {s: float(mapped[mapped.session == s].vol_usd.sum()) if len(mapped) else 0.0 for s in S}
     total = sum(tok_s.values())
     kpis = dict(
-        days=window_days, target_days=C.TICKER_WINDOW_DAYS, start=w0.strftime("%Y-%m-%d"), end=end.strftime("%Y-%m-%d"),
-        token_dates=int(hw.market_date.nunique()) if len(hw) else 0,
-        stock_dates=int(sw.market_date.nunique()) if len(sw) else 0,
-        token_total=total, token_other=float(other[other.market_date >= w0].vol_usd.sum()) if len(other) else 0.0,
+        days=len(dates), target_days=len(dates), start=start.strftime("%Y-%m-%d"), end=end.strftime("%Y-%m-%d"),
+        token_dates=int(head.market_date.nunique()) if len(head) else 0,
+        stock_dates=int(sf.market_date.nunique()) if len(sf) else 0,
+        token_total=total, token_other=float(other.vol_usd.sum()) if len(other) else 0.0,
         outside_rth_share=(1 - tok_s["RTH"] / total) if total else None,
         closed_share=(tok_s["CLOSED"] / total) if total else None,
         stock_total=sum(stk_s.values()),
@@ -114,10 +107,10 @@ def build(demo: bool = False, end_date: str | None = None) -> dict:
     )
 
     # tickers
-    rows, series_for = [], []
-    if len(hw):
-        g = hw[hw.underlying != ""].groupby("underlying")
-        stock_by = sw.groupby("underlying").vol_usd.sum() if len(sw) else pd.Series(dtype=float)
+    rows = []
+    if len(head):
+        g = head[head.underlying != ""].groupby("underlying")
+        stock_by = sf.groupby("underlying").vol_usd.sum() if len(sf) else pd.Series(dtype=float)
         for u, d in g:
             ss = d.groupby("session").vol_usd.sum()
             tot = float(d.vol_usd.sum())
@@ -128,24 +121,22 @@ def build(demo: bool = False, end_date: str | None = None) -> dict:
                              ratio_bp=(tot / stock * 1e4) if stock else None,
                              venues=sorted(d.source.unique()), families=sorted(d.family.unique())))
         rows.sort(key=lambda r: -r["token"])
-        series_for = [r["t"] for r in rows[: C.TICKER_SERIES_TOP]]
     tdir = C.SITE_DATA / "t"
     if tdir.exists():
         shutil.rmtree(tdir)
     tdir.mkdir(parents=True, exist_ok=True)
-    for u in series_for:
+    for row in rows:
+        u = row["t"]
         hd, sd = head[head.underlying == u], sf[sf.underlying == u] if len(sf) else sf
         ser = dict(t=u, dates=daily["dates"], token=_series(hd, dates, "session", S),
                    stock=_series(sd, dates, "session", S) if len(sd) else None,
                    venues=_series(hd, dates, "source", sorted(hd.source.unique())))
         (tdir / f"{u}.json").write_text(json.dumps(_clean(ser), separators=(",", ":")))
-    for r in rows:
-        r["series"] = r["t"] in series_for
+        row["series"] = True
 
     # closure-window test
-    pinned = demo or end_date is not None
-    now_ts = int((end + pd.Timedelta(days=2)).timestamp()) if pinned else int(pd.Timestamp.now(tz="UTC").timestamp())
-    pts = pricing.closure_points(markets, now_ts)
+    archive_end_ts = int((end + pd.Timedelta(days=1)).tz_localize(C.MARKET_TZ).timestamp())
+    pts = pricing.closure_points(markets, archive_end_ts)
     summ = pricing.summary(pts)
     closures = dict(
         definition=dict(end_buffer_h=C.CLOSURE_END_BUFFER_H, min_token_vol=C.CLOSURE_MIN_TOKEN_VOL,
@@ -201,17 +192,15 @@ def build(demo: bool = False, end_date: str | None = None) -> dict:
         last_run=state.get("last_run"),
     )
 
-    week_end = int((end + pd.Timedelta(days=1)).tz_localize(C.MARKET_TZ).timestamp())
-    week_days = min(C.WEEK_PROFILE_DAYS, int((end - dates.min()).days + 1)) if len(dates) else C.WEEK_PROFILE_DAYS
-    week = aggregate.week_profile(markets, week_end, days=week_days)
+    week = aggregate.week_profile(markets, archive_end_ts, days=len(dates))
 
     _dump("meta.json", _clean(meta))
     _dump("daily.json", _clean(daily))
     _dump("volume_history.json", comparisons.volume_history(head, sf))
-    _dump("tickers.json", _clean(dict(window_days=window_days, target_window_days=C.TICKER_WINDOW_DAYS,
+    _dump("tickers.json", _clean(dict(window_days=len(dates), target_window_days=len(dates),
                                       start=kpis["start"], end=kpis["end"], rows=rows,
-                                      comparisons=comparisons.volume_views(hw, sw),
-                                      lead_lag=comparisons.lead_lag(markets, w0, end))))
+                                      comparisons=comparisons.volume_views(head, sf),
+                                      lead_lag=comparisons.lead_lag(markets, start, end))))
     _dump("closures.json", _clean(closures))
     _dump("week.json", _clean(week))
     token_csv = C.SITE_DATA / "token_daily.csv"

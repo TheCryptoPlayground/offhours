@@ -161,6 +161,23 @@ def test_site_build_writes_consistent_files(paths):
     assert (C.SITE_DATA / "token_daily.csv").exists() and (C.SITE_DATA / "closures.csv").exists()
 
 
+def test_summaries_include_data_older_than_a_month(paths):
+    seed()
+    early = et("2026-09-14 09:30")
+    store.write_bars("binance", bars("binance:TSLABUSDT", early, early + H, vol=9876))
+    store.write_bars("stocks", bars("stocks:TSLA", early, early + H, vol=12345))
+    meta = site.build(end_date="2026-11-16")
+    tickers = json.loads((C.SITE_DATA / "tickers.json").read_text())
+    week = json.loads((C.SITE_DATA / "week.json").read_text())
+    series = json.loads((C.SITE_DATA / "t/TSLA.json").read_text())
+    assert meta["first_date"] == tickers["start"] == "2026-09-14"
+    assert meta["kpis"]["days"] == tickers["window_days"] == week["days"] == 64
+    assert meta["kpis"]["token_total"] == tickers["rows"][0]["token"] == 9876 + 1000 * (7 * 48 + 24)
+    assert tickers["comparisons"]["calendar"][0]["token"] == tickers["rows"][0]["token"]
+    assert series["token"]["RTH"][0] == 9876
+    assert week["token"][0][19] == round((9876 + 2000) / 10)
+
+
 def test_site_build_removes_stale_optional_export(paths, monkeypatch):
     seed()
     site.build(end_date="2026-11-16")

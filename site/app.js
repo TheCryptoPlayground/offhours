@@ -54,7 +54,7 @@
   }
 
   const D = {};
-  const ui = { week: "token", daily: "usd", range: "30", venue: "venues", query: "", sort: { key: "token", dir: -1 }, ticker: null, tickerLimit: "10", closureLimit: "10" };
+  const ui = { week: "token", daily: "usd", range: "all", venueRange: "all", tickerRange: "all", venue: "venues", query: "", sort: { key: "token", dir: -1 }, ticker: null, tickerLimit: "10", closureLimit: "10" };
   const charts = {};
 
   async function load(name) {
@@ -133,15 +133,15 @@
     $$(`[data-${group}]`).forEach((b) => b.setAttribute("aria-pressed", String(b.getAttribute(`data-${group}`) === value)));
   }
 
-  function rangeStart(dates) {
-    if (ui.range === "all") return 0;
-    return Math.max(0, dates.length - Number(ui.range || 30));
+  function rangeStart(dates, range) {
+    if (range === "all") return 0;
+    return Math.max(0, dates.length - Number(range));
   }
 
-  function rangeLabel(dates) {
+  function rangeLabel(dates, range) {
     if (!dates.length) return "No dates";
-    const i = rangeStart(dates);
-    return `${longDate(dates[i])} to ${longDate(dates[dates.length - 1])}`;
+    const i = rangeStart(dates, range);
+    return `${range === "all" ? "All history · " : ""}${longDate(dates[i])} to ${longDate(dates[dates.length - 1])}`;
   }
 
   /* ---------- Header, week grid, summary ---------- */
@@ -168,7 +168,7 @@
       : "No history";
     const items = [
       [span, "Historical span"],
-      [usd(k.token_total || 0), `Token volume in the current ${k.days || 0}-day summary window`],
+      [usd(k.token_total || 0), "Token volume across all history"],
       [pct(k.outside_rth_share), "Volume outside regular US hours"],
       [String((m.markets || {}).total || 0), `Token markets in the historical registry`],
     ];
@@ -229,9 +229,9 @@
     const svg = $("#week-grid");
     svg.setAttribute("viewBox", `0 0 ${left + 48 * pitch} ${top + 7 * pitch}`);
     svg.innerHTML = out.join("");
-    $("#week-note").textContent = ui.week === "token"
-      ? `Average dollar volume of tokenized stocks in each half hour of the week, New York time, over the last ${w.days} days. Darker means more trading. The outlined block is the regular session.`
-      : "The same stocks on the US consolidated tape. Before 6 December 2026 the tape does not comprehensively cover overnight trading, although occasional eligible or late prints can appear; nothing trades at weekends.";
+    const market = ui.week === "token" ? "tokenized stocks" : "US stocks on the consolidated tape";
+    $("#week-note").textContent = `Average recorded dollar volume for ${market} by New York half hour across all ${w.days} calendar days. Darker cells show more volume. The outline marks regular hours.` +
+      (ui.week === "stock" ? " Overnight coverage on the consolidated tape is incomplete before 6 December 2026." : "");
   }
 
   function renderSummary() {
@@ -240,12 +240,12 @@
       $("#summary").textContent = "No token volume recorded yet.";
       return;
     }
-    const out = [`Current ${k.days}-day summary window (${longDate(k.start)} to ${longDate(k.end)}): <strong>${usd(k.token_total)}</strong> token volume; <strong>${pct(k.outside_rth_share)}</strong> outside regular hours; <strong>${pct(k.closed_share)}</strong> while US venues were closed.`];
+    const out = [`From ${longDate(k.start)} to ${longDate(k.end)}, tokens traded <strong>${usd(k.token_total)}</strong>. Of that volume, <strong>${pct(k.outside_rth_share)}</strong> traded outside regular hours and <strong>${pct(k.closed_share)}</strong> while US venues were closed.`];
     if (fin(k.ratio_bp) && k.stock_total > 0) {
       const r = k.ratio_bp_by_session || {};
       out.push(`Token volume as a share of the same stocks' dollar volume: <strong>${bp(k.ratio_bp)}</strong> overall, ${bp(r.RTH)} regular hours, ${bp(r.PRE)} pre-market and ${bp(r.POST)} after-hours.`);
     } else {
-      out.push("This summary window has no comparable US stock volume.");
+      out.push("The archive has no comparable US stock volume.");
     }
     if (k.token_other > 0) out.push(`DEX pools pairing stock tokens with memecoins traded another ${usd(k.token_other)}, not counted above.`);
     $("#summary").innerHTML = out.join(" ");
@@ -254,7 +254,7 @@
   /* ---------- Daily, mix, venues ---------- */
   function renderDaily() {
     const d = D.daily;
-    const start = rangeStart(d.dates);
+    const start = rangeStart(d.dates, ui.range);
     const dates = d.dates.slice(start);
     const share = ui.daily === "share";
     const totals = dates.map((_, j) => SESS.reduce((a, s) => a + (d.token[s][start + j] || 0), 0));
@@ -281,7 +281,7 @@
         },
       },
     });
-    $("#daily-note").textContent = `${rangeLabel(d.dates)}. Overnight trading from 20:00 ET counts toward the next trading date; weekends and holidays retain their own dates.`;
+    $("#daily-note").textContent = `${rangeLabel(d.dates, ui.range)}. Overnight trading from 20:00 ET counts toward the next trading date; weekends and holidays retain their own dates.`;
   }
 
   function renderMix() {
@@ -310,12 +310,12 @@
         `<td>${hasStock ? (stk > 0 ? usd(stk) : "none recorded") : "n/a"}</td><td>${ratio}</td></tr>`;
     });
     $("#mix-table").innerHTML = `<thead><tr><th>Session</th><th>Tokens</th><th>The stocks</th><th title="Token volume as basis points of the stocks' own dollar volume">Tokens as a share</th></tr></thead><tbody>${rows.join("")}</tbody>`;
-    $("#mix-note").textContent = `Last ${k.days} days. A basis point (bp) is a hundredth of a percent of the stocks' own dollar volume in that session, counting only tokens whose stock is in the data.`;
+    $("#mix-note").textContent = `All history · ${longDate(k.start)} to ${longDate(k.end)}. A basis point (bp) is a hundredth of a percent of the stocks' own dollar volume in that session, counting only tokens whose stock is in the data.`;
   }
 
   function renderVenues() {
     const d = D.daily;
-    const start = rangeStart(d.dates);
+    const start = rangeStart(d.dates, ui.venueRange);
     const dates = d.dates.slice(start);
     const byVenue = ui.venue === "venues";
     const names = D.meta.venue_labels || {};
@@ -359,7 +359,7 @@
     const explanation = byVenue
       ? "Each row pairs a token product with the place its trades were recorded. For Coinbase stock tokens, we measure swaps in selected pools on the Base blockchain."
       : "Each product combines its recorded trades across tracked venues. For example, the xStocks total includes trades recorded on Kraken and Bybit.";
-    $("#venue-note").textContent = `${rangeLabel(d.dates)}. ${explanation}` +
+    $("#venue-note").textContent = `${rangeLabel(d.dates, ui.venueRange)}. ${explanation}` +
       (other > 0 ? ` Pools with other counterpart assets contributed a further ${usd(other)}, excluded here.` : "");
     const rows = entries.map(({ product, venue, total, observed }) =>
       `<tr><td>${esc(product)}</td>${byVenue ? `<td class="left">${esc(venue)}</td>` : ""}<td>${usd(total)}</td><td>${observed.length}</td><td>${observed.length ? longDate(observed[0]) : "—"}</td><td>${observed.length ? longDate(observed[observed.length - 1]) : "—"}</td></tr>`);
@@ -399,8 +399,8 @@
     $("#ticker-table").innerHTML = rows.length
       ? `<thead><tr>${head}</tr></thead><tbody>${body}</tbody>`
       : "<tbody><tr><td>No stock-level volume yet.</td></tr></tbody>";
-    if (T.start) $("#stocks-note").textContent = `${longDate(T.start)} to ${longDate(T.end)} (${T.window_days} day${T.window_days === 1 ? "" : "s"}). Select a row to see its daily series.`;
-    const scope = q ? `${rows.length} of ${allRows.length} stocks match “${ui.query.trim()}”` : `${allRows.length} stocks in the current summary window`;
+    if (T.start) $("#stocks-note").textContent = `All history · ${longDate(T.start)} to ${longDate(T.end)} (${T.window_days} day${T.window_days === 1 ? "" : "s"}). Select a row to see its daily series.`;
+    const scope = q ? `${rows.length} of ${allRows.length} stocks match “${ui.query.trim()}”` : `${allRows.length} stocks across all history`;
     const shownLabel = shown.length === rows.length ? `all ${rows.length} stocks` : `the top ${shown.length}`;
     $("#ticker-count").textContent = `${scope}. Showing ${shownLabel} by ${col.label.toLowerCase()}.`;
     if (focusKey) { const b = $(`[data-sort="${focusKey}"]`); if (b) b.focus(); }
@@ -415,8 +415,9 @@
     $("#ticker-h").textContent = `${t}: token volume by session`;
     if (charts["ticker-chart"]) { charts["ticker-chart"].destroy(); delete charts["ticker-chart"]; }
     D.series = null;
+    $("#ticker-ranges").hidden = !row?.series;
     if (!row || !row.series) {
-      $("#ticker-note").textContent = "Day-by-day detail is published for the 100 most traded stocks.";
+      $("#ticker-note").textContent = "No daily series is available for this stock.";
       return;
     }
     try {
@@ -435,7 +436,7 @@
   function renderTickerChart(row) {
     const s = D.series;
     if (!s || s.t !== row.t) return;
-    const start = rangeStart(s.dates);
+    const start = rangeStart(s.dates, ui.tickerRange);
     const dates = s.dates.slice(start);
     const datasets = SESS.map((k) => ({
       type: "bar", label: LABEL[k], data: s.token[k].slice(start), backgroundColor: css(VAR[k]), borderWidth: 0,
@@ -464,7 +465,7 @@
       },
     });
     const n = row.venues.length;
-    const out = [`Summary window (${D.tickers.window_days} days): ${usd(row.token)} of ${row.t} tokens on ${n} venue${n === 1 ? "" : "s"}, ${pct(offShare(row))} outside regular hours and ${pct(closedShare(row))} while closed. Chart: ${rangeLabel(s.dates)}.`];
+    const out = [`Across all ${D.tickers.window_days} days, ${usd(row.token)} of ${row.t} tokens on ${n} venue${n === 1 ? "" : "s"}, ${pct(offShare(row))} outside regular hours and ${pct(closedShare(row))} while closed. Chart: ${rangeLabel(s.dates, ui.tickerRange)}.`];
     if (fin(row.ratio_bp)) out.push(`That is ${bp(row.ratio_bp)} of ${row.t}'s own dollar volume.`);
     const c = ((D.closures || {}).by_ticker || []).find((x) => x.underlying === row.t);
     if (c && fin(c.beta)) out.push(`Weekend test over ${c.windows} closures: slope ${fix(c.beta)} (standard error ${fix(c.se)}), R² ${fix(c.r2)}.`);
@@ -664,7 +665,7 @@
 
   function renderLead() {
     const t = D.tickers;
-    $("#lead-window").textContent = `This price comparison uses the latest ${t.window_days} calendar days, ${longDate(t.start)} to ${longDate(t.end)}.`;
+    $("#lead-window").textContent = `This price comparison uses all ${t.window_days} calendar days in the archive, ${longDate(t.start)} to ${longDate(t.end)}.`;
     const select = $("#lead-symbol");
     const results = t.lead_lag?.[$("#lead-session").value] || {};
     const names = Object.keys(results).sort();
@@ -719,14 +720,19 @@
     $("#lead-session").addEventListener("change", renderLead);
     $$("[data-week]").forEach((b) => b.addEventListener("click", () => { ui.week = b.dataset.week; pressed("week", ui.week); renderWeek(); }));
     $$("[data-daily]").forEach((b) => b.addEventListener("click", () => { ui.daily = b.dataset.daily; pressed("daily", ui.daily); renderDaily(); }));
-    $$("[data-range]").forEach((b) => b.addEventListener("click", () => {
-      ui.range = b.dataset.range;
-      pressed("range", ui.range);
-      renderDaily();
-      renderVenues();
-      const row = ui.ticker && (D.tickers.rows || []).find((r) => r.t === ui.ticker);
+    function bindRange(group, property, render) {
+      $$(`[data-${group}]`).forEach(button => button.addEventListener("click", () => {
+        ui[property] = button.getAttribute(`data-${group}`);
+        pressed(group, ui[property]);
+        render();
+      }));
+    }
+    bindRange("range", "range", renderDaily);
+    bindRange("venue-range", "venueRange", renderVenues);
+    bindRange("ticker-range", "tickerRange", () => {
+      const row = (D.tickers.rows || []).find(r => r.t === ui.ticker);
       if (row && D.series) renderTickerChart(row);
-    }));
+    });
     $$("[data-venue]").forEach((b) => b.addEventListener("click", () => { ui.venue = b.dataset.venue; pressed("venue", ui.venue); renderVenues(); }));
     $$("[data-limit]").forEach((b) => b.addEventListener("click", () => {
       ui.tickerLimit = b.dataset.limit;

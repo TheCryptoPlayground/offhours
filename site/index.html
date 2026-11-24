@@ -8,7 +8,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%2315212B'/%3E%3Crect x='3' y='3' width='4' height='10' fill='%235C8FC4'/%3E%3Crect x='9' y='3' width='4' height='10' fill='%23F0A23A'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="style.css?v=20261124-2">
 <script src="vendor/chart.umd.js" defer></script>
-<script src="app.js?v=20261124-4" defer></script>
+<script src="app.js?v=20261124-5" defer></script>
 </head>
 <body>
 <div class="demo-banner" id="demo-banner" hidden><p>Synthetic demo data, generated to preview the layout. These are not market figures.</p></div>
@@ -48,10 +48,10 @@
   <div class="row">
     <h2 id="daily-h">Daily volume by session</h2>
     <div class="control-stack">
-      <div class="seg" role="group" aria-label="Date range">
-        <button type="button" data-range="30" aria-pressed="true">30D</button>
+      <div class="seg" role="group" aria-label="Daily volume date range">
+        <button type="button" data-range="all" aria-pressed="true">All history</button>
         <button type="button" data-range="90" aria-pressed="false">90D</button>
-        <button type="button" data-range="all" aria-pressed="false">All</button>
+        <button type="button" data-range="30" aria-pressed="false">30D</button>
       </div>
       <div class="seg" role="group" aria-label="Units">
         <button type="button" data-daily="usd" aria-pressed="true">Dollars</button>
@@ -75,9 +75,16 @@
 <section aria-labelledby="venue-h">
   <div class="row">
     <h2 id="venue-h">Token products and where they trade</h2>
-    <div class="seg" role="group" aria-label="Group token volume by">
-      <button type="button" data-venue="venues" aria-pressed="true">Product and venue</button>
-      <button type="button" data-venue="families" aria-pressed="false">Product totals</button>
+    <div class="control-stack">
+      <div class="seg" role="group" aria-label="Product and venue date range">
+        <button type="button" data-venue-range="all" aria-pressed="true">All history</button>
+        <button type="button" data-venue-range="90" aria-pressed="false">90D</button>
+        <button type="button" data-venue-range="30" aria-pressed="false">30D</button>
+      </div>
+      <div class="seg" role="group" aria-label="Group token volume by">
+        <button type="button" data-venue="venues" aria-pressed="true">Product and venue</button>
+        <button type="button" data-venue="families" aria-pressed="false">Product totals</button>
+      </div>
     </div>
   </div>
   <p class="note" id="venue-note"></p>
@@ -100,7 +107,13 @@
   <p class="result-count" id="ticker-count" aria-live="polite"></p>
   <div class="table-wrap"><table id="ticker-table"></table></div>
   <div id="ticker-detail" hidden>
-    <h3 id="ticker-h"></h3>
+    <div class="row"><h3 id="ticker-h"></h3>
+      <div id="ticker-ranges" class="seg" role="group" aria-label="Stock chart date range">
+        <button type="button" data-ticker-range="all" aria-pressed="true">All history</button>
+        <button type="button" data-ticker-range="90" aria-pressed="false">90D</button>
+        <button type="button" data-ticker-range="30" aria-pressed="false">30D</button>
+      </div>
+    </div>
     <p class="note" id="ticker-note"></p>
     <div class="chart"><canvas id="ticker-chart"></canvas></div>
   </div>
@@ -111,8 +124,8 @@
   <p class="note"><span id="volume-archive"></span> <a href="#sources-h">See coverage by source</a>.</p>
   <div class="comparison-controls">
   <label>Date range <select id="volume-range">
-    <option value="7">Last 7 days</option><option value="30" selected>Last 30 days</option>
-    <option value="90">Last 90 days</option><option value="all">All history</option><option value="custom">Custom dates</option>
+    <option value="all" selected>All history</option><option value="7">Last 7 days</option><option value="30">Last 30 days</option>
+    <option value="90">Last 90 days</option><option value="custom">Custom dates</option>
   </select></label>
   <label>From <input type="date" id="volume-start"></label>
   <label>Through <input type="date" id="volume-end"></label>
@@ -136,7 +149,7 @@
 
 <section aria-labelledby="wk-h">
   <h2 id="wk-h">Closure price comparison</h2>
-  <p class="note" id="wk-note">Token price change during each weekend or full-day US market closure, plotted against the underlying stock's change at the next open. This panel populates when token and stock history overlap.</p>
+  <p class="note" id="wk-note">Across the full archive, each point compares a token’s price change during a qualifying weekend or holiday closure with its underlying stock’s change at the next regular open.</p>
   <div class="split">
     <div class="chart square"><canvas id="scatter" aria-label="Token move during the closure against the stock's move to the next open"></canvas></div>
     <div><dl class="stats" id="stats"></dl><p class="note" id="stats-note" style="margin-top:1rem"></p></div>
