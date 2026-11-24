@@ -163,7 +163,6 @@
   function renderOverview() {
     const m = D.meta;
     const k = m.kpis || {};
-    const working = (m.sources || []).filter((s) => s.ok === true).length;
     const span = m.first_date && m.last_date
       ? `${Math.floor((new Date(`${m.last_date}T12:00:00Z`) - new Date(`${m.first_date}T12:00:00Z`)) / 86400000) + 1} days`
       : "No history";
@@ -171,7 +170,7 @@
       [span, "Historical span"],
       [usd(k.token_total || 0), `Token volume in the current ${k.days || 0}-day summary window`],
       [pct(k.outside_rth_share), "Volume outside regular US hours"],
-      [String((m.markets || {}).total || 0), `Markets across ${working} working source${working === 1 ? "" : "s"}`],
+      [String((m.markets || {}).total || 0), `Token markets in the historical registry`],
     ];
     $("#kpi-grid").innerHTML = items.map(([value, label]) =>
       `<div class="kpi"><span class="value">${esc(value)}</span><span class="label">${esc(label)}</span></div>`).join("");
@@ -305,7 +304,7 @@
     const rows = SESS.map((s) => {
       const tok = (st[s] || 0) * (k.token_total || 0);
       const stk = (ss[s] || 0) * (k.stock_total || 0);
-      const none = s === "CLOSED" ? "only tokens trade" : "no comparable tape";
+      const none = "no stock volume recorded";
       const ratio = fin(rb[s]) ? bp(rb[s]) : hasStock && stk === 0 ? none : "n/a";
       return `<tr><td><span class="sw-inline" style="background:var(${VAR[s]})"></span>${LABEL[s]}</td><td>${usd(tok)}</td>` +
         `<td>${hasStock ? (stk > 0 ? usd(stk) : "none recorded") : "n/a"}</td><td>${ratio}</td></tr>`;
@@ -339,9 +338,9 @@
         },
       },
     });
-    const k = D.meta.kpis || {};
-    $("#venue-note").textContent = `${rangeLabel(d.dates)}. Exchange order books plus DEX pools against stablecoins, majors or other stock tokens.` +
-      (k.token_other > 0 ? ` Pools against memecoins traded a further ${usd(k.token_other)} in the last ${k.days} days and are left out here.` : "");
+    const other = sum(d.token_other.slice(start));
+    $("#venue-note").textContent = `${rangeLabel(d.dates)}. Volume includes exchange order books and eligible on-chain trading pools.` +
+      (other > 0 ? ` Pools with other counterpart assets contributed a further ${usd(other)}, excluded here.` : "");
     const issuers = ui.venue === "families";
     $("#issuer-detail").hidden = !issuers;
     if (issuers) {
@@ -401,14 +400,18 @@
     const box = $("#ticker-detail");
     box.hidden = false;
     $("#ticker-h").textContent = `${t}: token volume by session`;
+    if (charts["ticker-chart"]) { charts["ticker-chart"].destroy(); delete charts["ticker-chart"]; }
+    D.series = null;
     if (!row || !row.series) {
-      if (charts["ticker-chart"]) { charts["ticker-chart"].destroy(); delete charts["ticker-chart"]; }
       $("#ticker-note").textContent = "Day-by-day detail is published for the 100 most traded stocks.";
       return;
     }
     try {
-      D.series = await load(`t/${encodeURIComponent(t)}.json`);
+      const series = await load(`t/${encodeURIComponent(t)}.json`);
+      if (ui.ticker !== t) return;
+      D.series = series;
     } catch (e) {
+      if (ui.ticker !== t) return;
       $("#ticker-note").textContent = `Could not load the detail for ${t} (${e.message}).`;
       return;
     }
@@ -537,18 +540,19 @@
     $("#coverage").textContent = bits.join(" ") || "Coverage figures appear after the first full run.";
     const src = m.sources || [];
     $("#source-table").innerHTML = src.length
-      ? `<thead><tr><th>Source</th><th>Markets</th><th class="left">Status</th><th>Last run</th></tr></thead><tbody>${src.map((s) => {
-        const status = s.ok === true ? '<span class="status-ok">Working</span>'
-          : s.ok === false ? '<span class="status-bad">Failing</span>' : '<span class="sub">Not completed</span>';
+      ? `<thead><tr><th>Source</th><th>Markets</th><th class="left">Observed market dates</th><th class="left">Latest collection</th><th>Last run</th></tr></thead><tbody>${src.map((s) => {
+        const status = s.ok && (s.errors || s.discovery_errors) ? '<span class="sub">Partial</span>' : s.ok === true ? '<span class="status-ok">Working</span>'
+          : s.ok === false ? '<span class="status-bad">Failing</span>' : '<span class="sub">No recorded run</span>';
         const detail = s.error ? ` <span class="sub">${esc(String(s.error).slice(0, 160))}</span>` : "";
         const errs = (s.errors ? ` <span class="sub">(${s.errors} market errors)</span>` : "") +
           (s.discovery_errors ? ` <span class="sub">(${s.discovery_errors} token pool lookups failed)</span>` : "");
-        const when = s.finished ? `${esc(s.finished.slice(0, 16).replace("T", " "))} UTC` : "n/a";
-        return `<tr><td>${esc(s.label)}</td><td>${s.markets ?? "n/a"}</td><td class="left">${status}${errs}${detail}</td><td>${when}</td></tr>`;
+        const runAt = s.finished || s.started;
+        const when = runAt ? `${esc(runAt.slice(0, 16).replace("T", " "))} UTC` : "n/a";
+        return `<tr><td>${esc(s.label)}</td><td>${s.markets ?? "—"}</td><td class="left">${s.first_date ? longDate(s.first_date) + " to " + longDate(s.last_date) : "—"}</td><td class="left">${status}${errs}${detail}</td><td>${when}</td></tr>`;
       }).join("")}</tbody>`
       : "<tbody><tr><td>No runs recorded yet.</td></tr></tbody>";
     const links = ['<a href="data/token_daily.csv">Token volume by day, session, venue, issuer and stock</a>'];
-    if ((m.kpis || {}).stock_total > 0) links.push('<a href="data/stock_daily.csv">Stock volume by day and session</a>');
+    if (m.history?.stock_dates > 0) links.push('<a href="data/stock_daily.csv">Stock volume by day and session</a>');
     if (((D.closures || {}).points || []).length) links.push('<a href="data/closures.csv">Closure observations</a>');
     $("#downloads").innerHTML = links.join(", ") + ".";
   }
@@ -564,14 +568,81 @@
     $("#main").innerHTML = `<div class="empty"><h2>Dashboard could not load</h2><p>Reload the page to retry.</p>${err ? `<p class="sub">${esc(err.message)}</p>` : ""}</div>`;
   }
 
+  function historicalComparison(history, start, end, mode) {
+    const totals = new Map();
+    for (const [day, records] of Object.entries(history)) {
+      if (day < start || day > end) continue;
+      const tickers = new Map();
+      for (const [ticker, session, token, stock] of records) {
+        if (mode !== "calendar" && mode !== "matched" && mode !== session) continue;
+        if (!tickers.has(ticker)) tickers.set(ticker, [0, 0]);
+        const pair = tickers.get(ticker);
+        pair[0] += token;
+        pair[1] += stock;
+      }
+      for (const [ticker, [token, stock]] of tickers) {
+        const both = token > 0 && stock > 0;
+        if (!both && mode !== "calendar") continue;
+        if (!totals.has(ticker)) totals.set(ticker, { t: ticker, token: 0, stock: 0, days: 0, above: 0 });
+        const row = totals.get(ticker);
+        row.token += token;
+        row.stock += stock;
+        if (both) {
+          row.days++;
+          if (token > stock) row.above++;
+        }
+      }
+    }
+    return Array.from(totals.values()).filter(row => row.days).map(row => ({
+      ...row, token: row.token / 100, stock: row.stock / 100
+    }));
+  }
+
+  function setComparisonRange() {
+    const dates = D.daily.dates;
+    const range = $("#volume-range").value;
+    if (range !== "custom" && dates.length) {
+      $("#volume-start").value = dates[range === "all" ? 0 : Math.max(0, dates.length - Number(range))];
+      $("#volume-end").value = dates[dates.length - 1];
+    }
+    renderComparisons();
+  }
+
   function renderComparisons() {
     const mode = $("#volume-mode").value;
     const limit = $("#volume-limit").value;
-    const t = D.tickers;
-    const rows = (t.comparisons?.[mode] || []).slice().sort((a,b) => b.token/b.stock - a.token/a.stock);
-    const description = mode === "calendar" ? "All dates contribute to each total." :
+    const start = $("#volume-start").value, end = $("#volume-end").value;
+    const dates = D.daily.dates;
+    const message = (value) => {
+      $("#volume-summary").textContent = value;
+      $("#volume-comparison").replaceChildren();
+    };
+    if (!dates.length) return message("No recorded history is available yet.");
+    if (!start || !end || start > end || start < dates[0] || end > dates[dates.length - 1]) {
+      return message(`Choose a start date on or before the end date. Both dates must fall between ${longDate(dates[0])} and ${longDate(dates[dates.length - 1])}.`);
+    }
+    let rows;
+    if (start === D.tickers.start && end === D.tickers.end) {
+      rows = (D.tickers.comparisons?.[mode] || []).slice();
+    } else if (D.volumeHistory) {
+      rows = historicalComparison(D.volumeHistory.days, start, end, mode);
+    } else {
+      message("Loading historical volume…");
+      if (!D.loadingVolume) {
+        D.loadingVolume = load("volume_history.json").then(history => {
+          D.volumeHistory = history;
+          renderComparisons();
+        }).catch(() => {
+          if ($("#volume-start").value !== D.tickers.start || $("#volume-end").value !== D.tickers.end)
+            message("Historical data could not load. Change the range to retry.");
+        }).finally(() => { D.loadingVolume = null; });
+      }
+      return;
+    }
+    rows.sort((a,b) => b.token/b.stock - a.token/a.stock || a.t.localeCompare(b.t));
+    const description = mode === "calendar" ? "Each total includes all recorded volume in the selected dates. A ticker needs at least one date with trading on both sides." :
       mode === "matched" ? "Both markets traded on each included date." : "Both markets traded in the selected session on each included date.";
-    $("#volume-summary").textContent = `${longDate(t.start)} to ${longDate(t.end)}. ${description} ${rows.filter(r => r.token > r.stock).length} of ${rows.length} comparable tickers exceeded 100% over the window.`;
+    $("#volume-summary").textContent = `${longDate(start)} to ${longDate(end)}. ${description} ${rows.filter(r => r.token > r.stock).length} of ${rows.length} comparable tickers exceeded 100% over the window.`;
     $("#volume-comparison").innerHTML = "<thead><tr><th>Stock</th><th>Token dollars</th><th>Stock dollars</th><th>Token / stock</th><th>Days above 100% / matched</th></tr></thead><tbody>" +
       rows.slice(0, limit === "all" ? rows.length : Number(limit)).map(r =>
         `<tr><td>${esc(r.t)}</td><td>${usd(r.token)}</td><td>${usd(r.stock)}</td><td>${pct(r.token/r.stock,2)}</td><td>${r.above} / ${r.days}</td></tr>`).join("") +
@@ -580,6 +651,7 @@
 
   function renderLead() {
     const t = D.tickers;
+    $("#lead-window").textContent = `This price comparison uses the latest ${t.window_days} calendar days, ${longDate(t.start)} to ${longDate(t.end)}.`;
     const select = $("#lead-symbol");
     const results = t.lead_lag?.[$("#lead-session").value] || {};
     const names = Object.keys(results).sort();
@@ -612,6 +684,22 @@
   }
 
   function bind() {
+    const dates = D.daily.dates;
+    const dex = D.meta.sources?.find(source => source.id === "dex");
+    if (dates.length) {
+      $("#volume-archive").textContent = `Archive: ${longDate(dates[0])} to ${longDate(dates[dates.length - 1])}.` +
+        (dex?.first_date ? ` On-chain pool records begin ${longDate(dex.first_date)}.` : "");
+    }
+    for (const input of [$("#volume-start"), $("#volume-end")]) {
+      input.min = dates[0] || "";
+      input.max = dates[dates.length - 1] || "";
+      input.addEventListener("change", () => {
+        $("#volume-range").value = "custom";
+        renderComparisons();
+      });
+    }
+    $("#volume-range").addEventListener("change", setComparisonRange);
+    setComparisonRange();
     $("#volume-mode").addEventListener("change", renderComparisons);
     $("#volume-limit").addEventListener("change", renderComparisons);
     $("#lead-symbol").addEventListener("change", renderLead);

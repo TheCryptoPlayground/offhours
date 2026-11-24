@@ -11,6 +11,11 @@ A daily tracker of tokenized US stock trading by US market session. It answers t
 Everything is free: public exchange APIs, GeckoTerminal, CoinGecko and Alpaca's free plan for data,
 GitHub Actions to run it daily, GitHub Pages to host the site.
 
+The [volume comparison](https://tianhaoyin1120.github.io/offhours/#compare-h) supports 7, 30 and 90 days,
+all archived history, and inclusive custom dates. Each ticker requires at least one date with volume on both sides.
+Matched-date and session views use only dates with positive volume on both sides. The adjacent half-hour price comparison uses the latest 30 days.
+[Data sources and APIs](https://tianhaoyin1120.github.io/offhours/#sources-h) lists upstream feeds and public JSON and CSV downloads.
+
 ## Preview in two minutes
 
 ```bash

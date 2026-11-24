@@ -63,6 +63,17 @@ def test_calendar_and_matched_crossovers():
     assert result["POST"] == []
 
 
+def test_history_uses_published_cents_and_preserves_one_sided_dates():
+    date = pd.Timestamp("2026-11-13")
+    columns = ["underlying", "market_date", "session", "vol_usd"]
+    token = pd.DataFrame([("X", date, "PRE", 1.006), ("X", date, "PRE", 2.006),
+                          ("", date, "PRE", 50)], columns=columns)
+    stock = pd.DataFrame([("X", date, "RTH", 300)], columns=columns)
+    rows = comparisons.volume_history(token, stock)["days"]["2026-11-13"]
+    assert sorted(rows) == [["X", "PRE", 302, 0], ["X", "RTH", 0, 30000]]
+    assert comparisons.volume_history(token.iloc[:0], stock.iloc[:0])["days"] == {}
+
+
 def test_adjacent_return_direction(paths):
     seed()
     days = pd.bdate_range("2026-11-09", "2026-11-13")

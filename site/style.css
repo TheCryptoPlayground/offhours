@@ -170,3 +170,7 @@ th.left, td.left { text-align: left; white-space: normal; }
 .search input { width: 100%; min-height: 2.35rem; border: 1px solid var(--rule); border-radius: 6px; padding: 0.45rem 0.65rem; background: var(--raised); color: var(--ink); font: 400 1rem var(--font); }
 .result-count { min-height: 1.25rem; margin: -0.25rem 0 0.5rem; color: var(--muted); font-size: 0.875rem; }
 .data-unavailable { color: var(--muted); font-size: 0.875rem; margin-top: 0.5rem; }
+
+.comparison-controls { display: flex; flex-wrap: wrap; gap: .6rem 1rem; align-items: end; margin-block: .8rem; }
+.comparison-controls label { display: grid; gap: .25rem; font-size: .875rem; color: var(--muted); }
+.comparison-controls select, .comparison-controls input { min-height: 2.35rem; border: 1px solid var(--rule); border-radius: 5px; background: var(--raised); color: var(--ink); font: inherit; padding: .3rem .5rem; }

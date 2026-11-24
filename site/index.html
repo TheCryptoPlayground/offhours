@@ -6,9 +6,9 @@
 <title>Tokenized Stock Observatory: trading beyond US market hours</title>
 <meta name="description" content="Historical and daily market data for tokenized US stocks, split by US trading session, venue, issuer and underlying stock.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%2315212B'/%3E%3Crect x='3' y='3' width='4' height='10' fill='%235C8FC4'/%3E%3Crect x='9' y='3' width='4' height='10' fill='%23F0A23A'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="style.css?v=20261120-6">
+<link rel="stylesheet" href="style.css?v=20261124-2">
 <script src="vendor/chart.umd.js" defer></script>
-<script src="app.js?v=20261120-5" defer></script>
+<script src="app.js?v=20261124-2" defer></script>
 </head>
 <body>
 <div class="demo-banner" id="demo-banner" hidden><p>Synthetic demo data, generated to preview the layout. These are not market figures.</p></div>
@@ -19,7 +19,7 @@
   <p class="stamp" id="stamp">Loading data</p>
   <p class="project-link"><a href="https://github.com/TianhaoYin1120/offhours">Source code, methodology and data pipeline on GitHub</a></p>
   <nav class="jump" aria-label="Dashboard sections">
-    <a href="#overview-h">Overview</a><a href="#daily-h">History</a><a href="#venue-h">Venues</a><a href="#stocks-h">Stocks</a><a href="#compare-h">Token vs. stock</a><a href="#coverage-h">Coverage</a>
+    <a href="#overview-h">Overview</a><a href="#daily-h">History</a><a href="#venue-h">Venues</a><a href="#stocks-h">Stocks</a><a href="#compare-h">Token vs. stock</a><a href="#sources-h">Data &amp; APIs</a><a href="#coverage-h">Coverage</a>
   </nav>
 </header>
 
@@ -81,6 +81,7 @@
     </div>
   </div>
   <p class="note" id="venue-note"></p>
+  <p class="note">Base and Ethereum are blockchains. A trading pool holds assets that traders can swap on a decentralized exchange (DEX). The venue view groups these swaps by blockchain. Choose Issuer to see whose tokens traded. Coinbase’s centralized exchange order book is outside the Base pool total.</p>
   <div class="chart"><canvas id="venue-chart" aria-label="Daily tokenized stock volume by venue"></canvas></div>
   <div id="issuer-detail" class="table-wrap" hidden><table id="issuer-totals"></table></div>
 </section>
@@ -108,16 +109,26 @@
 
 <section aria-labelledby="compare-h">
   <h2 id="compare-h">When does token volume exceed stock volume?</h2>
+  <p class="note"><span id="volume-archive"></span> <a href="#sources-h">See coverage by source</a>.</p>
+  <div class="comparison-controls">
+  <label>Date range <select id="volume-range">
+    <option value="7">Last 7 days</option><option value="30" selected>Last 30 days</option>
+    <option value="90">Last 90 days</option><option value="all">All history</option><option value="custom">Custom dates</option>
+  </select></label>
+  <label>From <input type="date" id="volume-start"></label>
+  <label>Through <input type="date" id="volume-end"></label>
   <label>Compare <select id="volume-mode">
     <option value="calendar">Full calendar window</option><option value="matched">Matched trading dates</option>
     <option value="RTH">Regular hours</option><option value="PRE">Pre-market</option>
     <option value="POST">After-hours</option><option value="OVERNIGHT">Overnight</option>
     <option value="CLOSED">Closed periods</option></select></label>
   <label>Rows <select id="volume-limit"><option value="10">Top 10</option><option value="20">Top 20</option><option value="all">All</option></select></label>
+  </div>
   <p class="note" id="volume-summary" aria-live="polite"></p>
   <div class="table-wrap"><table id="volume-comparison"></table></div>
-  <p class="note">Daily counts use dates with positive recorded dollar volume on both sides. A ratio above 100% means the observed tokens traded more dollars than the underlying stock.</p>
+  <p class="note">Dates are inclusive US market dates. Coverage varies by stock and venue. Daily counts use dates with positive recorded dollar volume on both sides. A ratio above 100% means the observed tokens traded more dollars than the underlying stock.</p>
   <h3>Which market moves first?</h3>
+  <p class="note" id="lead-window"></p>
   <label>Session <select id="lead-session"><option value="RTH">Regular hours</option><option value="PRE">Pre-market</option><option value="POST">After-hours</option></select></label>
   <label>Stock <select id="lead-symbol"></select></label>
   <p id="lead-result" aria-live="polite"></p>
@@ -148,7 +159,14 @@
   <p>Coinbase-issued tokens on Base and Ondo-issued tokens on Ethereum are sampled for AAPL, AMZN, GOOGL, MSFT, NVDA, QQQ, SPY and TSLA where eligible pools exist. Weekly discovery selects up to two leading eligible pools per token by reported 24-hour volume. Each pool counts once. Issuer minting, redemptions and ordinary transfers are excluded.</p>
   <h3>Sessions</h3>
   <div class="table-wrap"><table id="session-table"></table></div>
-  <h3>Sources</h3>
+  <h3 id="sources-h">Data sources and APIs</h3>
+  <p>The dashboard publishes daily files that anyone can open without an account. The collector uses the following upstream APIs.</p>
+  <ul>
+    <li><strong>US stock volume.</strong> Alpaca supplies 30-minute price and share-volume bars from the consolidated US tape. We estimate dollars traded by multiplying shares by the bar’s volume-weighted average price, using its closing price when that average is unavailable. <a href="https://docs.alpaca.markets/us/reference/stockbars">Alpaca historical stock bars</a>.</li>
+    <li><strong>Token trades on exchange order books.</strong> Historical candles come from the spot market APIs of <a href="https://developers.binance.com/docs/binance-spot-api-docs/rest-api/market-data-endpoints">Binance</a>, <a href="https://docs.kraken.com/api/docs/rest-api/get-ohlc-data/">Kraken</a> and <a href="https://bybit-exchange.github.io/docs/v5/market/kline">Bybit</a>. The status table below shows the latest collection result.</li>
+    <li><strong>Token swaps on Base and Ethereum.</strong> GeckoTerminal supplies prices and dollar volume in 15-minute intervals for individual trading pools. CoinGecko supplies token lists and contract addresses used to identify those pools. <a href="https://api.geckoterminal.com/docs/index.html">GeckoTerminal API</a> · <a href="https://docs.coingecko.com/reference/coins-markets">CoinGecko API</a>.</li>
+  </ul>
+  <p><strong>Dashboard data files</strong> · <a href="data/meta.json">Coverage and refresh status (JSON)</a> · <a href="data/daily.json">Daily totals (JSON)</a> · <a href="data/volume_history.json">Full comparison history in cents (JSON)</a> · <a href="#downloads">CSV downloads</a></p>
   <p id="coverage"></p>
   <div class="table-wrap"><table id="source-table"></table></div>
   <h3>Dataset scope</h3>

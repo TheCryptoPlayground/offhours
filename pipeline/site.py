@@ -173,11 +173,18 @@ def build(demo: bool = False, end_date: str | None = None) -> dict:
     source_ids = expected_sources + sorted(set(source_state) - set(expected_sources))
     for sid in source_ids:
         st = source_state.get(sid, {})
-        sources.append(dict(id=sid, label=C.VENUE_LABELS.get(sid, sid.title()),
+        if sid == "stocks":
+            observed = sf.market_date
+        elif sid == "dex":
+            observed = tf.loc[tf.source.str.startswith("dex-"), "market_date"]
+        else:
+            observed = tf.loc[tf.source == sid, "market_date"]
+        sources.append(dict(first_date=observed.min().strftime("%Y-%m-%d") if len(observed) else None,
+                            last_date=observed.max().strftime("%Y-%m-%d") if len(observed) else None, id=sid, label=C.VENUE_LABELS.get(sid, sid.title()),
                             type=st.get("type"), ok=st.get("ok"), markets=st.get("markets"),
                             errors=st.get("errors"), discovery_errors=st.get("discovery_errors"),
                             error=st.get("error") or st.get("last_error"),
-                            finished=st.get("finished")))
+                            started=st.get("started"), finished=st.get("finished")))
     meta = dict(
         generated_at=datetime.now(timezone.utc).isoformat(timespec="seconds"), demo=demo,
         first_date=daily["dates"][0] if daily["dates"] else None, last_date=daily["dates"][-1] if daily["dates"] else None,
@@ -196,6 +203,7 @@ def build(demo: bool = False, end_date: str | None = None) -> dict:
 
     _dump("meta.json", _clean(meta))
     _dump("daily.json", _clean(daily))
+    _dump("volume_history.json", comparisons.volume_history(head, sf))
     _dump("tickers.json", _clean(dict(window_days=window_days, target_window_days=C.TICKER_WINDOW_DAYS,
                                       start=kpis["start"], end=kpis["end"], rows=rows,
                                       comparisons=comparisons.volume_views(hw, sw),

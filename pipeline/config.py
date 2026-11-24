@@ -82,9 +82,9 @@ DEX_NETWORKS = ["robinhood", "solana", "bsc", "eth", "base", "arbitrum"]  # Geck
 VENUE_LABELS = {
     "binance": "Binance", "kraken": "Kraken", "bybit": "Bybit", "bitget": "Bitget",
     "gate": "Gate", "okx": "OKX",
-    "dex-robinhood": "Robinhood Chain DEXs", "dex-solana": "Solana DEXs", "dex-bsc": "BNB Chain DEXs",
-    "dex-eth": "Ethereum DEXs", "dex-base": "Base DEXs", "dex-arbitrum": "Arbitrum DEXs",
-    "dex": "DEX pools (GeckoTerminal)", "stocks": "US stocks (Alpaca, consolidated tape)",
+    "dex-robinhood": "Trading pools on Robinhood Chain", "dex-solana": "Trading pools on Solana", "dex-bsc": "Trading pools on BNB Chain",
+    "dex-eth": "Trading pools on Ethereum", "dex-base": "Trading pools on Base", "dex-arbitrum": "Trading pools on Arbitrum",
+    "dex": "On-chain trading pools (GeckoTerminal)", "stocks": "US stocks (Alpaca, consolidated tape)",
 }
 
 USD_LIKE = {
