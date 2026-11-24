@@ -6,8 +6,8 @@
   const HOURS = { RTH: "09:30 to 16:00", PRE: "04:00 to 09:30", POST: "16:00 to 20:00", OVERNIGHT: "20:00 to 04:00", CLOSED: "weekends and holidays" };
   const VAR = { RTH: "--rth", PRE: "--pre", POST: "--post", OVERNIGHT: "--ovn", CLOSED: "--closed" };
   const FAMILY = {
-    xstocks: "xStocks", ondo: "Ondo Global Markets", bstocks: "bStocks (Binance)", robinhood: "Robinhood",
-    coinbase: "Coinbase", dinari: "Dinari", backpack: "Backpack", other: "Other issuers",
+    xstocks: "xStocks", ondo: "Ondo Global Markets", bstocks: "bStocks", robinhood: "Robinhood",
+    coinbase: "Coinbase stock tokens", dinari: "Dinari", backpack: "Backpack", other: "Other issuers",
   };
   const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
   const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -317,14 +317,31 @@
     const d = D.daily;
     const start = rangeStart(d.dates);
     const dates = d.dates.slice(start);
-    const groups = d[ui.venue] || {};
-    const keys = Object.keys(groups).sort((a, b) => sum(groups[b].slice(start)) - sum(groups[a].slice(start)));
-    const pal = PALETTE[darkMode() ? "dark" : "light"];
+    const byVenue = ui.venue === "venues";
     const names = D.meta.venue_labels || {};
-    const datasets = keys.map((k, i) => ({
-      label: ui.venue === "venues" ? names[k] || k : FAMILY[k] || k,
-      data: groups[k].slice(start), backgroundColor: pal[i % pal.length], borderWidth: 0, barPercentage: 0.9, categoryPercentage: 0.94,
+    const entries = [];
+    function add(family, venue, series) {
+      const product = FAMILY[family] || family;
+      const data = series.slice(start);
+      entries.push({ product, venue, label: venue ? `${product} · ${venue}` : product,
+        data, total: sum(data), observed: dates.filter((_, i) => data[i] > 0) });
+    }
+    if (byVenue) {
+      for (const [source, products] of Object.entries(d.product_venues)) {
+        const name = names[source] || source;
+        const venue = source.startsWith("dex-") ? name : `${name} order book`;
+        for (const [family, series] of Object.entries(products)) add(family, venue, series);
+      }
+    } else {
+      for (const [family, series] of Object.entries(d.families)) add(family, "", series);
+    }
+    entries.sort((a, b) => b.total - a.total || a.label.localeCompare(b.label));
+    const pal = PALETTE[darkMode() ? "dark" : "light"];
+    const datasets = entries.map((entry, i) => ({
+      label: entry.label, data: entry.data, backgroundColor: pal[i % pal.length],
+      borderWidth: 0, barPercentage: 0.9, categoryPercentage: 0.94,
     }));
+    $("#venue-chart").setAttribute("aria-label", byVenue ? "Daily token volume by product and trading venue" : "Daily token volume by product across tracked venues");
     make("venue-chart", {
       type: "bar",
       data: { labels: dates, datasets },
@@ -339,18 +356,14 @@
       },
     });
     const other = sum(d.token_other.slice(start));
-    $("#venue-note").textContent = `${rangeLabel(d.dates)}. Volume includes exchange order books and eligible on-chain trading pools.` +
+    const explanation = byVenue
+      ? "Each row pairs a token product with the place its trades were recorded. For Coinbase stock tokens, we measure swaps in selected pools on the Base blockchain."
+      : "Each product combines its recorded trades across tracked venues. For example, the xStocks total includes trades recorded on Kraken and Bybit.";
+    $("#venue-note").textContent = `${rangeLabel(d.dates)}. ${explanation}` +
       (other > 0 ? ` Pools with other counterpart assets contributed a further ${usd(other)}, excluded here.` : "");
-    const issuers = ui.venue === "families";
-    $("#issuer-detail").hidden = !issuers;
-    if (issuers) {
-      const rows = keys.map(key => {
-        const values = groups[key].slice(start);
-        const observed = dates.filter((_, i) => values[i] > 0);
-        return `<tr><td>${esc(FAMILY[key] || key)}</td><td>${usd(sum(values))}</td><td>${observed.length}</td><td>${observed.length ? longDate(observed[0]) : "—"}</td><td>${observed.length ? longDate(observed[observed.length-1]) : "—"}</td></tr>`;
-      });
-      $("#issuer-totals").innerHTML = "<thead><tr><th>Issuer</th><th>Recorded volume</th><th>Dates with volume</th><th>First in range</th><th>Latest in range</th></tr></thead><tbody>" + rows.join("") + "</tbody>";
-    }
+    const rows = entries.map(({ product, venue, total, observed }) =>
+      `<tr><td>${esc(product)}</td>${byVenue ? `<td class="left">${esc(venue)}</td>` : ""}<td>${usd(total)}</td><td>${observed.length}</td><td>${observed.length ? longDate(observed[0]) : "—"}</td><td>${observed.length ? longDate(observed[observed.length - 1]) : "—"}</td></tr>`);
+    $("#product-totals").innerHTML = `<thead><tr><th>Token product</th>${byVenue ? '<th class="left">Where it traded</th>' : ""}<th>Recorded volume</th><th>Dates with volume</th><th>First in range</th><th>Latest in range</th></tr></thead><tbody>${rows.join("")}</tbody>`;
   }
 
   /* ---------- Stocks table and detail ---------- */

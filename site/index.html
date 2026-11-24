@@ -8,7 +8,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%2315212B'/%3E%3Crect x='3' y='3' width='4' height='10' fill='%235C8FC4'/%3E%3Crect x='9' y='3' width='4' height='10' fill='%23F0A23A'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="style.css?v=20261124-2">
 <script src="vendor/chart.umd.js" defer></script>
-<script src="app.js?v=20261124-3" defer></script>
+<script src="app.js?v=20261124-4" defer></script>
 </head>
 <body>
 <div class="demo-banner" id="demo-banner" hidden><p>Synthetic demo data, generated to preview the layout. These are not market figures.</p></div>
@@ -19,7 +19,7 @@
   <p class="stamp" id="stamp">Loading data</p>
   <p class="project-link"><a href="https://github.com/TianhaoYin1120/offhours">Source code, methodology and data pipeline on GitHub</a></p>
   <nav class="jump" aria-label="Dashboard sections">
-    <a href="#overview-h">Overview</a><a href="#daily-h">History</a><a href="#venue-h">Venues</a><a href="#stocks-h">Stocks</a><a href="#compare-h">Token vs. stock</a><a href="#sources-h">Data &amp; APIs</a><a href="#coverage-h">Coverage</a>
+    <a href="#overview-h">Overview</a><a href="#daily-h">History</a><a href="#venue-h">Products &amp; venues</a><a href="#stocks-h">Stocks</a><a href="#compare-h">Token vs. stock</a><a href="#sources-h">Data &amp; APIs</a><a href="#coverage-h">Coverage</a>
   </nav>
 </header>
 
@@ -74,16 +74,15 @@
 
 <section aria-labelledby="venue-h">
   <div class="row">
-    <h2 id="venue-h">Where the volume is</h2>
-    <div class="seg" role="group" aria-label="Group by">
-      <button type="button" data-venue="venues" aria-pressed="true">Venue</button>
-      <button type="button" data-venue="families" aria-pressed="false">Issuer</button>
+    <h2 id="venue-h">Token products and where they trade</h2>
+    <div class="seg" role="group" aria-label="Group token volume by">
+      <button type="button" data-venue="venues" aria-pressed="true">Product and venue</button>
+      <button type="button" data-venue="families" aria-pressed="false">Product totals</button>
     </div>
   </div>
   <p class="note" id="venue-note"></p>
-  <p class="note">Base and Ethereum are blockchains. A trading pool holds assets that traders can swap on a decentralized exchange (DEX). The venue view groups these swaps by blockchain. Choose Issuer to see whose tokens traded. Coinbase’s centralized exchange order book is outside the Base pool total.</p>
-  <div class="chart"><canvas id="venue-chart" aria-label="Daily tokenized stock volume by venue"></canvas></div>
-  <div id="issuer-detail" class="table-wrap" hidden><table id="issuer-totals"></table></div>
+  <div class="chart"><canvas id="venue-chart" aria-label="Daily token volume by product and trading venue"></canvas></div>
+  <div class="table-wrap"><table id="product-totals"></table></div>
 </section>
 
 <section aria-labelledby="stocks-h">

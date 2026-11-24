@@ -80,6 +80,10 @@ def build(demo: bool = False, end_date: str | None = None) -> dict:
         token_other=_series(other.assign(k="x"), dates, "k", ["x"])["x"] if len(other) else [0.0] * len(dates),
         stock=_series(sf, dates, "session", S) if len(sf) else {s: [0.0] * len(dates) for s in S},
         venues=_series(head, dates, "source", venues) if venues else {},
+        product_venues={
+            source: _series(group, dates, "family", sorted(group.family.unique()))
+            for source, group in head.groupby("source")
+        },
         families=_series(head, dates, "family", families) if families else {},
     )
 
