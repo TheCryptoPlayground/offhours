@@ -7,6 +7,9 @@ from . import config as C
 
 
 def volume_views(tokens, stocks):
+    # Daily exports round each fact to cents before users can sum it.
+    tokens = tokens.assign(vol_usd=tokens.vol_usd.astype(float).round(2))
+    stocks = stocks.assign(vol_usd=stocks.vol_usd.astype(float).round(2))
     views = {}
     keys = ["underlying", "market_date"]
     for mode in ("calendar", "matched", *C.SESSIONS):

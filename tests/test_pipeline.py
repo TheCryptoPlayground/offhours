@@ -52,13 +52,15 @@ def seed():
 
 def test_calendar_and_matched_crossovers():
     cols = ["underlying", "market_date", "session", "vol_usd"]
-    token = pd.DataFrame([("X", 1, "RTH", 80), ("X", 1, "PRE", 12), ("X", 2, "CLOSED", 50)], columns=cols)
-    stock = pd.DataFrame([("X", 1, "RTH", 100), ("X", 1, "PRE", 10)], columns=cols)
+    token = pd.DataFrame([("X", 1, "RTH", 80), ("X", 1, "PRE", 12), ("X", 2, "CLOSED", 50),
+                          ("Y", 1, "POST", 0.001)], columns=cols)
+    stock = pd.DataFrame([("X", 1, "RTH", 100), ("X", 1, "PRE", 10), ("Y", 1, "POST", 1000)], columns=cols)
     result = comparisons.volume_views(token, stock)
     assert result["calendar"][0] == dict(t="X", token=142, stock=110, days=1, above=0)
     assert result["matched"][0]["token"] == 92
     assert result["PRE"][0]["above"] == 1
     assert result["CLOSED"] == []
+    assert result["POST"] == []
 
 
 def test_adjacent_return_direction(paths):
