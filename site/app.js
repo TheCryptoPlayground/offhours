@@ -178,8 +178,21 @@
     const history = m.history || {};
     const tokenDates = history.token_dates || 0;
     const stockDates = history.stock_dates || 0;
-    $("#overview-note").textContent = `${tokenDates} calendar date${tokenDates === 1 ? "" : "s"} contain token trades` +
-      (stockDates ? `; ${stockDates} contain underlying-stock data.` : "; underlying-stock data is not configured yet.");
+    const latestStockDate = D.daily.dates.filter((_, i) =>
+      SESS.some((session) => D.daily.stock[session][i] > 0)).pop();
+    const source = (m.sources || []).find((s) => s.id === "stocks");
+    const notes = [`Token trades appear on ${tokenDates} calendar dates.`];
+    if (stockDates && latestStockDate) {
+      notes.push(`US stock volume appears on ${stockDates} dates. Latest recorded trading date: ${longDate(latestStockDate)}.`);
+    } else {
+      notes.push("The current dataset contains no recorded US stock volume.");
+    }
+    if (source?.ok === false) {
+      notes.push(source.error?.includes("ALPACA_API_KEY_ID / ALPACA_API_SECRET_KEY not set")
+        ? "The latest refresh skipped US stocks because the collection job lacked Alpaca credentials."
+        : "The latest Alpaca refresh failed. See Sources for details.");
+    }
+    $("#overview-note").textContent = notes.join(" ");
   }
 
   function renderWeek() {
@@ -233,7 +246,7 @@
       const r = k.ratio_bp_by_session || {};
       out.push(`Token volume as a share of the same stocks' dollar volume: <strong>${bp(k.ratio_bp)}</strong> overall, ${bp(r.RTH)} regular hours, ${bp(r.PRE)} pre-market and ${bp(r.POST)} after-hours.`);
     } else {
-      out.push("The comparison with the stocks' own volume appears once Alpaca keys are set.");
+      out.push("This summary window has no comparable US stock volume.");
     }
     if (k.token_other > 0) out.push(`DEX pools pairing stock tokens with memecoins traded another ${usd(k.token_other)}, not counted above.`);
     $("#summary").innerHTML = out.join(" ");
@@ -505,9 +518,8 @@
     const cov = m.coverage;
     const bits = [];
     if (u.tokens) {
-      const stocksReady = (m.sources || []).some((s) => s.id === "stocks" && s.ok === true && s.markets > 0);
       bits.push(`The token list comes from CoinGecko's tokenized-stock categories: ${u.tokens} tokens, ${u.mapped} of them matched to a US ticker` +
-        (u.tickers_checked || stocksReady ? ". Underlying symbols represented in the dashboard are checked by the successful Alpaca stock-data run." : ". Tickers stay unchecked until Alpaca keys are set."));
+        (u.tickers_checked ? ". The token-list refresh checked ticker mappings against Alpaca listings." : ". The token-list refresh assigned these symbols without an Alpaca listing check."));
     }
     if (cov && cov.coingecko_24h > 0) {
       bits.push(`In the 24 hours to ${esc(cov.as_of.slice(0, 16).replace("T", " "))} UTC these sources measured ${usd(cov.measured_24h)}, against ${usd(cov.coingecko_24h)} that CoinGecko reports for the same tokens on every venue it tracks (${pct(cov.measured_24h / cov.coingecko_24h)}). The two count slightly different things, so read it as a rough coverage check.`);
@@ -534,9 +546,11 @@
   function showEmpty(err) {
     $("#stamp").textContent = "";
     const local = location.protocol === "file:";
-    $("#main").innerHTML = `<div class="empty"><h2>No data yet</h2><p>${local
-      ? "Browsers block data files on pages opened straight from disk. Serve the folder instead with <code>python -m http.server -d site</code> and open <code>http://localhost:8000</code>."
-      : "This page reads the files in <code>site/data/</code>, which the daily job writes."}</p><p>Run <code>python -m pipeline all</code> to collect market data, or <code>python -m pipeline demo</code> to preview the layout with synthetic numbers.</p>${err ? `<p class="sub">${esc(err.message)}</p>` : ""}</div>`;
+    if (local) {
+      $("#main").innerHTML = '<div class="empty"><h2>Open the dashboard online</h2><p>Your browser could not load the dashboard data from this local file. <a href="https://tianhaoyin1120.github.io/offhours/">View the published dashboard</a> or serve the site folder over HTTP.</p></div>';
+      return;
+    }
+    $("#main").innerHTML = `<div class="empty"><h2>Dashboard could not load</h2><p>Reload the page to retry.</p>${err ? `<p class="sub">${esc(err.message)}</p>` : ""}</div>`;
   }
 
   function renderAll() {
