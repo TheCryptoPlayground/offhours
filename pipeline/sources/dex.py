@@ -27,10 +27,11 @@ def norm_addr(a: str) -> str:
 
 
 class GeckoTerminal:
-    pace = 2.2
+    pace = 6.5
 
     def __init__(self, http: HTTP):
         self.http = http
+        self.failed_deployments = set()
 
     def get(self, path: str, **params):
         return self.http.get(GT + path, params=params, headers=HEADERS, pace=self.pace)
@@ -97,11 +98,18 @@ def counterpart(symbol: str, is_stock: bool) -> str:
     return "other"
 
 
-def discover_pools(gt: GeckoTerminal, addresses: pd.DataFrame, tokens: pd.DataFrame, now: str) -> list[Market]:
+def discover_pools(gt: GeckoTerminal, addresses: pd.DataFrame, tokens: pd.DataFrame, now: str, focused=False) -> list[Market]:
     """Find the pools worth tracking for every listed stock token on the configured networks."""
     tok = tokens.set_index("cg_id")
     registry = {(r.network, norm_addr(r.address)): r.cg_id for r in addresses.itertuples()}
     want = addresses[addresses.network.isin(C.DEX_NETWORKS)].copy()
+    if focused:
+        # A reproducible issuer panel keeps the free daily job bounded.
+        symbols = {"AAPL", "NVDA", "TSLA", "GOOGL", "AMZN", "MSFT", "SPY", "QQQ"}
+        family = want.cg_id.map(tok.family)
+        want = want[want.cg_id.map(tok.underlying).isin(symbols) &
+                    (((family == "coinbase") & (want.network == "base")) |
+                     ((family == "ondo") & (want.network == "eth")))]
     want["vol24"] = want.cg_id.map(tok.vol24).fillna(0)
     want = want[want.vol24 >= C.DEX_MIN_TOKEN_VOL].sort_values("vol24", ascending=False)
     log.info("dex: discovering pools for %d token deployments", len(want))
@@ -111,9 +119,11 @@ def discover_pools(gt: GeckoTerminal, addresses: pd.DataFrame, tokens: pd.DataFr
         try:
             pools = gt.token_pools(r.network, r.address)
         except Exception as e:
+            gt.failed_deployments.add((r.network, r.cg_id))
             log.warning("dex: pools for %s on %s failed: %s", r.cg_id, r.network, e)
             continue
-        for p in pools:
+        accepted = 0
+        for p in sorted(pools, key=lambda pool: -pool["vol24"]):
             key = (r.network, p["pool"])
             if key in found:
                 continue
@@ -125,6 +135,8 @@ def discover_pools(gt: GeckoTerminal, addresses: pd.DataFrame, tokens: pd.DataFr
             stock_id = base_id if side == "base" else quote_id
             other_sym = p["quote_sym"] if side == "base" else p["base_sym"]
             kind = counterpart(other_sym, (quote_id if side == "base" else base_id) is not None)
+            if focused and (kind not in ("usd", "major") or stock_id != r.cg_id):
+                continue
             floor = C.DEX_MIN_OTHER_POOL_VOL if kind == "other" else C.DEX_MIN_POOL_VOL
             if p["vol24"] < floor or stock_id not in tok.index:
                 continue
@@ -136,6 +148,9 @@ def discover_pools(gt: GeckoTerminal, addresses: pd.DataFrame, tokens: pd.DataFr
                 venue_type="dex", counterpart=kind, network=r.network, token_side=side,
                 bar_s=C.DEX_BAR_S, vol24=p["vol24"], discovered=now,
             )
+            accepted += 1
+            if focused and accepted == 2:
+                break
     markets = sorted(found.values(), key=lambda m: -m.vol24)[: C.DEX_MAX_POOLS]
     log.info("dex: tracking %d pools (of %d found)", len(markets), len(found))
     return markets

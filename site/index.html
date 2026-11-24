@@ -19,7 +19,7 @@
   <p class="stamp" id="stamp">Loading data</p>
   <p class="project-link"><a href="https://github.com/TianhaoYin1120/offhours">Source code, methodology and data pipeline on GitHub</a></p>
   <nav class="jump" aria-label="Dashboard sections">
-    <a href="#overview-h">Overview</a><a href="#daily-h">History</a><a href="#venue-h">Venues</a><a href="#stocks-h">Stocks</a><a href="#coverage-h">Coverage</a>
+    <a href="#overview-h">Overview</a><a href="#daily-h">History</a><a href="#venue-h">Venues</a><a href="#stocks-h">Stocks</a><a href="#compare-h">Token vs. stock</a><a href="#coverage-h">Coverage</a>
   </nav>
 </header>
 
@@ -105,6 +105,24 @@
   </div>
 </section>
 
+<section aria-labelledby="compare-h">
+  <h2 id="compare-h">When does token volume exceed stock volume?</h2>
+  <label>Compare <select id="volume-mode">
+    <option value="calendar">Full calendar window</option><option value="matched">Matched trading dates</option>
+    <option value="RTH">Regular hours</option><option value="PRE">Pre-market</option>
+    <option value="POST">After-hours</option><option value="OVERNIGHT">Overnight</option>
+    <option value="CLOSED">Closed periods</option></select></label>
+  <label>Rows <select id="volume-limit"><option value="10">Top 10</option><option value="20">Top 20</option><option value="all">All</option></select></label>
+  <p class="note" id="volume-summary" aria-live="polite"></p>
+  <div class="table-wrap"><table id="volume-comparison"></table></div>
+  <p class="note">Daily counts use dates with positive recorded dollar volume on both sides. A ratio above 100% means the observed tokens traded more dollars than the underlying stock.</p>
+  <h3>Which market moves first?</h3>
+  <label>Session <select id="lead-session"><option value="RTH">Regular hours</option><option value="PRE">Pre-market</option><option value="POST">After-hours</option></select></label>
+  <label>Stock <select id="lead-symbol"></select></label>
+  <p id="lead-result" aria-live="polite"></p>
+  <p class="note">Each correlation compares one market’s half-hour price change with the other market’s change in the next half hour of the same session. Positive values indicate moves in the same direction. Values near zero indicate little linear association. Shared news can affect both markets.</p>
+</section>
+
 <section aria-labelledby="wk-h">
   <h2 id="wk-h">Closure price comparison</h2>
   <p class="note" id="wk-note">Token price change during each weekend or full-day US market closure, plotted against the underlying stock's change at the next open. This panel populates when token and stock history overlap.</p>
@@ -126,6 +144,7 @@
 
 <section aria-labelledby="coverage-h" class="method">
   <h2 id="coverage-h">Coverage and downloads</h2>
+  <p>Coinbase-issued tokens on Base and Ondo-issued tokens on Ethereum are sampled for AAPL, AMZN, GOOGL, MSFT, NVDA, QQQ, SPY and TSLA where eligible pools exist. Weekly discovery selects up to two leading eligible pools per token by reported 24-hour volume. Each pool counts once. Issuer minting, redemptions and ordinary transfers are excluded.</p>
   <h3>Sessions</h3>
   <div class="table-wrap"><table id="session-table"></table></div>
   <h3>Sources</h3>

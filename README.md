@@ -104,7 +104,7 @@ tape uses with 23/5 trading. Weekends and holidays count under their own dates. 
 | Bitget        | xStocks, Ondo, Bitget's own tokens           | v2 spot `history-candles`                  | 120 days |
 | Gate          | xStocks                                      | v4 spot `candlesticks`                     | 120 days |
 | OKX           | Ondo                                         | v5 `market/history-candles`                | 120 days |
-| GeckoTerminal | DEX pools on Robinhood Chain, Solana, BNB Chain, Ethereum, Base, Arbitrum | pool OHLCV, 15 minutes | 30 days |
+| GeckoTerminal | Selected Coinbase stock tokens on Base and Ondo stock tokens on Ethereum | pool OHLCV, 15 minutes | up to 30 days |
 | Alpaca        | the stocks, consolidated tape                | v2 `stocks/bars`, `feed=sip`               | 120 days (the free plan reaches back to 2016) |
 | CoinGecko     | token list, issuer, contract addresses       | categories, `coins/markets`, `coins/list`  | refreshed weekly |
 
@@ -127,6 +127,14 @@ Change the backfill with `OFFHOURS_BACKFILL_DAYS` and `OFFHOURS_DEX_BACKFILL_DAY
 **Volume** is quote volume as each venue reports it. For Kraken that is bar VWAP times base volume,
 for GeckoTerminal the pool's volume in USD, and for the stocks, shares times bar VWAP. Dollar
 stablecoins count one for one.
+
+## Volume crossovers and two-way price discovery
+
+Calendar totals include token-only dates. Matched totals use dates with positive volume on both sides, optionally in the same session. Daily crossover counts always use matched observations. A small stock denominator or an incomplete feed can materially affect the ratio.
+
+The lead–lag panel pairs consecutive half hours for each ticker within one regular, pre-market or after-hours session. Returns are log(close/open). Each USD or major-quoted token market contributes its own return weighted by that interval’s dollar volume. Both quarters are required for 15-minute markets. Both directions use the same pairs, with at least 30 observations. These are descriptive Pearson correlations. Shared news, sparse trades and asynchronous last prints can affect them.
+
+The scheduled pool panel targets AAPL, AMZN, GOOGL, MSFT, NVDA, QQQ, SPY and TSLA. Weekly discovery selects up to two qualifying pools per token deployment from GeckoTerminal’s first volume-ranked page. Tokens need $5,000 in trailing daily volume and pools need $2,000. Stablecoin and major-asset pairs qualify. Only realized bar volume enters totals.
 
 ## The weekend test
 

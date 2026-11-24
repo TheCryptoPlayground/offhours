@@ -53,7 +53,7 @@ jobs:
           COINGECKO_DEMO_API_KEY: ${{ secrets.COINGECKO_DEMO_API_KEY }}
           OFFHOURS_EXTRA_STOCKS: ${{ vars.OFFHOURS_EXTRA_STOCKS }}
           EXTRA_ARGS: ${{ inputs.args }}
-        run: python -m pipeline update --only binance,kraken,bybit,stocks $EXTRA_ARGS
+        run: python -m pipeline update --only binance,kraken,bybit,dex,stocks $EXTRA_ARGS
 
       - name: Build site data
         run: python -m pipeline build

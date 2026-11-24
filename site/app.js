@@ -531,7 +531,8 @@
         const status = s.ok === true ? '<span class="status-ok">Working</span>'
           : s.ok === false ? '<span class="status-bad">Failing</span>' : '<span class="sub">Not completed</span>';
         const detail = s.error ? ` <span class="sub">${esc(String(s.error).slice(0, 160))}</span>` : "";
-        const errs = s.errors ? ` <span class="sub">(${s.errors} market errors)</span>` : "";
+        const errs = (s.errors ? ` <span class="sub">(${s.errors} market errors)</span>` : "") +
+          (s.discovery_errors ? ` <span class="sub">(${s.discovery_errors} token pool lookups failed)</span>` : "");
         const when = s.finished ? `${esc(s.finished.slice(0, 16).replace("T", " "))} UTC` : "n/a";
         return `<tr><td>${esc(s.label)}</td><td>${s.markets ?? "n/a"}</td><td class="left">${status}${errs}${detail}</td><td>${when}</td></tr>`;
       }).join("")}</tbody>`
@@ -553,6 +554,34 @@
     $("#main").innerHTML = `<div class="empty"><h2>Dashboard could not load</h2><p>Reload the page to retry.</p>${err ? `<p class="sub">${esc(err.message)}</p>` : ""}</div>`;
   }
 
+  function renderComparisons() {
+    const mode = $("#volume-mode").value;
+    const limit = $("#volume-limit").value;
+    const t = D.tickers;
+    const rows = (t.comparisons?.[mode] || []).slice().sort((a,b) => b.token/b.stock - a.token/a.stock);
+    const description = mode === "calendar" ? "All dates contribute to each total." :
+      mode === "matched" ? "Both markets traded on each included date." : "Both markets traded in the selected session on each included date.";
+    $("#volume-summary").textContent = `${longDate(t.start)} to ${longDate(t.end)}. ${description} ${rows.filter(r => r.token > r.stock).length} of ${rows.length} comparable tickers exceeded 100% over the window.`;
+    $("#volume-comparison").innerHTML = "<thead><tr><th>Stock</th><th>Token dollars</th><th>Stock dollars</th><th>Token / stock</th><th>Days above 100% / matched</th></tr></thead><tbody>" +
+      rows.slice(0, limit === "all" ? rows.length : Number(limit)).map(r =>
+        `<tr><td>${esc(r.t)}</td><td>${usd(r.token)}</td><td>${usd(r.stock)}</td><td>${pct(r.token/r.stock,2)}</td><td>${r.above} / ${r.days}</td></tr>`).join("") +
+      (rows.length ? "" : '<tr><td colspan="5">No comparable recorded volume.</td></tr>') + "</tbody>";
+  }
+
+  function renderLead() {
+    const t = D.tickers;
+    const select = $("#lead-symbol");
+    const results = t.lead_lag?.[$("#lead-session").value] || {};
+    const names = Object.keys(results).sort();
+    const previous = select.value;
+    select.replaceChildren(...names.map(name => new Option(name, name)));
+    if (names.includes(previous)) select.value = previous;
+    else if (names.includes("BNC")) select.value = "BNC";
+    const r = results[select.value];
+    $("#lead-result").textContent = r ? `${select.value}, ${longDate(t.start)} to ${longDate(t.end)}. Token first: ${fin(r.token_first) ? fix(r.token_first) : "n/a"}. Stock first: ${fin(r.stock_first) ? fix(r.stock_first) : "n/a"}. Based on ${r.n} consecutive half-hour pairs.` :
+      "A stock needs 30 comparable half-hour pairs to appear here.";
+  }
+
   function renderAll() {
     chartDefaults();
     renderStamp();
@@ -564,6 +593,8 @@
     renderMix();
     renderVenues();
     renderTickers();
+    renderComparisons();
+    renderLead();
     renderClosures();
     renderMethod();
     const row = ui.ticker && (D.tickers.rows || []).find((r) => r.t === ui.ticker);
@@ -571,6 +602,10 @@
   }
 
   function bind() {
+    $("#volume-mode").addEventListener("change", renderComparisons);
+    $("#volume-limit").addEventListener("change", renderComparisons);
+    $("#lead-symbol").addEventListener("change", renderLead);
+    $("#lead-session").addEventListener("change", renderLead);
     $$("[data-week]").forEach((b) => b.addEventListener("click", () => { ui.week = b.dataset.week; pressed("week", ui.week); renderWeek(); }));
     $$("[data-daily]").forEach((b) => b.addEventListener("click", () => { ui.daily = b.dataset.daily; pressed("daily", ui.daily); renderDaily(); }));
     $$("[data-range]").forEach((b) => b.addEventListener("click", () => {

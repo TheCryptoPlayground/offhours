@@ -9,7 +9,7 @@ from datetime import datetime, timezone
 import numpy as np
 import pandas as pd
 
-from . import aggregate, pricing, store, universe
+from . import aggregate, comparisons, pricing, store, universe
 from . import config as C
 
 log = logging.getLogger("offhours")
@@ -175,7 +175,8 @@ def build(demo: bool = False, end_date: str | None = None) -> dict:
         st = source_state.get(sid, {})
         sources.append(dict(id=sid, label=C.VENUE_LABELS.get(sid, sid.title()),
                             type=st.get("type"), ok=st.get("ok"), markets=st.get("markets"),
-                            errors=st.get("errors"), error=st.get("error") or st.get("last_error"),
+                            errors=st.get("errors"), discovery_errors=st.get("discovery_errors"),
+                            error=st.get("error") or st.get("last_error"),
                             finished=st.get("finished")))
     meta = dict(
         generated_at=datetime.now(timezone.utc).isoformat(timespec="seconds"), demo=demo,
@@ -196,7 +197,9 @@ def build(demo: bool = False, end_date: str | None = None) -> dict:
     _dump("meta.json", _clean(meta))
     _dump("daily.json", _clean(daily))
     _dump("tickers.json", _clean(dict(window_days=window_days, target_window_days=C.TICKER_WINDOW_DAYS,
-                                      start=kpis["start"], end=kpis["end"], rows=rows)))
+                                      start=kpis["start"], end=kpis["end"], rows=rows,
+                                      comparisons=comparisons.volume_views(hw, sw),
+                                      lead_lag=comparisons.lead_lag(markets, w0, end))))
     _dump("closures.json", _clean(closures))
     _dump("week.json", _clean(week))
     token_csv = C.SITE_DATA / "token_daily.csv"

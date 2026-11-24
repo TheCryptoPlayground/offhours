@@ -44,14 +44,14 @@ sk-hynix-xstock,SKHYX,SK Hynix xStock,xstocks,SKHY,116.68,282483.0,11359291.0,to
 coinbase-xstock,COINX,Coinbase xStock,xstocks,COIN,106.59,6299720.0,10825621.0,tokenized-stock;xstocks-ecosystem
 amazon-ondo-tokenized-stock,AMZNON,Amazon (Ondo Tokenized Stock),ondo,AMZN,252.73,1069151.0,10581270.0,ondo-tokenized-assets;tokenized-stock
 sofi-technologies-ondo-tokenized-stock,SOFION,SoFi Technologies (Ondo Tokenized Stock),ondo,SOFI,13.16,487583.0,10058368.0,ondo-tokenized-assets;tokenized-stock
-alphabet-coinbase-tokenized-stock,GOOGLC,Alphabet (Coinbase Tokenized Stock),coinbase,GOOGLC,273.45,10594301.0,10041051.0,tokenized-stock
+alphabet-coinbase-tokenized-stock,GOOGLC,Alphabet (Coinbase Tokenized Stock),coinbase,GOOGL,273.45,10594301.0,10041051.0,tokenized-stock
 amazon-xstock,AMZNX,Amazon xStock,xstocks,AMZN,252.81,4766290.0,9370127.0,tokenized-stock;xstocks-ecosystem
 meta-xstock,METAX,Meta xStock,xstocks,META,584.99,3748707.0,9339784.0,tokenized-stock;xstocks-ecosystem
 meta-platforms-ondo-tokenized-stock,METAON,Meta Platforms (Ondo Tokenized Stock),ondo,META,584.2,2405579.0,9036186.0,ondo-tokenized-assets;tokenized-stock
 tsmc-bstocks-tokenized-stock,TSMB,TSMC (bStocks Tokenized Stock),bstocks,TSM,337.98,1659260.0,8841806.0,bstocks-ecosystem;tokenized-stock
 currenc-group-inc,CURR,CURRENC Group Inc.,other,CURR,1.87,0.0,8822634.0,tokenized-stock
 circle-internet-group-robinhood-tokenized-stock,CRCL,Circle Internet Group • Robinhood Token,robinhood,CRCL,50.82,1490908.0,8523936.0,tokenized-stock
-nvidia-coinbase-tokenized-stock,NVDAC,NVIDIA (Coinbase Tokenized Stock),coinbase,NVDAC,142.65,17858497.0,8429021.0,tokenized-stock
+nvidia-coinbase-tokenized-stock,NVDAC,NVIDIA (Coinbase Tokenized Stock),coinbase,NVDA,142.65,17858497.0,8429021.0,tokenized-stock
 wrapped-sp500-xstock,WSPYX,Wrapped SP500 xStock,xstocks,WSPY,717.43,4029875.0,8294351.0,tokenized-stock;xstocks-ecosystem
 alibaba-bstocks-tokenized-stock,BABAB,Alibaba (bStocks Tokenized Stock),bstocks,BABA,84.01,1917888.0,7788011.0,tokenized-stock
 robinhood-xstock,HOODX,Robinhood xStock,xstocks,HOOD,67.03,9508901.0,7676808.0,tokenized-stock;xstocks-ecosystem
@@ -80,7 +80,7 @@ alphabet-class-c-ondo-tokenized-stock,GOOGON,Alphabet Class C (Ondo Tokenized St
 coinbase-ondo-tokenized-stock,COINON,Coinbase (Ondo Tokenized Stock),ondo,COIN,106.5,1537420.0,5752537.0,ondo-tokenized-assets;tokenized-stock
 wrapped-nasdaq-xstock,WQQQX,Wrapped Nasdaq xStock,xstocks,WQQQ,637.77,6984144.0,5363108.0,tokenized-stock;xstocks-ecosystem
 advanced-micro-devices-bstocks-tokenized-stock,AMDB,Advanced Micro Devices (bStocks Tokenized Stock),bstocks,AMD,459.93,7332127.0,5283036.0,bstocks-ecosystem;tokenized-stock
-meta-coinbase-tokenized-stock,METAC,Meta (Coinbase Tokenized Stock),coinbase,METAC,583.8,8590767.0,5276114.0,tokenized-stock
+meta-coinbase-tokenized-stock,METAC,Meta (Coinbase Tokenized Stock),coinbase,META,583.8,8590767.0,5276114.0,tokenized-stock
 apple-eqx-tokenized-stock,EQAAPL,Apple (EQX Tokenized Stock),other,EQAAPL,350.09,1954.01,5251328.0,tokenized-stock
 marvell-xstock,MRVLX,Marvell xStock,xstocks,MRVL,133.64,29621.0,5129660.0,tokenized-stock;xstocks-ecosystem
 amazon-eqx-tokenized-stock,EQAMZN,Amazon (EQX Tokenized Stock),other,EQAMZN,253.29,6798.01,5065812.0,tokenized-stock
@@ -102,7 +102,7 @@ oracle-xstock,ORCLX,Oracle xStock,xstocks,ORCL,108.68,15349.37,4084446.0,tokeniz
 pdd-holdings-bstocks-tokenized-stock,PDDB,PDD Holdings (bStocks Tokenized Stock),bstocks,PDD,85.85,2546630.0,4062361.0,bstocks-ecosystem;tokenized-stock
 cea-industries,BNC4,Cea Industries,other,BNC4,3.26,140444.0,3983324.0,tokenized-stock
 micron-technology-eqx-tokenized-stock,EQMU,Micron Technology (EQX Tokenized Stock),other,EQMU,659.85,13911.87,3959116.0,tokenized-stock
-spacex-coinbase-tokenized-stock,SPCXC,SpaceX (Coinbase Tokenized Stock),coinbase,SPCXC,132.19,11805635.0,3830257.0,tokenized-stock
+spacex-coinbase-tokenized-stock,SPCXC,SpaceX (Coinbase Tokenized Stock),coinbase,SPCX,132.19,11805635.0,3830257.0,tokenized-stock
 coca-cola-ondo-tokenized-stock,KOON,Coca-Cola (Ondo Tokenized Stock),ondo,KO,99.18,3023521.0,3747463.0,ondo-tokenized-assets;tokenized-stock
 intel-rstock,RINTC,Intel Tokenized Stock (Reality),other,RINTC,52.9,1209217.0,3741386.0,tokenized-stock
 bloom-energy-bstocks-tokenized-stock,BEB,Bloom Energy (bStocks Tokenized Stock),bstocks,BE,157.01,2538124.0,3736692.0,bstocks-ecosystem;tokenized-stock
@@ -137,10 +137,10 @@ amd-ondo-tokenized-stock,AMDON,AMD (Ondo Tokenized Stock),ondo,AMD,459.87,278596
 anthropic-pbc-robinhood-token,ANT,"Anthropic, PBC • Robinhood Token",robinhood,ANT,90.28,36024035.0,2472098.0,tokenized-stock
 tesla-rstock-2,RTSLA,Tesla Tokenized Stock (Reality),other,RTSLA,366.82,97610.0,2422995.0,tokenized-stock
 cisco-systems-ondo-tokenized-stock,CSCOON,Cisco Systems (Ondo Tokenized Stock),ondo,CSCO,94.69,305631.0,2390254.0,ondo-tokenized-assets;tokenized-stock
-sandisk-coinbase-tokenized-stock,SNDKC,SanDisk (Coinbase Tokenized Stock),coinbase,SNDKC,709.47,21916150.0,2362554.0,tokenized-stock
+sandisk-coinbase-tokenized-stock,SNDKC,SanDisk (Coinbase Tokenized Stock),coinbase,SNDK,709.47,21916150.0,2362554.0,tokenized-stock
 amazon-robinhood-tokenized-stock,AMZN,Amazon • Robinhood Token,robinhood,AMZN,253.58,1044291.0,2353236.0,tokenized-stock
 ibm-ondo-tokenized-stock,IBMON,IBM (Ondo Tokenized Stock),ondo,IBM,227.74,1158324.0,2352545.0,ondo-tokenized-assets;tokenized-stock
-tesla-coinbase-tokenized-stocks,TSLAC,Tesla (Coinbase Tokenized Stocks),coinbase,TSLAC,367.32,6049761.0,2341664.0,tokenized-stock
+tesla-coinbase-tokenized-stocks,TSLAC,Tesla (Coinbase Tokenized Stocks),coinbase,TSLA,367.32,6049761.0,2341664.0,tokenized-stock
 gamestop-xstock,GMEX,Gamestop xStock,xstocks,GME,26.78,9500793.0,2321960.0,tokenized-stock;xstocks-ecosystem
 marvell-technology-rstock,RMRVL,Marvell Technology Tokenized Stock (Reality),other,RMRVL,132.4,514901.0,2294950.0,tokenized-stock
 qualcomm-ondo-tokenized-stock,QCOMON,Qualcomm (Ondo Tokenized Stock),ondo,QCOM,162.36,467834.0,2291007.0,ondo-tokenized-assets;tokenized-stock
@@ -153,10 +153,10 @@ berkshire-hathaway-xstock,BRK.BX,Berkshire Hathaway xStock,xstocks,BRK.B,573.69,
 mcdonald-s-xstock,MCDX,McDonald's xStock,xstocks,MCD,278.41,1777995.0,2215261.0,tokenized-stock;xstocks-ecosystem
 pepsico-ondo-tokenized-stock,PEPON,PepsiCo (Ondo Tokenized Stock),ondo,PEP,140.39,148894.0,2209444.0,ondo-tokenized-assets;tokenized-stock
 wrapped-spacex-xstock,WSPCXX,Wrapped SpaceX xStock,xstocks,WSPCX,132.15,2108117.0,2204913.0,tokenized-stock;xstocks-ecosystem
-amazon-coinbase-tokenized-stock,AMZNC,Amazon (Coinbase Tokenized Stock),coinbase,AMZNC,252.89,11202956.0,2198264.0,tokenized-stock
+amazon-coinbase-tokenized-stock,AMZNC,Amazon (Coinbase Tokenized Stock),coinbase,AMZN,252.89,11202956.0,2198264.0,tokenized-stock
 netflix-xstock,NFLXX,Netflix xStock,xstocks,NFLX,58.81,87921.0,2198043.0,tokenized-stock;xstocks-ecosystem
 toyota-ondo-tokenized-stock,TMON,Toyota (Ondo Tokenized Stock),ondo,TM,209.91,10.51,2149457.0,ondo-tokenized-assets;tokenized-stock
-apple-coinbase-tokenized-stock,AAPLC,Apple (Coinbase Tokenized Stock),coinbase,AAPLC,349.88,5594797.0,2135334.0,tokenized-stock
+apple-coinbase-tokenized-stock,AAPLC,Apple (Coinbase Tokenized Stock),coinbase,AAPL,349.88,5594797.0,2135334.0,tokenized-stock
 broadcom-rstock,RAVGO,Broadcom Tokenized Stock (Reality),other,RAVGO,336.44,619766.0,2112336.0,tokenized-stock
 axt-bstocks-tokenized-stock,AXTIB,AXT (bStocks Tokenized Stock),bstocks,AXTI,32.62,2328985.0,2104988.0,bstocks-ecosystem;tokenized-stock
 starbucks-ondo-tokenized-stock,SBUXON,Starbucks (Ondo Tokenized Stock),ondo,SBUX,105.47,97023.0,2094410.0,ondo-tokenized-assets;tokenized-stock
@@ -165,7 +165,7 @@ blackrock-inc-ondo-tokenized-stock,BLKON,"Blackrock, Inc. (Ondo Tokenized Stock)
 novo-nordisk-ondo-tokenized-stock,NVOON,Novo Nordisk (Ondo Tokenized Stock),ondo,NVO,39.43,511723.0,2001746.0,ondo-tokenized-assets;tokenized-stock
 alibaba-ondo-tokenized-stock,BABAON,Alibaba (Ondo Tokenized Stock),ondo,BABA,84.09,1720495.0,2001405.0,ondo-tokenized-assets;tokenized-stock
 moderna-bstocks-tokenized-stock,MRNAB,Moderna (bStocks Tokenized Stock),bstocks,MRNA,197.67,20386934.0,1990628.0,bstocks-ecosystem;tokenized-stock
-microstrategy-coinbase-tokenized-stock,MSTRC,MicroStrategy (Coinbase Tokenized Stock),coinbase,MSTRC,84.76,22049896.0,1990082.0,tokenized-stock
+microstrategy-coinbase-tokenized-stock,MSTRC,MicroStrategy (Coinbase Tokenized Stock),coinbase,MSTR,84.76,22049896.0,1990082.0,tokenized-stock
 palantir-technologies-robinhood-tokenized-stock,PLTR,Palantir Technologies • Robinhood Token,robinhood,PLTR,149.63,943973.0,1985545.0,tokenized-stock
 amd-robinhood-tokenized-stock,AMD,AMD • Robinhood Token,robinhood,AMD,460.66,4676102.0,1950221.0,tokenized-stock
 petrobras-ondo-tokenized-stock,PBRON,Petrobras (Ondo Tokenized Stock),ondo,PBR,16.74,486037.0,1948942.0,ondo-tokenized-assets;tokenized-stock
@@ -202,7 +202,7 @@ blackberry-bstocks-tokenized-stock,BBB,Blackberry (bStocks Tokenized Stock),bsto
 mastercard-ondo-tokenized-stock,MAON,Mastercard (Ondo Tokenized Stock),ondo,MA,630.75,599987.0,1354360.0,ondo-tokenized-assets;tokenized-stock
 costco-ondo-tokenized-stock,COSTON,Costco (Ondo Tokenized Stock),ondo,COST,1109.33,3729741.0,1339063.0,ondo-tokenized-assets;tokenized-stock
 strategy-stretch-preferred-dinari-tokenized-stock,STRC,Strategy Stretch Preferred (Dinari Tokenized Stock),dinari,STRC,94.7,121.49,1320115.0,tokenized-stock
-microsoft-coinbase-tokenized-stock,MSFTC,Microsoft (Coinbase Tokenized Stock),coinbase,MSFTC,490.43,4624963.0,1313716.0,tokenized-stock
+microsoft-coinbase-tokenized-stock,MSFTC,Microsoft (Coinbase Tokenized Stock),coinbase,MSFT,490.43,4624963.0,1313716.0,tokenized-stock
 palantir-technologies-bstocks-tokenized-stock,PLTRB,Palantir Technologies (bStocks Tokenized Stock),bstocks,PLTR,149.32,1489476.0,1297864.0,bstocks-ecosystem;tokenized-stock
 corning-bstocks-tokenized-stock,GLWB,Corning (bStocks Tokenized Stock),bstocks,GLW,100.94,1277447.0,1297007.0,bstocks-ecosystem;tokenized-stock
 eaton-ondo-tokenized,ETNON,Eaton (Ondo Tokenized),ondo,ETN,324.15,252661.0,1289737.0,ondo-tokenized-assets;tokenized-stock
@@ -228,7 +228,7 @@ sk-hynix-ondo-tokenized,SKHYON,SK Hynix (Ondo Tokenized),ondo,SKHY,116.61,625078
 coherent-ondo-tokenized,COHRON,Coherent (Ondo Tokenized),ondo,COHR,202.53,858606.0,1135348.0,ondo-tokenized-assets;tokenized-stock
 coreweave-ondo-tokenized,CRWVON,CoreWeave (Ondo Tokenized),ondo,CRWV,42.97,1150818.0,1134719.0,ondo-tokenized-assets;tokenized-stock
 disney-ondo-tokenized-stock,DISON,Disney (Ondo Tokenized Stock),ondo,DIS,121.46,164473.0,1130916.0,ondo-tokenized-assets;tokenized-stock
-micron-technology-inc-coinbase-tokenized-stock,MUC,Micron Technology Inc. (Coinbase Tokenized Stock),coinbase,MUC,660.18,9071056.0,1130033.0,tokenized-stock
+micron-technology-inc-coinbase-tokenized-stock,MUC,Micron Technology Inc. (Coinbase Tokenized Stock),coinbase,MU,660.18,9071056.0,1130033.0,tokenized-stock
 goldman-sachs-ondo-tokenized-stock,GSON,Goldman Sachs (Ondo Tokenized Stock),ondo,GS,855.67,2177.67,1126447.0,ondo-tokenized-assets;tokenized-stock
 chipotle-ondo-tokenized-stock,CMGON,Chipotle (Ondo Tokenized Stock),ondo,CMG,36.66,143909.0,1122038.0,ondo-tokenized-assets;tokenized-stock
 super-micro-computer-bstocks-tokenized-stock,SMCIB,Super Micro Computer (bStocks Tokenized Stock),bstocks,SMCI,22.89,123887.0,1120377.0,bstocks-ecosystem;tokenized-stock
@@ -323,7 +323,7 @@ moderna-inc-robinhood-token,MRNA,"Moderna, Inc. • Robinhood Token",robinhood,M
 forward-industries-bstocks-tokenized-stock,FWDIB,Forward Industries (bStocks Tokenized Stock),bstocks,FWDI,3.85,1102856.0,556233.0,bstocks-ecosystem;tokenized-stock
 advanced-micro-devices-backpack-securities,AMD,Advanced Micro Devices (Backpack Securities),backpack,AMD,460.04,1269369.0,552532.0,tokenized-stock
 bloom-energy-ondo-tokenized,BEON,Bloom Energy (Ondo Tokenized),ondo,BE,156.71,375307.0,551622.0,ondo-tokenized-assets;tokenized-stock
-advanced-micro-devices-inc-coinbase-tokenized-stock,AMDC,"Advanced Micro Devices, Inc. (Coinbase Tokenized Stock)",coinbase,AMDC,459.57,4966883.0,550182.0,tokenized-stock
+advanced-micro-devices-inc-coinbase-tokenized-stock,AMDC,"Advanced Micro Devices, Inc. (Coinbase Tokenized Stock)",coinbase,AMD,459.57,4966883.0,550182.0,tokenized-stock
 cisco-xstock,CSCOX,Cisco xStock,xstocks,CSCO,93.99,22330.0,547031.0,tokenized-stock;xstocks-ecosystem
 fabrinet-ondo-tokenized,FNON,Fabrinet (Ondo Tokenized),ondo,FN,302.77,197779.0,546587.0,ondo-tokenized-assets;tokenized-stock
 netflix-robinhood-tokenized-stock,NFLX,Netflix • Robinhood Token,robinhood,NFLX,58.52,76525.0,538170.0,tokenized-stock
@@ -343,13 +343,13 @@ wrapped-apple-xstock,WAAPLX,Wrapped Apple xStock,xstocks,WAAPL,351.33,828201.0,5
 hims-hers-bstocks-tokenized-stock,HIMSB,Hims & Hers (bStocks Tokenized Stock),bstocks,HIMS,15.74,50591.0,511630.0,bstocks-ecosystem;tokenized-stock
 backed-niu-technologies,BNIU,Backed NIU Technologies,other,BNIU,3.17,0.0,507504.0,tokenized-stock
 newmont-ondo-tokenized,NEMON,Newmont (Ondo Tokenized),ondo,NEM,98.93,44.48,504334.0,ondo-tokenized-assets;tokenized-stock
-netflix-inc-coinbase-tokenized-stock,NFLXC,Netflix Inc (Coinbase Tokenized Stock),coinbase,NFLXC,58.7,2473082.0,499063.0,tokenized-stock
+netflix-inc-coinbase-tokenized-stock,NFLXC,Netflix Inc (Coinbase Tokenized Stock),coinbase,NFLX,58.7,2473082.0,499063.0,tokenized-stock
 eli-lilly-ondo-tokenized-stock,LLYON,Eli Lilly (Ondo Tokenized Stock),ondo,LLY,1360.45,4188249.0,496028.0,ondo-tokenized-assets;tokenized-stock
 micron-technology-robinhood-tokenized-stock,MU,Micron Technology • Robinhood Token,robinhood,MU,659.89,6124937.0,471525.0,tokenized-stock
 salesforce-xstock,CRMX,Salesforce xStock,xstocks,CRM,184.24,10656.04,470738.0,tokenized-stock;xstocks-ecosystem
 coreweave-robinhood-tokenized-stock,CRWV,CoreWeave • Robinhood Token,robinhood,CRWV,43.33,198640.0,464208.0,tokenized-stock
 strategy-backpack-securities,MSTR,Strategy (Backpack Securities),backpack,MSTR,84.76,811263.0,463631.0,tokenized-stock
-palantir-coinbase-tokenized-stock,PLTRC,Palantir (Coinbase Tokenized Stock),coinbase,PLTRC,149.13,2212698.0,456667.0,tokenized-stock
+palantir-coinbase-tokenized-stock,PLTRC,Palantir (Coinbase Tokenized Stock),coinbase,PLTR,149.13,2212698.0,456667.0,tokenized-stock
 reddit-ondo-tokenized-stock,RDDTON,Reddit (Ondo Tokenized Stock),ondo,RDDT,88.25,143287.0,454304.0,ondo-tokenized-assets;tokenized-stock
 texas-instruments-ondo-tokenized,TXNON,Texas Instruments (Ondo Tokenized),ondo,TXN,284.48,150636.0,450522.0,ondo-tokenized-assets;tokenized-stock
 applovin-ondo-tokenized-stock,APPON,AppLovin (Ondo Tokenized Stock),ondo,APP,364.5,257.12,448430.0,ondo-tokenized-assets;tokenized-stock
@@ -377,7 +377,7 @@ iren-rstock,RIREN,IREN Tokenized Stock (Reality),other,RIREN,13.82,3311745.0,393
 oklo-ondo-tokenized,OKLOON,Oklo (Ondo Tokenized),ondo,OKLO,20.82,479984.0,386266.0,ondo-tokenized-assets;tokenized-stock
 mongodb-bstocks-tokenized-stock,MDBB,MongoDB (bStocks Tokenized Stock),bstocks,MDB,291.37,1109291.0,385134.0,bstocks-ecosystem;tokenized-stock
 eli-lilly-and-company-backpack-securities,LLY,Eli Lilly and Company (Backpack Securities),backpack,LLY,1354.27,37082.0,373261.0,tokenized-stock
-broadcom-inc-coinbase-tokenized-stock,AVGOC,Broadcom Inc. (Coinbase Tokenized Stock),coinbase,AVGOC,336.55,340440.0,369383.0,tokenized-stock
+broadcom-inc-coinbase-tokenized-stock,AVGOC,Broadcom Inc. (Coinbase Tokenized Stock),coinbase,AVGO,336.55,340440.0,369383.0,tokenized-stock
 procter-gamble-xstock,PGX,Procter & Gamble xStock,xstocks,PG,168.91,20423.0,359846.0,tokenized-stock;xstocks-ecosystem
 zoom-bstocks-tokenized-stock,ZMB,Zoom (bStocks Tokenized Stock),bstocks,ZM,82.23,1045430.0,358497.0,bstocks-ecosystem;tokenized-stock
 bending-spoons-bstocks-tokenized-stock,BSPB,Bending Spoons (bStocks Tokenized Stock),bstocks,BSP,41.53,780225.0,358493.0,bstocks-ecosystem;tokenized-stock
@@ -387,12 +387,12 @@ pfizer-xstock,PFEX,Pfizer xStock,xstocks,PFE,28.97,327085.0,356073.0,tokenized-s
 alphabet-dinari-tokenized-stock,GOOGL,Alphabet (Dinari Tokenized Stock),dinari,GOOGL,273.19,4389.62,352511.0,tokenized-stock
 amc-entertainment-backpack-securities,AMC,AMC Entertainment (Backpack Securities),backpack,AMC,2.81,2483631.0,351761.0,tokenized-stock
 stablecoinx-bstocks-tokenized-stock,USDEB,StablecoinX (bStocks Tokenized Stock),bstocks,USDE,4.26,1042425.0,348952.0,bstocks-ecosystem;tokenized-stock
-take-two-interactive-software-inc-coinbase-tokenized-stock,TTWOC,"Take-Two Interactive Software, Inc. (Coinbase Tokenized Stock)",coinbase,TTWOC,208.51,2310115.0,339776.0,tokenized-stock
+take-two-interactive-software-inc-coinbase-tokenized-stock,TTWOC,"Take-Two Interactive Software, Inc. (Coinbase Tokenized Stock)",coinbase,TTWO,208.51,2310115.0,339776.0,tokenized-stock
 gopro-bstocks-tokenized-stock,GPROB,GoPro (bStocks Tokenized Stock),bstocks,GPRO,0.529499,1074655.0,338030.0,bstocks-ecosystem;tokenized-stock
 ishares-russell-2000-index-fund-bstocks-tokenized-etf,IWMB,iShares Russell 2000 Index Fund (bStocks Tokenized ETF),bstocks,IWM,264.58,14389.71,331025.0,bstocks-ecosystem;tokenized-stock
 robostrategy-ondo-tokenized,BOTON,RoboStrategy (Ondo Tokenized),ondo,BOT,18.72,152.26,330934.0,ondo-tokenized-assets;tokenized-stock
 coherent-rstock,RCOHR,Coherent Tokenized Stock (Reality),other,RCOHR,202.31,776026.0,330894.0,tokenized-stock
-oracle-corporation-coinbase-tokenized-stock,ORCLC,Oracle Corporation (Coinbase Tokenized Stock),coinbase,ORCLC,107.38,3286607.0,327317.0,tokenized-stock
+oracle-corporation-coinbase-tokenized-stock,ORCLC,Oracle Corporation (Coinbase Tokenized Stock),coinbase,ORCL,107.38,3286607.0,327317.0,tokenized-stock
 qualcomm-rstock,RQCOM,Qualcomm Tokenized Stock (Reality),other,RQCOM,159.16,3702.8,325367.0,tokenized-stock
 alibaba-rstock,RBABA,Alibaba Tokenized Stock (Reality),other,RBABA,83.73,34288.0,324059.0,tokenized-stock
 pepsico-xstock,PEPX,PepsiCo xStock,xstocks,PEP,139.63,20170.0,322100.0,tokenized-stock;xstocks-ecosystem
@@ -417,7 +417,7 @@ take-two-interactive-software-rstock,RTTWO,Take-Two Interactive Software Tokeniz
 mp-materials-ondo-tokenized,MPON,MP Materials (Ondo Tokenized),ondo,MP,35.47,840296.0,282426.0,ondo-tokenized-assets;tokenized-stock
 d-wave-quantum-ondo-tokenized-stock,QBTSON,D-Wave Quantum (Ondo Tokenized Stock),ondo,QBTS,7.11,776243.0,275973.0,ondo-tokenized-assets;tokenized-stock
 amazon-backpack-securities,AMZN,Amazon (Backpack Securities),backpack,AMZN,252.87,145042.0,275972.0,tokenized-stock
-sk-hynix-inc-coinbase-tokenized-stock,SKHYC,SK hynix Inc. (Coinbase Tokenized Stock),coinbase,SKHYC,116.6,317582.0,275142.0,tokenized-stock
+sk-hynix-inc-coinbase-tokenized-stock,SKHYC,SK hynix Inc. (Coinbase Tokenized Stock),coinbase,SKHY,116.6,317582.0,275142.0,tokenized-stock
 broadcom-robinhood-tokenized-stock,AVGO,Broadcom • Robinhood Token,robinhood,AVGO,336.76,266538.0,272682.0,tokenized-stock
 wrapped-meta-xstock,WMETAX,Wrapped Meta xStock,xstocks,WMETA,586.43,551729.0,269068.0,tokenized-stock;xstocks-ecosystem
 astera-labs-ondo-tokenized,ALABON,Astera Labs (Ondo Tokenized),ondo,ALAB,200.83,171510.0,268794.0,ondo-tokenized-assets;tokenized-stock
@@ -433,7 +433,7 @@ walmart-xstock,WMTX,Walmart xStock,xstocks,WMT,128.45,481.25,244705.0,tokenized-
 nebius-group-robinhood-tokenized-stock,NBIS,Nebius Group • Robinhood Token,robinhood,NBIS,93.89,71129.0,244693.0,tokenized-stock
 cloudflare-ondo-tokenized,NETON,Cloudflare (Ondo Tokenized),ondo,NET,293.86,170389.0,241801.0,ondo-tokenized-assets;tokenized-stock
 bank-of-america-xstock,BACX,Bank of America xStock,xstocks,BAC,47.83,323.89,237870.0,tokenized-stock;xstocks-ecosystem
-bloom-energy-corporation-coinbase-tokenized-stock,BEC,Bloom Energy Corporation (Coinbase Tokenized Stock),coinbase,BEC,156.91,415435.0,236364.0,tokenized-stock
+bloom-energy-corporation-coinbase-tokenized-stock,BEC,Bloom Energy Corporation (Coinbase Tokenized Stock),coinbase,BE,156.91,415435.0,236364.0,tokenized-stock
 enphase-energy-ondo-tokenized,ENPHON,Enphase Energy (Ondo Tokenized),ondo,ENPH,21.58,144117.0,235908.0,ondo-tokenized-assets;tokenized-stock
 western-digital-ondo-tokenized,WDCON,Western Digital (Ondo Tokenized),ondo,WDC,282.95,179803.0,234248.0,ondo-tokenized-assets;tokenized-stock
 wrapped-microstrategy-xstock,WMSTRX,Wrapped MicroStrategy xStock,xstocks,WMSTR,84.76,188802.0,232408.0,tokenized-stock;xstocks-ecosystem
@@ -475,7 +475,7 @@ hut-8-ondo-tokenized,HUTON,Hut 8 (Ondo Tokenized),ondo,HUT,52.99,795.23,179258.0
 mara-holdings-ondo-tokenized-stock,MARAON,MARA Holdings (Ondo Tokenized Stock),ondo,MARA,6.1,1104175.0,178129.0,ondo-tokenized-assets;tokenized-stock
 cerebras-systems-ondo-tokenized,CBRSON,Cerebras Systems (Ondo Tokenized),ondo,CBRS,84.05,174539.0,177268.0,ondo-tokenized-assets;tokenized-stock
 broadcom-dinari-tokenized-stock,AVGO,Broadcom (Dinari Tokenized Stock),dinari,AVGO,337.78,781.17,176706.0,tokenized-stock
-eli-lilly-co-coinbase-tokenized-stock,LLYC,Eli Lilly & Co (Coinbase Tokenized Stock),coinbase,LLYC,1354.38,95488.0,175941.0,tokenized-stock
+eli-lilly-co-coinbase-tokenized-stock,LLYC,Eli Lilly & Co (Coinbase Tokenized Stock),coinbase,LLY,1354.38,95488.0,175941.0,tokenized-stock
 arm-holdings-rstock,RARM,Arm Holdings plc Tokenized Stock (Reality),other,RARM,168.39,15725.38,175238.0,tokenized-stock
 fgi-industries-st0x-tokenized-stock,WTFGI,FGI Industries (ST0x Tokenized Stock),other,WTFGI,5.74,204.14,174266.0,tokenized-stock
 super-micro-computer-rstock,RSMCI,Super Micro Computer Tokenized Stock (Reality),other,RSMCI,22.84,753889.0,173972.0,tokenized-stock
@@ -489,17 +489,17 @@ accenture-xstock,ACNX,Accenture xStock,xstocks,ACN,215.8,18066.34,158109.0,token
 servicenow-rstock,RNOW,ServiceNow Tokenized Stock (Reality),other,RNOW,87.46,99768.0,157231.0,tokenized-stock
 vida-global-xstock,VIDAX,Vida Global xStock,xstocks,VIDA,0.553521,3808.07,155910.0,tokenized-stock;xstocks-ecosystem
 eaton-corporation-plc-xstock,ETNX,Eaton Corporation plc xStock,xstocks,ETN,422.15,0.0,152153.0,tokenized-stock;xstocks-ecosystem
-circle-internet-group-inc-coinbase-tokenized-stock,CRCLC,Circle Internet Group Inc. (Coinbase Tokenized Stock),coinbase,CRCLC,50.83,120824.0,151597.0,tokenized-stock
+circle-internet-group-inc-coinbase-tokenized-stock,CRCLC,Circle Internet Group Inc. (Coinbase Tokenized Stock),coinbase,CRCL,50.83,120824.0,151597.0,tokenized-stock
 shein-xstock,SHEINX,SHEIN xStock,xstocks,SHEIN,4.98,0.0,151079.0,tokenized-stock;xstocks-ecosystem
 mastercard-xstock,MAX,Mastercard xStock,xstocks,MA,629.83,18542.33,149150.0,tokenized-stock;xstocks-ecosystem
 applied-materials-rstock,RAMAT,Applied Materials Tokenized Stock (Reality),other,RAMAT,327.65,22154.0,148856.0,tokenized-stock
-berkshire-hathaway-inc-class-b-coinbase-tokenized-stock,BRK.BC,Berkshire Hathaway Inc. Class B (Coinbase Tokenized Stock),coinbase,BRK.BC,594.47,87.39,148719.0,tokenized-stock
+berkshire-hathaway-inc-class-b-coinbase-tokenized-stock,BRK.BC,Berkshire Hathaway Inc. Class B (Coinbase Tokenized Stock),coinbase,BRK.B,594.47,87.39,148719.0,tokenized-stock
 advanced-micro-devices-dinari-tokenized-stock,AMD,Advanced Micro Devices (Dinari Tokenized Stock),dinari,AMD,459.76,13940.37,148416.0,tokenized-stock
 applied-optoelectronics-ondo-tokenized,AAOION,Applied Optoelectronics (Ondo Tokenized),ondo,AAOI,37.19,144235.0,148175.0,ondo-tokenized-assets;tokenized-stock
 marvell-technology-backpack-securities,MRVL,Marvell Technology (Backpack Securities),backpack,MRVL,134.1,50828.0,147479.0,tokenized-stock
 nio-ondo-tokenized,NIOON,NIO (Ondo Tokenized),ondo,NIO,2.63,5521.96,145000.0,ondo-tokenized-assets;tokenized-stock
-intel-corporation-coinbase-tokenized-stock,INTCC,Intel Corporation (Coinbase Tokenized Stock),coinbase,INTCC,53.05,186219.0,143016.0,tokenized-stock
-western-digital-corporation-coinbase-tokenized-stock,WDCC,Western Digital Corporation (Coinbase Tokenized Stock),coinbase,WDCC,283.41,167.01,141710.0,tokenized-stock
+intel-corporation-coinbase-tokenized-stock,INTCC,Intel Corporation (Coinbase Tokenized Stock),coinbase,INTC,53.05,186219.0,143016.0,tokenized-stock
+western-digital-corporation-coinbase-tokenized-stock,WDCC,Western Digital Corporation (Coinbase Tokenized Stock),coinbase,WDC,283.41,167.01,141710.0,tokenized-stock
 palo-alto-networks-rstock,RPANW,Palo Alto Networks Tokenized Stock (Reality),other,RPANW,352.22,41519.0,140045.0,tokenized-stock
 applied-digital-ondo-tokenized,APLDON,Applied Digital (Ondo Tokenized),ondo,APLD,13.5,147058.0,139146.0,ondo-tokenized-assets;tokenized-stock
 macom-technology-solutions-holdings-ondo-tokenized,MTSION,MACOM Technology Solutions Holdings (Ondo Tokenized),ondo,MTSI,206.44,545.6,136294.0,ondo-tokenized-assets;tokenized-stock
@@ -507,9 +507,9 @@ exxon-mobil-ondo-tokenized-stocks,XOMON,Exxon Mobil (Ondo Tokenized Stock),ondo,
 nike-dinari-tokenized-stock,NKE,Nike (Dinari Tokenized Stock),dinari,NKE,34.31,888.2,134538.0,tokenized-stock
 cleanspark-xstock,CLSKX,CleanSpark xStock,xstocks,CLSK,16.61,0.0,134508.0,tokenized-stock;xstocks-ecosystem
 grindr-backpack-securities,GRND,Grindr (Backpack Securities),backpack,GRND,13.92,10653.84,133044.0,tokenized-stock
-moderna-inc-coinbase-tokenized-stock,MRNAC,"Moderna, Inc. (Coinbase Tokenized Stock)",coinbase,MRNAC,197.69,56344.0,132428.0,tokenized-stock
+moderna-inc-coinbase-tokenized-stock,MRNAC,"Moderna, Inc. (Coinbase Tokenized Stock)",coinbase,MRNA,197.69,56344.0,132428.0,tokenized-stock
 apple-backpack-securities,AAPL,Apple (Backpack Securities),backpack,AAPL,349.44,207453.0,132202.0,tokenized-stock
-marvell-technology-inc-coinbase-tokenized-stock,MRVLC,"Marvell Technology, Inc. (Coinbase Tokenized Stock)",coinbase,MRVLC,132.39,155671.0,130622.0,tokenized-stock
+marvell-technology-inc-coinbase-tokenized-stock,MRVLC,"Marvell Technology, Inc. (Coinbase Tokenized Stock)",coinbase,MRVL,132.39,155671.0,130622.0,tokenized-stock
 trip-com-group-ondo-tokenized-stock,TCOMON,Trip.com Group (Ondo Tokenized Stock),ondo,TCOM,41.37,1.061,130108.0,ondo-tokenized-assets;tokenized-stock
 ondas-holdings-ondo-tokenized,ONDSON,Ondas Holdings (Ondo Tokenized),ondo,ONDS,4.07,726445.0,129999.0,ondo-tokenized-assets;tokenized-stock
 hyperliquid-strategies-ondo-tokenized,PURRON,Hyperliquid Strategies (Ondo Tokenized),ondo,PURR,8.24,27065.0,128458.0,ondo-tokenized-assets;tokenized-stock
@@ -518,7 +518,7 @@ terawulf-xstock,WULFX,TeraWulf xStock,xstocks,WULF,13.39,0.0,127759.0,tokenized-
 the-wendy-s-company-backpack-securities,WEN,The Wendy's Company (Backpack Securities),backpack,WEN,8.51,16662.55,126803.0,tokenized-stock
 lumentum-robinhood-tokenized-stock,LITE,Lumentum • Robinhood Token,robinhood,LITE,505.07,9217.36,126791.0,tokenized-stock
 moderna-rstock,RMRNA,Moderna Tokenized Stock (Reality),other,RMRNA,197.25,1718930.0,124894.0,tokenized-stock
-applied-optoelectronics-inc-coinbase-tokenized-stock,AAOIC,Applied Optoelectronics Inc (Coinbase Tokenized Stock),coinbase,AAOIC,39.28,286.44,124267.0,tokenized-stock
+applied-optoelectronics-inc-coinbase-tokenized-stock,AAOIC,Applied Optoelectronics Inc (Coinbase Tokenized Stock),coinbase,AAOI,39.28,286.44,124267.0,tokenized-stock
 core-scientific-ondo-tokenized,CORZON,Core Scientific (Ondo Tokenized),ondo,CORZ,12.93,145772.0,123919.0,ondo-tokenized-assets;tokenized-stock
 applied-digital-rstock,RAPLD,Applied Digital Tokenized Stock (Reality),other,RAPLD,13.49,247870.0,122873.0,tokenized-stock
 boeing-robinhood-tokenized-stock,BA,Boeing • Robinhood Token,robinhood,BA,159.46,4435.55,122627.0,tokenized-stock
@@ -544,8 +544,8 @@ jd-com-rstock,RJD,JD.com Tokenized Stock (Reality),other,RJD,25.05,540389.0,1103
 li-auto-ondo-tokenized,LION,Li Auto (Ondo Tokenized),ondo,LI,11.63,46.93,109946.0,ondo-tokenized-assets;tokenized-stock
 intuitive-surgical-rstock,RISRG,Intuitive Surgical Tokenized Stock (Reality),other,RISRG,409.32,11020.79,109069.0,tokenized-stock
 mp-materials-rstock,RMP,MP Materials Tokenized Stock (Reality),other,RMP,35.43,28627.0,109015.0,tokenized-stock
-lumentum-holdings-inc-coinbase-tokenized-stock,LITEC,Lumentum Holdings Inc (Coinbase Tokenized Stock),coinbase,LITEC,500.59,2033.75,108588.0,tokenized-stock
-coreweave-inc-coinbase-tokenized-stock,CRWVC,"CoreWeave, Inc. (Coinbase Tokenized Stock)",coinbase,CRWVC,44.78,190.17,108302.0,tokenized-stock
+lumentum-holdings-inc-coinbase-tokenized-stock,LITEC,Lumentum Holdings Inc (Coinbase Tokenized Stock),coinbase,LITE,500.59,2033.75,108588.0,tokenized-stock
+coreweave-inc-coinbase-tokenized-stock,CRWVC,"CoreWeave, Inc. (Coinbase Tokenized Stock)",coinbase,CRWV,44.78,190.17,108302.0,tokenized-stock
 thermo-fisher-xstock,TMOX,Thermo Fisher xStock,xstocks,TMO,688.79,1.95,107550.0,tokenized-stock;xstocks-ecosystem
 aurora-innovation-ondo-tokenized,AURON,Aurora Innovation (Ondo Tokenized),ondo,AUR,3.85,1193.28,105884.0,ondo-tokenized-assets;tokenized-stock
 western-digital-corporation-robinhood-token,WDC,Western Digital Corporation • Robinhood Token,robinhood,WDC,281.08,8983.78,105213.0,tokenized-stock
@@ -553,7 +553,7 @@ intuitive-machines-ondo-tokenized,LUNRON,Intuitive Machines (Ondo Tokenized),ond
 destiny-tech100-rstock,RDXYZ,Destiny Tech100 Tokenized Stock (Reality),other,RDXYZ,22.86,471276.0,100076.0,tokenized-stock
 walmart-rstock,RWMT,Walmart Tokenized Stock (Reality),other,RWMT,128.07,124081.0,98823.0,tokenized-stock
 linde-xstock,LINX,Linde xStock,xstocks,LIN,515.51,0.0,98372.0,tokenized-stock;xstocks-ecosystem
-roblox-corporation-coinbase-tokenized-stock,RBLXC,Roblox Corporation (Coinbase Tokenized Stock),coinbase,RBLXC,85.03,0.0,96674.0,tokenized-stock
+roblox-corporation-coinbase-tokenized-stock,RBLXC,Roblox Corporation (Coinbase Tokenized Stock),coinbase,RBLX,85.03,0.0,96674.0,tokenized-stock
 seagate-technology-rstock,RSTX,Seagate Tokenized Stock (Reality),other,RSTX,496.21,244672.0,95526.0,tokenized-stock
 quantum-computing-robinhood-tokenized-stock,QUBT,Quantum Computing • Robinhood Token,robinhood,QUBT,4.79,5884.35,93688.0,tokenized-stock
 lam-research-rstock,RLRCX,Lam Research Tokenized Stock (Reality),other,RLRCX,196.26,34762.0,93424.0,tokenized-stock
@@ -608,7 +608,7 @@ shopify-robinhood-tokenized-stock,SHOP,Shopify • Robinhood Token,robinhood,SHO
 mobileye-global-ondo-tokenized,MBLYON,Mobileye Global (Ondo Tokenized),ondo,MBLY,5.08,669.39,59023.0,ondo-tokenized-assets;tokenized-stock
 marathon-petroleum-rstock,RMPC,Marathon Petroleum Tokenized Stock (Reality),other,RMPC,373.78,1125.59,58845.0,tokenized-stock
 ero-copper-dinari-tokenized-stock,ERO,Ero Copper (Dinari Tokenized Stock),dinari,ERO,23.22,1933.49,58636.0,tokenized-stock
-reddit-inc-coinbase-tokenized-stock,RDDTC,"Reddit, Inc. (Coinbase Tokenized Stock)",coinbase,RDDTC,89.7,0.0,58469.0,tokenized-stock
+reddit-inc-coinbase-tokenized-stock,RDDTC,"Reddit, Inc. (Coinbase Tokenized Stock)",coinbase,RDDT,89.7,0.0,58469.0,tokenized-stock
 ge-vernova-rstock,RGEV,GE Vernova Tokenized Stock (Reality),other,RGEV,733.31,353254.0,58104.0,tokenized-stock
 waterdrop-inc-astock,AWDH,Waterdrop Inc aStock,other,AWDH,1.014,29.41,57902.0,tokenized-stock
 cameco-rstock,RCCJ,Cameco Tokenized Stock (Reality),other,RCCJ,60.41,286797.0,57851.0,tokenized-stock
@@ -620,7 +620,7 @@ visa-inc-robinhood-token,V,Visa Inc. • Robinhood Token,robinhood,V,407.86,3350
 hubbell-ondo-tokenized,HUBBON,Hubbell (Ondo Tokenized),ondo,HUBB,437.03,1623.9,53560.0,ondo-tokenized-assets;tokenized-stock
 uber-technologies-inc-robinhood-token,UBER,"Uber Technologies, Inc. • Robinhood Token",robinhood,UBER,65.41,1350.64,51682.0,tokenized-stock
 akamai-rstock,RAKAM,Akamai Technologies Tokenized Stock (Reality),other,RAKAM,89.46,103324.0,51519.0,tokenized-stock
-gamestop-corp-coinbase-tokenized-stock,GMEC,GameStop Corp. (Coinbase Tokenized Stock),coinbase,GMEC,25.62,0.0,50984.0,tokenized-stock
+gamestop-corp-coinbase-tokenized-stock,GMEC,GameStop Corp. (Coinbase Tokenized Stock),coinbase,GME,25.62,0.0,50984.0,tokenized-stock
 rocket-lab-backpack-securities,RKLB,Rocket Lab (Backpack Securities),backpack,RKLB,49.6,10527.74,50922.0,tokenized-stock
 intuitive-machines-rstock,RLUNR,Intuitive Machines Tokenized Stock (Reality),other,RLUNR,9.55,20473.0,50654.0,tokenized-stock
 globalfoundries-rstock,RGFS,GlobalFoundries Tokenized Stock (Reality),other,RGFS,37.91,152958.0,50352.0,tokenized-stock
@@ -628,7 +628,7 @@ figure-technology-solutions-rstock,RFIGR,Figure Technology Solutions Tokenized S
 mercadolibre-rstock,RMELI,MercadoLibre Tokenized Stock (Reality),other,RMELI,1348.94,360341.0,50092.0,tokenized-stock
 ionq-rstock,RIONQ,IonQ Tokenized Stock (Reality),other,RIONQ,21.98,11900.96,49933.0,tokenized-stock
 celestica-rstock,RCLS,Celestica Tokenized Stock (Reality),other,RCLS,228.78,181584.0,49846.0,tokenized-stock
-sony-group-corporation-coinbase-tokenized-stock,SONYC,Sony Group Corporation (Coinbase Tokenized Stock),coinbase,SONYC,27.13,5762.7,49813.0,tokenized-stock
+sony-group-corporation-coinbase-tokenized-stock,SONYC,Sony Group Corporation (Coinbase Tokenized Stock),coinbase,SONY,27.13,5762.7,49813.0,tokenized-stock
 whitefiber-inc-robinhood-token,WYFI,"WhiteFiber, Inc. • Robinhood Token",robinhood,WYFI,7.61,507.64,49642.0,tokenized-stock
 bitgo-holdings-rstock,RBTGO,BitGo Holdings Tokenized Stock (Reality),other,RBTGO,3.7,0.0,49273.0,tokenized-stock
 forward-industries-rstock,RFWDI,Forward Industries Tokenized Stock (Reality),other,RFWDI,3.87,29419.0,49246.0,tokenized-stock
@@ -646,7 +646,7 @@ jpmorgan-rstock,RJPM,JPMorgan Chase Tokenized Stock (Reality),other,RJPM,321.68,
 freeport-mcmoran-rstock,RFCX,Freeport-McMoRan Tokenized Stock (Reality),other,RFCX,48.49,187244.0,44830.0,tokenized-stock
 arista-networks-rstock,RANET,Arista Networks Tokenized Stock (Reality),other,RANET,182.83,199804.0,44782.0,tokenized-stock
 mgm-resorts-international-backpack-securities,MGM,MGM Resorts International (Backpack Securities),backpack,MGM,32.76,1771.73,44751.0,tokenized-stock
-nokia-corporation-coinbase-tokenized-stock,NOKC,Nokia Corporation (Coinbase Tokenized Stock),coinbase,NOKC,7.21,5109.43,44545.0,tokenized-stock
+nokia-corporation-coinbase-tokenized-stock,NOKC,Nokia Corporation (Coinbase Tokenized Stock),coinbase,NOK,7.21,5109.43,44545.0,tokenized-stock
 rtx-ondo-tokenized,RTXON,RTX (Ondo Tokenized),ondo,RTX,195.4,0.999141,44154.0,ondo-tokenized-assets;tokenized-stock
 galaxy-digital-rstock,RGLXY,Galaxy Digital Tokenized Stock (Reality),other,RGLXY,12.0,17115.84,43800.0,tokenized-stock
 crowdstrike-ondo-tokenized-stocks,CRWDON,CrowdStrike (Ondo Tokenized Stock),ondo,CRWD,943.79,255.42,43727.0,ondo-tokenized-assets;tokenized-stock
@@ -660,9 +660,9 @@ grab-holdings-rstock,RGRAB,Grab Holdings Tokenized Stock (Reality),other,RGRAB,2
 coinbase-global-dinari-tokenized-stock,COIN,Coinbase Global (Dinari Tokenized Stock),coinbase,COIN,106.52,1424.66,40607.0,tokenized-stock
 talen-energy-ondo-tokenized-stock,TLNON,Talen Energy (Ondo Tokenized Stock),ondo,TLN,355.18,984.86,40476.0,ondo-tokenized-assets;tokenized-stock
 synopsys-rstock,RSNPS,Synopsys Tokenized Stock (Reality),other,RSNPS,426.39,91647.0,40337.0,tokenized-stock
-nio-inc-coinbase-tokenized-stock,NIOC,NIO Inc. (Coinbase Tokenized Stock),coinbase,NIOC,2.6,10.02,39835.0,tokenized-stock
+nio-inc-coinbase-tokenized-stock,NIOC,NIO Inc. (Coinbase Tokenized Stock),coinbase,NIO,2.6,10.02,39835.0,tokenized-stock
 snowflake-rstock,RSNOW,Snowflake Tokenized Stock (Reality),other,RSNOW,261.71,66254.0,39823.0,tokenized-stock
-hesai-group-coinbase-tokenized-stock,HSAIC,Hesai Group (Coinbase Tokenized Stock),coinbase,HSAIC,13.99,76.0,39722.0,tokenized-stock
+hesai-group-coinbase-tokenized-stock,HSAIC,Hesai Group (Coinbase Tokenized Stock),coinbase,HSAI,13.99,76.0,39722.0,tokenized-stock
 target-rstock,RTGT,Target Tokenized Stock (Reality),other,RTGT,168.72,0.0,39357.0,tokenized-stock
 fortinet-rstock,RFTNT,Fortinet Tokenized Stock (Reality),other,RFTNT,128.38,86194.0,39318.0,tokenized-stock
 hyperliquid-strategies-inc-rstock,RPURR,Hyperliquid Strategies Tokenized Stock (Reality),other,RPURR,7.94,30010.0,39259.0,tokenized-stock
@@ -680,21 +680,21 @@ mercadolibre-dinari-tokenized-stock,MELI,MercadoLibre (Dinari Tokenized Stock),d
 jpmorgan-chase-co-robinhood-token,JPM,JPMorgan Chase & Co. • Robinhood Token,robinhood,JPM,326.97,18.72,37160.0,tokenized-stock
 lennar-corp-rstock,RLEN,Lennar Tokenized Stock (Reality),other,RLEN,81.06,31226.0,37043.0,tokenized-stock
 accenture-rstock,RACN,Accenture Tokenized Stock (Reality),other,RACN,220.9,86427.0,37010.0,tokenized-stock
-pdd-holdings-inc-coinbase-tokenized-stock,PDDC,PDD Holdings Inc. (Coinbase Tokenized Stock),coinbase,PDDC,92.51,1110.59,37002.0,tokenized-stock
+pdd-holdings-inc-coinbase-tokenized-stock,PDDC,PDD Holdings Inc. (Coinbase Tokenized Stock),coinbase,PDD,92.51,1110.59,37002.0,tokenized-stock
 mara-holdings-dinari-tokenized-stock,MARA,MARA Holdings (Dinari Tokenized Stock),dinari,MARA,6.51,13.5,36345.0,tokenized-stock
 bitdeer-technologies-ondo-tokenized,BTDRON,Bitdeer Technologies (Ondo Tokenized),ondo,BTDR,3.3,334.83,36327.0,ondo-tokenized-assets;tokenized-stock
 american-airlines-rstock,RAAL,American Airlines Group Tokenized Stock (Reality),other,RAAL,12.73,256978.0,36105.0,tokenized-stock
-unilever-plc-coinbase-tokenized-stock,ULC,Unilever Plc (Coinbase Tokenized Stock),coinbase,ULC,62.94,4.29,35497.0,tokenized-stock
+unilever-plc-coinbase-tokenized-stock,ULC,Unilever Plc (Coinbase Tokenized Stock),coinbase,UL,62.94,4.29,35497.0,tokenized-stock
 usa-rare-earth-rstock,RUSAR,USA Rare Earth Tokenized Stock (Reality),other,RUSAR,6.65,168.24,35279.0,tokenized-stock
-trump-media-technology-group-corp-coinbase-tokenized-stock,DJTC,Trump Media & Technology Group Corp. (Coinbase Tokenized Stock),coinbase,DJTC,6.78,0.0,35175.0,tokenized-stock
-hims-hers-health-inc-coinbase-tokenized-stock,HIMSC,"Hims & Hers Health, Inc. (Coinbase Tokenized Stock)",coinbase,HIMSC,15.74,1880026.0,34849.0,tokenized-stock
+trump-media-technology-group-corp-coinbase-tokenized-stock,DJTC,Trump Media & Technology Group Corp. (Coinbase Tokenized Stock),coinbase,DJT,6.78,0.0,35175.0,tokenized-stock
+hims-hers-health-inc-coinbase-tokenized-stock,HIMSC,"Hims & Hers Health, Inc. (Coinbase Tokenized Stock)",coinbase,HIMS,15.74,1880026.0,34849.0,tokenized-stock
 netflix-dinari-tokenized-stock,NFLX,Netflix (Dinari Tokenized Stock),dinari,NFLX,58.73,56.08,34549.0,tokenized-stock
-vale-s-a-coinbase-tokenized-stock,VALEC,Vale S.A. (Coinbase Tokenized Stock),coinbase,VALEC,9.84,1.65,34476.0,tokenized-stock
+vale-s-a-coinbase-tokenized-stock,VALEC,Vale S.A. (Coinbase Tokenized Stock),coinbase,VALE,9.84,1.65,34476.0,tokenized-stock
 costco-rstock,RCOST,Costco Tokenized Stock (Reality),other,RCOST,1100.15,25729.0,34220.0,tokenized-stock
-infosys-limited-coinbase-tokenized-stock,INFYC,Infosys Limited (Coinbase Tokenized Stock),coinbase,INFYC,12.11,43.99,34188.0,tokenized-stock
+infosys-limited-coinbase-tokenized-stock,INFYC,Infosys Limited (Coinbase Tokenized Stock),coinbase,INFY,12.11,43.99,34188.0,tokenized-stock
 ouster-ondo-tokenized,OUSTON,Ouster (Ondo Tokenized),ondo,OUST,27.08,379.31,34017.0,ondo-tokenized-assets;tokenized-stock
 sofi-technologies-robinhood-tokenized-stock,SOFI,SoFi Technologies • Robinhood Token,robinhood,SOFI,13.85,14.13,33820.0,tokenized-stock
-anheuser-busch-inbev-sa-nv-coinbase-tokenized-stock,BUDC,Anheuser-Busch InBev SA/NV (Coinbase Tokenized Stock),coinbase,BUDC,80.55,28.19,33668.0,tokenized-stock
+anheuser-busch-inbev-sa-nv-coinbase-tokenized-stock,BUDC,Anheuser-Busch InBev SA/NV (Coinbase Tokenized Stock),coinbase,BUD,80.55,28.19,33668.0,tokenized-stock
 aerovironment-rstock,RAVAV,AeroVironment Tokenized Stock (Reality),other,RAVAV,93.86,47732.0,33471.0,tokenized-stock
 teradyne-rstock,RTER,Teradyne Tokenized Stock (Reality),other,RTER,218.38,20858.0,33273.0,tokenized-stock
 boeing-rstock,RBA,Boeing Tokenized Stock (Reality),other,RBA,159.75,142778.0,33128.0,tokenized-stock
@@ -704,32 +704,32 @@ firefly-aerospace-rstock,RFLY,Firefly Aerospace Tokenized Stock (Reality),other,
 american-electric-power-rstock,RAEP,American Electric Power Tokenized Stock (Reality),other,RAEP,129.95,0.0,32655.0,tokenized-stock
 lockheed-martin-rstock,RLMT,Lockheed Tokenized Stock (Reality),other,RLMT,572.46,6453.32,32607.0,tokenized-stock
 caterpillar-dinari-tokenized-stock,CAT,Caterpillar (Dinari Tokenized Stock),dinari,CAT,524.61,34.36,32459.0,tokenized-stock
-arm-holdings-plc-coinbase-tokenized-stock,ARMC,Arm Holdings plc (Coinbase Tokenized Stock),coinbase,ARMC,139.95,16147.59,32397.0,tokenized-stock
+arm-holdings-plc-coinbase-tokenized-stock,ARMC,Arm Holdings plc (Coinbase Tokenized Stock),coinbase,ARM,139.95,16147.59,32397.0,tokenized-stock
 oracle-dinari-tokenized-stock,ORCL,Oracle (Dinari Tokenized Stock),dinari,ORCL,107.51,272.03,32227.0,tokenized-stock
 zoom-robinhood-tokenized-stock,ZM,Zoom • Robinhood Token,robinhood,ZM,90.8,2969.82,32202.0,tokenized-stock
 grindr-st0x-tokenized-stock,WTGRND,Grindr (ST0x Tokenized Stock),other,WTGRND,14.08,1280.23,32179.0,tokenized-stock
 alphabet-class-c-dinari-tokenized-stock,GOOG,Alphabet Class C (Dinari Tokenized Stock),dinari,GOOG,271.15,341.74,32126.0,tokenized-stock
 qualcomm-robinhood-tokenized-stock,QCOM,Qualcomm • Robinhood Token,robinhood,QCOM,160.38,8684.34,32116.0,tokenized-stock
 johnson-johnson-ondo-tokenized-stock,JNJON,Johnson & Johnson (Ondo Tokenized Stock),ondo,JNJ,273.3,550.33,32076.0,ondo-tokenized-assets;tokenized-stock
-li-auto-inc-coinbase-tokenized-stock,LIC,Li Auto Inc. (Coinbase Tokenized Stock),coinbase,LIC,11.23,23.12,32015.0,tokenized-stock
+li-auto-inc-coinbase-tokenized-stock,LIC,Li Auto Inc. (Coinbase Tokenized Stock),coinbase,LI,11.23,23.12,32015.0,tokenized-stock
 visa-rstock,RV,Visa Tokenized Stock (Reality),other,RV,405.02,8558.42,31981.0,tokenized-stock
 constellation-energy-rstock,RCEG,Constellation Energy Tokenized Stock (Reality),other,RCEG,248.73,31498.0,31792.0,tokenized-stock
-novo-nordisk-a-s-coinbase-tokenized-stock,NVOC,Novo Nordisk A/S (Coinbase Tokenized Stock),coinbase,NVOC,38.72,20.26,31675.0,tokenized-stock
+novo-nordisk-a-s-coinbase-tokenized-stock,NVOC,Novo Nordisk A/S (Coinbase Tokenized Stock),coinbase,NVO,38.72,20.26,31675.0,tokenized-stock
 red-cat-holdings-inc-robinhood-token,RCAT,"Red Cat Holdings, Inc. • Robinhood Token",robinhood,RCAT,2.05,670.79,31056.0,tokenized-stock
 constellation-energy-corporation-robinhood-token,CEG,Constellation Energy Corporation • Robinhood Token,robinhood,CEG,248.99,1787.19,31003.0,tokenized-stock
 sk-hynix-stove-tokenized-stock,SKHYNIXS,SK Hynix (Stove Tokenized Stock),other,SKHYNIXS,824.7,5318.4,30822.0,tokenized-stock
 wrapped-oracle-xstock,WORCLX,Wrapped Oracle xStock,xstocks,WORCL,123.95,0.0,30808.0,tokenized-stock;xstocks-ecosystem
 strategy-strike-preferred-dinari-tokenized-stock,STRK,Strategy Strike Preferred (Dinari Tokenized Stock),dinari,STRK,60.86,61.31,30784.0,tokenized-stock
 rtx-corporation-rstock,RRTX,RTX Tokenized Stock (Reality),other,RRTX,192.57,0.01758338,30577.0,tokenized-stock
-sap-se-coinbase-tokenized-stock,SAPC,SAP SE (Coinbase Tokenized Stock),coinbase,SAPC,203.69,3.27,30146.0,tokenized-stock
+sap-se-coinbase-tokenized-stock,SAPC,SAP SE (Coinbase Tokenized Stock),coinbase,SAP,203.69,3.27,30146.0,tokenized-stock
 petroleo-brasileiro-sa-petrobras-rstock,RPBR,Petrobras Tokenized Stock (Reality),other,RPBR,16.14,53019.0,29882.0,tokenized-stock
 d-wave-quantum-rstock,RQBTS,D-Wave Quantum Tokenized Stock (Reality),other,RQBTS,7.06,2571.03,29659.0,tokenized-stock
 taiwan-semiconductor-manufacturing-dinari-tokenized-stock,TSM,Taiwan Semiconductor Manufacturing (Dinari Tokenized Stock),dinari,TSM,337.69,589.41,29620.0,tokenized-stock
-baidu-inc-coinbase-tokenized-stock,BIDUC,"Baidu, Inc. (Coinbase Tokenized Stock)",coinbase,BIDUC,72.9,219.62,29526.0,tokenized-stock
+baidu-inc-coinbase-tokenized-stock,BIDUC,"Baidu, Inc. (Coinbase Tokenized Stock)",coinbase,BIDU,72.9,219.62,29526.0,tokenized-stock
 tempus-ai-rstock,RTEM,Tempus AI Tokenized Stock (Reality),other,RTEM,58.06,49561.0,29478.0,tokenized-stock
 eli-lilly-and-co-rstock,RLLY,Eli Lilly Tokenized Stock (Reality),other,RLLY,1356.43,111062.0,29478.0,tokenized-stock
 on-semiconductor-corporation-robinhood-token,ON,ON Semiconductor Corporation • Robinhood Token,robinhood,ON,62.99,2665.86,29472.0,tokenized-stock
-sea-limited-coinbase-tokenized-stock,SEC,Sea Limited (Coinbase Tokenized Stock),coinbase,SEC,65.64,587.5,29340.0,tokenized-stock
+sea-limited-coinbase-tokenized-stock,SEC,Sea Limited (Coinbase Tokenized Stock),coinbase,SE,65.64,587.5,29340.0,tokenized-stock
 the-travelers-companies-rstock,RTRV,The Travelers Companies Tokenized Stock (Reality),other,RTRV,392.95,49.11,29319.0,tokenized-stock
 airbnb-rstock,RABNB,Airbnb Tokenized Stock (Reality),other,RABNB,173.33,38388.0,29313.0,tokenized-stock
 gamestop-rstock,RGME,GameStop Tokenized Stock (Reality),other,RGME,26.87,58252.0,28932.0,tokenized-stock
@@ -738,11 +738,11 @@ nuscale-power-ondo-tokenized,SMRON,NuScale Power (Ondo Tokenized),ondo,SMR,3.71,
 hp-inc-rstock,RHPQ,HP Tokenized Stock (Reality),other,RHPQ,27.48,2237.74,28414.0,tokenized-stock
 novartis-ag-rstock,RNVS,Novartis AG Tokenized Stock (Reality),other,RNVS,151.83,116142.0,28293.0,tokenized-stock
 workday-robinhood-tokenized-stock,WDAY,Workday • Robinhood Token,robinhood,WDAY,176.31,96.48,28236.0,tokenized-stock
-bitmine-immersion-technologies-inc-coinbase-tokenized-stock,BMNRC,"BitMine Immersion Technologies, Inc. (Coinbase Tokenized Stock)",coinbase,BMNRC,21.68,0.0,28106.0,tokenized-stock
+bitmine-immersion-technologies-inc-coinbase-tokenized-stock,BMNRC,"BitMine Immersion Technologies, Inc. (Coinbase Tokenized Stock)",coinbase,BMNR,21.68,0.0,28106.0,tokenized-stock
 bitgo-xstock,BTGOX,Bitgo xStock,xstocks,BTGO,3.65,23.37,27924.0,tokenized-stock;xstocks-ecosystem
-weride-inc-coinbase-tokenized-stock,WRDC,WeRide Inc. (Coinbase Tokenized Stock),coinbase,WRDC,3.7,15.0,27766.0,tokenized-stock
+weride-inc-coinbase-tokenized-stock,WRDC,WeRide Inc. (Coinbase Tokenized Stock),coinbase,WRD,3.7,15.0,27766.0,tokenized-stock
 uranium-energy-ondo-tokenized,UECON,Uranium Energy (Ondo Tokenized),ondo,UEC,5.67,10.31,27590.0,ondo-tokenized-assets;tokenized-stock
-banco-santander-s-a-coinbase-tokenized-stock,SANC,"Banco Santander, S.A. (Coinbase Tokenized Stock)",coinbase,SANC,11.04,1037.46,27499.0,tokenized-stock
+banco-santander-s-a-coinbase-tokenized-stock,SANC,"Banco Santander, S.A. (Coinbase Tokenized Stock)",coinbase,SAN,11.04,1037.46,27499.0,tokenized-stock
 valero-energy-rstock,RVLO,Valero Energy Tokenized Stock (Reality),other,RVLO,336.18,25773.0,27498.0,tokenized-stock
 asml-holding-dinari-tokenized-stock,ASML,ASML Holding (Dinari Tokenized Stock),dinari,ASML,1327.99,10.88,27404.0,tokenized-stock
 huntington-ingalls-industries-ondo-tokenized,HIION,Huntington Ingalls Industries (Ondo Tokenized),ondo,HII,292.26,0.0,27374.0,ondo-tokenized-assets;tokenized-stock
@@ -760,7 +760,7 @@ ge-aerospace-robinhood-token,GE,GE Aerospace • Robinhood Token,robinhood,GE,31
 rocket-lab-dinari-tokenized-stock,RKLB,Rocket Lab (Dinari Tokenized Stock),dinari,RKLB,48.9,591.45,25126.0,tokenized-stock
 duke-energy-rstock,RDUK,Duke Energy Tokenized Stock (Reality),other,RDUK,128.71,0.0,25071.0,tokenized-stock
 conocophillips-ondo-tokenized-stocks,COPON,ConocoPhillips (Ondo Tokenized Stock),ondo,COP,137.74,479174.0,24977.0,ondo-tokenized-assets;tokenized-stock
-bilibili-inc-coinbase-tokenized-stock,BILIC,Bilibili Inc. (Coinbase Tokenized Stock),coinbase,BILIC,10.54,17.59,24770.0,tokenized-stock
+bilibili-inc-coinbase-tokenized-stock,BILIC,Bilibili Inc. (Coinbase Tokenized Stock),coinbase,BILI,10.54,17.59,24770.0,tokenized-stock
 sunrun-inc-robinhood-token,RUN,Sunrun Inc. • Robinhood Token,robinhood,RUN,7.14,360.45,24742.0,tokenized-stock
 uber-technologies-rstock,RUBER,Uber Tokenized Stock (Reality),other,RUBER,65.25,52016.0,24619.0,tokenized-stock
 ge-aerospace-rstock,RGE,General Electric Tokenized Stock (Reality),other,RGE,319.09,37450.0,24317.0,tokenized-stock
@@ -870,7 +870,7 @@ bilibili-rstock,RBILI,Bilibili Tokenized Stock (Reality),other,RBILI,10.72,1996.
 wrapped-palantir-xstock,WPLTRX,Wrapped Palantir xStock,xstocks,WPLTR,197.59,0.0,11377.35,tokenized-stock;xstocks-ecosystem
 tesla-astock,ATSLA,Tesla aStock,other,ATSLA,392.77,0.0,11266.19,tokenized-stock
 ionq-dinari-tokenized-stock,IONQ,IonQ (Dinari Tokenized Stock),dinari,IONQ,22.04,11644.72,11244.02,tokenized-stock
-cheesecake-factory-inc-coinbase-tokenized-stock,CAKEC,Cheesecake Factory Inc (Coinbase Tokenized Stock),coinbase,CAKEC,5287.63,0.0,11235.33,tokenized-stock
+cheesecake-factory-inc-coinbase-tokenized-stock,CAKEC,Cheesecake Factory Inc (Coinbase Tokenized Stock),coinbase,CAKE,5287.63,0.0,11235.33,tokenized-stock
 bullish-ondo-tokenized-stocks,BLSHON,Bullish (Ondo Tokenized Stock),ondo,BLSH,19.94,385.4,11226.99,ondo-tokenized-assets;tokenized-stock
 mcdonald-s-st0x-tokenized-stock,WTMCD,McDonald's (ST0x Tokenized Stock),other,WTMCD,271.26,1123.48,11184.73,tokenized-stock
 alphabet-astock,AGOOGL,Alphabet aStock,other,AGOOGL,293.98,0.0,11137.6,tokenized-stock
@@ -928,7 +928,7 @@ southern-copper-ondo-tokenized,SCCOON,Southern Copper (Ondo Tokenized),ondo,SCCO
 redwire-robinhood-tokenized-stock,RDW,Redwire • Robinhood Token,robinhood,RDW,7.58,0.0,8752.02,tokenized-stock
 archer-aviation-rstock,RACHR,Archer Aviation Tokenized Stock (Reality),other,RACHR,3.16,56327.0,8646.98,tokenized-stock
 clover-health-investments-corp-robinhood-token,CLOV,"Clover Health Investments, Corp. • Robinhood Token",robinhood,CLOV,4.29,48.0,8554.89,tokenized-stock
-paypal-holdings-inc-coinbase-tokenized-stock,PYPLC,"PayPal Holdings, Inc. (Coinbase Tokenized Stock)",coinbase,PYPLC,52.45,0.0,8447.76,tokenized-stock
+paypal-holdings-inc-coinbase-tokenized-stock,PYPLC,"PayPal Holdings, Inc. (Coinbase Tokenized Stock)",coinbase,PYPL,52.45,0.0,8447.76,tokenized-stock
 alnylam-pharmaceuticals-rstock,RALNY,Alnylam Pharmaceuticals Tokenized Stock (Reality),other,RALNY,147.69,324.93,8392.09,tokenized-stock
 crowdstrike-holdings-robinhood-tokenized-stock,CRWD,CrowdStrike Holdings • Robinhood Token,robinhood,CRWD,981.51,55.04,8355.84,tokenized-stock
 cloudflare-rstock,RNET,Cloudflare Tokenized Stock (Reality),other,RNET,291.72,16974.64,8086.76,tokenized-stock
@@ -1113,7 +1113,7 @@ aerovironment-inc-robinhood-token,AVAV,"AeroVironment, Inc. • Robinhood Token"
 macom-technology-solutions-holdings-inc-robinhood-token,MTSI,"MACOM Technology Solutions Holdings, Inc. • Robinhood Token",robinhood,MTSI,188.31,0.0,2728.79,tokenized-stock
 emerson-electric-ondo-tokenized,EMRON,Emerson Electric (Ondo Tokenized),ondo,EMR,161.46,0.0,2720.1,ondo-tokenized-assets;tokenized-stock
 texas-instruments-rstock,RTXN,Texas Instruments Tokenized Stock (Reality),other,RTXN,280.46,76272.0,2659.7,tokenized-stock
-rocket-lab-corporation-coinbase-tokenized-stock,RKLBC,Rocket Lab Corporation (Coinbase Tokenized Stock),coinbase,RKLBC,51.04,0.0,2628.59,tokenized-stock
+rocket-lab-corporation-coinbase-tokenized-stock,RKLBC,Rocket Lab Corporation (Coinbase Tokenized Stock),coinbase,RKLB,51.04,0.0,2628.59,tokenized-stock
 deere-rstock,RDE,Deere Tokenized Stock (Reality),other,RDE,625.59,705.81,2628.42,tokenized-stock
 pentair-plc-rstock,RPNR,Pentair plc Tokenized Stock (Reality),other,RPNR,67.47,0.0,2616.29,tokenized-stock
 solaredge-technologies-ondo-tokenized,SEDGON,SolarEdge Technologies (Ondo Tokenized),ondo,SEDG,20.32,52.88,2607.45,ondo-tokenized-assets;tokenized-stock
@@ -1138,7 +1138,7 @@ zscaler-rstock,RZS,Zscaler Tokenized Stock (Reality),other,RZS,199.81,19838.19,2
 thermo-fisher-scientific-ondo-tokenized-stock,TMOON,Thermo Fisher Scientific (Ondo Tokenized Stock),ondo,TMO,669.75,18.98,2275.01,ondo-tokenized-assets;tokenized-stock
 atlassian-rstock,RTEAM,Atlassian Tokenized Stock (Reality),other,RTEAM,129.88,36428.0,2274.3,tokenized-stock
 aptiv-plc-rstock,RAPTV,Aptiv PLC Tokenized Stock (Reality),other,RAPTV,39.45,0.0,2248.5,tokenized-stock
-duolingo-inc-coinbase-tokenized-stock,DUOLC,"Duolingo, Inc. (Coinbase Tokenized Stock)",coinbase,DUOLC,198.68,0.0,2225.43,tokenized-stock
+duolingo-inc-coinbase-tokenized-stock,DUOLC,"Duolingo, Inc. (Coinbase Tokenized Stock)",coinbase,DUOL,198.68,0.0,2225.43,tokenized-stock
 hewlett-packard-enterprise-rstock,RHPE,Hewlett Packard Enterprise Tokenized Stock (Reality),other,RHPE,45.46,31.64,2220.88,tokenized-stock
 opendoor-technologies-dinari-tokenized-stock,OPEN,Opendoor Technologies (Dinari Tokenized Stock),dinari,OPEN,1.46,307.12,2207.64,tokenized-stock
 waste-management-rstock,RWM,Waste Management Tokenized Stock (Reality),other,RWM,238.2,599.44,2198.67,tokenized-stock
@@ -1151,13 +1151,13 @@ amc-entertainment-holdings-dinari-tokenized-stock,AMC,AMC ENTERTAINMENT HOLDINGS
 american-bitcoin-dinari-tokenized-stock,ABTC,American Bitcoin (Dinari Tokenized Stock),dinari,ABTC,3.83,3.91,2167.73,tokenized-stock
 merck-dinari-tokenized-stock,MRK,Merck (Dinari Tokenized Stock),dinari,MRK,144.03,0.0,2158.05,tokenized-stock
 sony-group-dinari-tokenized-stock,SONY,Sony Group (Dinari Tokenized Stock),dinari,SONY,27.18,26.26,2157.76,tokenized-stock
-quantum-computing-inc-coinbase-tokenized-stock,QUBTC,Quantum Computing Inc. (Coinbase Tokenized Stock),coinbase,QUBTC,7.5,0.0,2155.08,tokenized-stock
+quantum-computing-inc-coinbase-tokenized-stock,QUBTC,Quantum Computing Inc. (Coinbase Tokenized Stock),coinbase,QUBT,7.5,0.0,2155.08,tokenized-stock
 veeva-systems-rstock,RVEEV,Veeva Systems Tokenized Stock (Reality),other,RVEEV,261.23,317.91,2135.01,tokenized-stock
 nucor-ondo-tokenized,NUEON,Nucor (Ondo Tokenized),ondo,NUE,252.2,20.46,2128.14,ondo-tokenized-assets;tokenized-stock
 fair-isaac-corporation-rstock,RFICO,Fair Isaac Tokenized Stock (Reality),other,RFICO,716.59,0.0,2127.37,tokenized-stock
 cognizant-technology-solutions-corporation-class-a-robinhood-token,CTSH,Cognizant Technology Solutions Corporation Class A • Robinhood Token,robinhood,CTSH,62.51,11.75,2090.86,tokenized-stock
 kla-corporation-robinhood-token,KLAC,KLA Corporation • Robinhood Token,robinhood,KLAC,146.93,93.86,2083.26,tokenized-stock
-ast-spacemobile-inc-coinbase-tokenized-stock,ASTSC,"AST SpaceMobile, Inc. (Coinbase Tokenized Stock)",coinbase,ASTSC,48.72,0.0,2054.68,tokenized-stock
+ast-spacemobile-inc-coinbase-tokenized-stock,ASTSC,"AST SpaceMobile, Inc. (Coinbase Tokenized Stock)",coinbase,ASTS,48.72,0.0,2054.68,tokenized-stock
 symbotic-inc-rstock,RSYM,Symbotic Tokenized Stock (Reality),other,RSYM,36.98,0.0,2041.31,tokenized-stock
 penguin-solutions-ondo-tokenized,PENGON,Penguin Solutions (Ondo Tokenized),ondo,PENG,42.39,0.0,2033.23,ondo-tokenized-assets;tokenized-stock
 delta-air-lines-rstock,RDAL,Delta Air Lines Tokenized Stock (Reality),other,RDAL,86.36,0.0,2024.96,tokenized-stock
@@ -1166,7 +1166,7 @@ beigene-ltd-rstock,RONC,BeiGene Ltd Tokenized Stock (Reality),other,RONC,413.46,
 quantumscape-dinari-tokenized-stock,QS,Quantumscape (Dinari Tokenized Stock),dinari,QS,3.0,373.36,2007.87,tokenized-stock
 wells-fargo-co-rstock,RWFC,Wells Fargo Tokenized Stock (Reality),other,RWFC,85.73,0.0,2000.93,tokenized-stock
 aehr-test-systems-robinhood-token,AEHR,Aehr Test Systems • Robinhood Token,robinhood,AEHR,60.21,0.0,1997.78,tokenized-stock
-wendy-s-co-coinbase-tokenized-stock,WENC,Wendy's Co (Coinbase Tokenized Stock),coinbase,WENC,8.26,0.0,1996.63,tokenized-stock
+wendy-s-co-coinbase-tokenized-stock,WENC,Wendy's Co (Coinbase Tokenized Stock),coinbase,WEN,8.26,0.0,1996.63,tokenized-stock
 realty-income-rstock,RO,Realty Income Tokenized Stock (Reality),other,RO,57.85,49.7,1979.6,tokenized-stock
 kanzhun-rstock,RBZ,Kanzhun Tokenized Stock (Reality),other,RBZ,12.59,0.0,1961.48,tokenized-stock
 alibaba-st0x-tokenized-stock,WTBABA,Alibaba (ST0x Tokenized Stock),other,WTBABA,83.45,82.23,1937.28,tokenized-stock
@@ -1177,9 +1177,9 @@ ciena-corporation-robinhood-token,CIEN,Ciena Corporation • Robinhood Token,rob
 medtronic-rstock,RMDT,Medtronic Tokenized Stock (Reality),other,RMDT,101.39,4817.86,1772.99,tokenized-stock
 salesforce-dinari-tokenized-stock,CRM,Salesforce (Dinari Tokenized Stock),dinari,CRM,182.97,3.95,1760.6,tokenized-stock
 cme-group-rstock,RCME,CME Group Tokenized Stock (Reality),other,RCME,308.18,0.0,1757.19,tokenized-stock
-peloton-interactive-inc-coinbase-tokenized-stock,PTONC,"Peloton Interactive, Inc. (Coinbase Tokenized Stock)",coinbase,PTONC,98.18,0.0,1750.74,tokenized-stock
+peloton-interactive-inc-coinbase-tokenized-stock,PTONC,"Peloton Interactive, Inc. (Coinbase Tokenized Stock)",coinbase,PTON,98.18,0.0,1750.74,tokenized-stock
 fidelity-national-information-services-rstock,RFIS,Fidelity National Information Services Tokenized Stock (Reality),other,RFIS,28.24,0.0,1742.72,tokenized-stock
-hertz-global-holdings-inc-coinbase-tokenized-stock,HTZC,"Hertz Global Holdings, Inc. (Coinbase Tokenized Stock)",coinbase,HTZC,7.62,0.0,1719.31,tokenized-stock
+hertz-global-holdings-inc-coinbase-tokenized-stock,HTZC,"Hertz Global Holdings, Inc. (Coinbase Tokenized Stock)",coinbase,HTZ,7.62,0.0,1719.31,tokenized-stock
 pg-e-corp-rstock,RPCG,PG&E Tokenized Stock (Reality),other,RPCG,14.04,174.83,1700.82,tokenized-stock
 albemarle-rstock,RALB,Albemarle Tokenized Stock (Reality),other,RALB,81.83,64.22,1695.23,tokenized-stock
 gemini-space-station-ondo-tokenized-stock,GEMION,Gemini Space Station (Ondo Tokenized Stock),ondo,GEMI,2.12,0.0,1694.61,ondo-tokenized-assets;tokenized-stock
@@ -1202,9 +1202,9 @@ vishay-precision-group-ondo-tokenized,VPGON,Vishay Precision Group (Ondo Tokeniz
 the-clorox-company-rstock,RCLX,Clorox Tokenized Stock (Reality),other,RCLX,107.64,0.0,1459.08,tokenized-stock
 elbit-systems-ltd-rstock,RESLT,Elbit Systems Ltd Tokenized Stock (Reality),other,RESLT,750.02,0.0,1453.99,tokenized-stock
 hdfc-bank-rstock,RHDB,HDFC Bank Tokenized Stock (Reality),other,RHDB,27.29,110.29,1450.4,tokenized-stock
-soundhound-ai-inc-coinbase-tokenized-stock,SOUNC,"SoundHound AI, Inc. (Coinbase Tokenized Stock)",coinbase,SOUNC,366.48,0.0,1441.15,tokenized-stock
+soundhound-ai-inc-coinbase-tokenized-stock,SOUNC,"SoundHound AI, Inc. (Coinbase Tokenized Stock)",coinbase,SOUN,366.48,0.0,1441.15,tokenized-stock
 biontech-se-rstock,RBNTX,BioNTech SE Tokenized Stock (Reality),other,RBNTX,85.14,0.0,1419.17,tokenized-stock
-pfizer-inc-coinbase-tokenized-stock,PFEC,Pfizer Inc (Coinbase Tokenized Stock),coinbase,PFEC,142.94,0.0,1410.26,tokenized-stock
+pfizer-inc-coinbase-tokenized-stock,PFEC,Pfizer Inc (Coinbase Tokenized Stock),coinbase,PFE,142.94,0.0,1410.26,tokenized-stock
 vici-properties-rstock,RVICI,VICI Properties Tokenized Stock (Reality),other,RVICI,24.33,49.58,1391.86,tokenized-stock
 interactive-brokers-rstock,RIBKR,Interactive Brokers Group Tokenized Stock (Reality),other,RIBKR,74.48,39980.0,1389.21,tokenized-stock
 fuelcell-energy-ondo-tokenized,FCELON,FuelCell Energy (Ondo Tokenized),ondo,FCEL,7.27,145775.0,1388.49,ondo-tokenized-assets;tokenized-stock
@@ -1235,7 +1235,7 @@ fifth-third-bancorp-dinari-tokenized-stock,FITB,Fifth Third Bancorp (Dinari Toke
 xanadu-quantum-robinhood-tokenized-stock,XNDU,Xanadu Quantum • Robinhood Token,robinhood,XNDU,1.86,73.77,1048.67,tokenized-stock
 tencent-holdings-dinari-tokenized-stock,TCEHY,Tencent Holdings (Dinari Tokenized Stock),dinari,TCEHY,57.61,0.0,1041.88,tokenized-stock
 amprius-technologies-rstock,RAMPX,Amprius Technologies Tokenized Stock (Reality),other,RAMPX,6.23,2392.13,1023.94,tokenized-stock
-philip-morris-international-inc-coinbase-tokenized-stock,PMC,Philip Morris International Inc. (Coinbase Tokenized Stock),coinbase,PMC,4068.98,0.0,1022.91,tokenized-stock
+philip-morris-international-inc-coinbase-tokenized-stock,PMC,Philip Morris International Inc. (Coinbase Tokenized Stock),coinbase,PM,4068.98,0.0,1022.91,tokenized-stock
 annaly-capital-management-dinari-tokenized-stock,NLY,Annaly Capital Management. (Dinari Tokenized Stock),dinari,NLY,17.26,0.0,1018.38,tokenized-stock
 the-kraft-heinz-company-rstock,RKHC,The Kraft Heinz Tokenized Stock (Reality),other,RKHC,25.11,1008.77,1015.23,tokenized-stock
 taskus-ondo-tokenized,TASKON,TaskUs (Ondo Tokenized),ondo,TASK,8.67,22.7,1000.73,ondo-tokenized-assets;tokenized-stock
@@ -1338,7 +1338,7 @@ trump-media-technology-group-dinari-tokenized-stock,DJT,Trump Media & Technology
 rocket-lab-astock,ARKLB,Rocket Lab aStock,other,ARKLB,55.67,0.0,427.67,tokenized-stock
 sharplink-dinari-tokenized-stock,SBET,Sharplink (Dinari Tokenized Stock),dinari,SBET,4.84,9.05,417.36,tokenized-stock
 progressive-rstock,RPGR,Progressive Tokenized Stock (Reality),other,RPGR,237.46,0.0,415.79,tokenized-stock
-novavax-inc-coinbase-tokenized-stock,NVAXC,Novavax Inc (Coinbase Tokenized Stock),coinbase,NVAXC,182.49,0.0,414.12,tokenized-stock
+novavax-inc-coinbase-tokenized-stock,NVAXC,Novavax Inc (Coinbase Tokenized Stock),coinbase,NVAX,182.49,0.0,414.12,tokenized-stock
 flex-ltd-rstock,RFLEX,Flex Tokenized Stock (Reality),other,RFLEX,71.83,14444.07,412.14,tokenized-stock
 cadence-design-systems-rstock,RCDNS,Cadence Design Systems Tokenized Stock (Reality),other,RCDNS,309.94,0.0,410.96,tokenized-stock
 firstenergy-corp-rstock,RFE,FirstEnergy Tokenized Stock (Reality),other,RFE,46.67,0.0,404.98,tokenized-stock

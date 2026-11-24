@@ -50,6 +50,8 @@ class HTTP:
             if r.status_code in (418, 429) or r.status_code >= 500:
                 ra = r.headers.get("Retry-After", "")
                 delay = float(ra) if ra.replace(".", "", 1).isdigit() else min(90, 3 * 2 ** attempt)
+                if r.status_code == 429:
+                    delay = max(delay, min(60, 5 * 2 ** attempt))
                 log.warning("%s returned %s; retrying in %.0fs", host, r.status_code, delay)
                 time.sleep(delay)
                 error = HTTPError(r.status_code, r.url, r.text)

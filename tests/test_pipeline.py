@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from pipeline import aggregate, pricing, site, store
+from pipeline import aggregate, comparisons, pricing, site, store
 from pipeline import config as C
 from pipeline.sources.base import Market
 
@@ -48,6 +48,34 @@ def seed():
                cg_id="tsla-rh", family="robinhood", underlying="TSLA", venue_type="dex", counterpart="other",
                network="robinhood", token_side="quote", bar_s=900),
     ])
+
+
+def test_calendar_and_matched_crossovers():
+    cols = ["underlying", "market_date", "session", "vol_usd"]
+    token = pd.DataFrame([("X", 1, "RTH", 80), ("X", 1, "PRE", 12), ("X", 2, "CLOSED", 50)], columns=cols)
+    stock = pd.DataFrame([("X", 1, "RTH", 100), ("X", 1, "PRE", 10)], columns=cols)
+    result = comparisons.volume_views(token, stock)
+    assert result["calendar"][0] == dict(t="X", token=142, stock=110, days=1, above=0)
+    assert result["matched"][0]["token"] == 92
+    assert result["PRE"][0]["above"] == 1
+    assert result["CLOSED"] == []
+
+
+def test_adjacent_return_direction(paths):
+    seed()
+    days = pd.bdate_range("2026-11-09", "2026-11-13")
+    rng = np.random.default_rng(12)
+    for day in days:
+        start = et(f"{day.date()} 09:30")
+        moves = rng.normal(0, 0.01, 14)
+        for source, mid, changes in [("binance", "binance:TSLABUSDT", moves[1:]), ("stocks", "stocks:TSLA", moves[:-1])]:
+            b = bars(mid, start, start + 13 * H)
+            b["close"] = b.open * np.exp(changes)
+            store.write_bars(source, b)
+    r = comparisons.lead_lag(store.load_markets(), days[0], days[-1])["RTH"]["TSLA"]
+    assert r["n"] == 60  # 12 adjacent pairs per day, no overnight joins
+    assert r["token_first"] == pytest.approx(1)
+    assert abs(r["stock_first"]) < 0.5
 
 
 def test_facts_by_session_and_market_date(paths):

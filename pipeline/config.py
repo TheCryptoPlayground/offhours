@@ -70,7 +70,7 @@ NAME_FAMILY = [
     ("ondo", r"\bondo tokeni[sz]ed\b", "ON"),
     ("bstocks", r"\bbstocks?\b", "B"),
     ("robinhood", r"\brobinhood\b", ""),
-    ("coinbase", r"\bcoinbase\b", ""),
+    ("coinbase", r"\bcoinbase\b", "C"),
     ("dinari", r"\bdinari\b", ""),
     ("backpack", r"\bbackpack\b", ""),
 ]

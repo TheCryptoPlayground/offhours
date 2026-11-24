@@ -92,8 +92,14 @@ def update_dex(http: HTTP, uni: dict, state: dict, now: float, rediscover: bool)
     active = set(state.get("dex_active", []))
     if rediscover or stale or not active:
         try:
-            markets = discover_pools(gt, uni["addresses"], uni["tokens"], _now_iso())
-            state["dex_discovered_at"] = _now_iso()
+            markets = discover_pools(gt, uni["addresses"], uni["tokens"], _now_iso(), focused=True)
+            if gt.failed_deployments:
+                status["discovery_errors"] = len(gt.failed_deployments)
+                previous = known[known.market_id.isin(active)].to_dict("records")
+                markets.extend(Market(**r) for r in previous if (r["network"], r["cg_id"]) in gt.failed_deployments)
+            if not markets:
+                raise ValueError("No eligible Coinbase or Ondo pools returned during discovery")
+            state["dex_discovered_at"] = None if gt.failed_deployments else _now_iso()
             state["dex_active"] = [m.market_id for m in markets]
         except Exception as e:
             status.update(ok=False, error=str(e)[:300])
@@ -105,7 +111,7 @@ def update_dex(http: HTTP, uni: dict, state: dict, now: float, rediscover: bool)
     status["markets"] = len(markets)
     _pull(markets, lambda m, a, b: gt.fetch(m.network, m.native, m.token_side, a, b), state, status,
           C.DEX_BACKFILL_DAYS, now)
-    status.update(ok=status["errors"] < max(1, len(markets)), finished=_now_iso())
+    status.update(ok=bool(status["rows"]), finished=_now_iso())
     return markets
 
 
