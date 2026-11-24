@@ -342,6 +342,16 @@
     const k = D.meta.kpis || {};
     $("#venue-note").textContent = `${rangeLabel(d.dates)}. Exchange order books plus DEX pools against stablecoins, majors or other stock tokens.` +
       (k.token_other > 0 ? ` Pools against memecoins traded a further ${usd(k.token_other)} in the last ${k.days} days and are left out here.` : "");
+    const issuers = ui.venue === "families";
+    $("#issuer-detail").hidden = !issuers;
+    if (issuers) {
+      const rows = keys.map(key => {
+        const values = groups[key].slice(start);
+        const observed = dates.filter((_, i) => values[i] > 0);
+        return `<tr><td>${esc(FAMILY[key] || key)}</td><td>${usd(sum(values))}</td><td>${observed.length}</td><td>${observed.length ? longDate(observed[0]) : "—"}</td><td>${observed.length ? longDate(observed[observed.length-1]) : "—"}</td></tr>`;
+      });
+      $("#issuer-totals").innerHTML = "<thead><tr><th>Issuer</th><th>Recorded volume</th><th>Dates with volume</th><th>First in range</th><th>Latest in range</th></tr></thead><tbody>" + rows.join("") + "</tbody>";
+    }
   }
 
   /* ---------- Stocks table and detail ---------- */
