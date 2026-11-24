@@ -130,7 +130,7 @@
   const topDown = (a, b) => b.datasetIndex - a.datasetIndex;
 
   function pressed(group, value) {
-    $$(`[data-${group}]`).forEach((b) => b.setAttribute("aria-pressed", String(b.dataset[group] === value)));
+    $$(`[data-${group}]`).forEach((b) => b.setAttribute("aria-pressed", String(b.getAttribute(`data-${group}`) === value)));
   }
 
   function rangeStart(dates) {
