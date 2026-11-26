@@ -1,0 +1,17 @@
+{
+  "checked_at": "2026-11-26T10:52:10+00:00",
+  "networks": {
+    "base": {
+      "reported_pools": 354,
+      "tracked_pools": 239,
+      "reported_usd": 196513029.8500003,
+      "tracked_usd": 196326851.0200002
+    },
+    "eth": {
+      "reported_pools": 199,
+      "tracked_pools": 118,
+      "reported_usd": 7662067.919999996,
+      "tracked_usd": 7052582.35
+    }
+  }
+}

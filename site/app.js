@@ -611,13 +611,26 @@
     if (u.tokens) {
       const mapping = u.tickers_checked ? "The refresh checked symbols against Alpaca’s listing directory." :
         "The refresh inferred symbols from token names and tickers without checking Alpaca’s listing directory.";
-      bits.push(`CoinGecko discovery returned ${u.tokens} candidate tokens and assigned ${u.mapped} underlying symbols. ${mapping} The stock table contains ${D.tickers.rows.length} distinct symbols with observed token trading.`);
+      bits.push(`For exchange order books, CoinGecko discovery returned ${u.tokens} candidate tokens and assigned ${u.mapped} underlying symbols. ${mapping} The stock table contains ${D.tickers.rows.length} distinct symbols with observed token trading.`);
     }
     if (cov && cov.coingecko_24h > 0) {
       const stamp = iso => iso.slice(0, 16).replace("T", " ");
       bits.push(`Tracked venues recorded ${usd(cov.measured_24h)} during the 24 hours ending ${stamp(cov.window_end || cov.as_of)} UTC. CoinGecko’s discovery snapshot at ${stamp(cov.as_of)} UTC reported ${usd(cov.coingecko_24h)} across its broader list. Venue coverage and reporting windows differ.`);
     }
     $("#coverage").textContent = bits.join(" ") || "Coverage figures appear after the first full run.";
+    const check = m.pool_volume_check;
+    if (check?.networks) {
+      const values = [["base", "Coinbase on Base"], ["eth", "Ondo on Ethereum"]].flatMap(([net, label]) => {
+        const entry = check.networks[net];
+        return entry?.reported_usd > 0
+          ? [`Tracked pools for ${label} accounted for ${pct(entry.tracked_usd / entry.reported_usd, 1)} of ${usd(entry.reported_usd)} in reported volume for its own contracts`] : [];
+      });
+      if (values.length) {
+        const note = $("#pool-volume-check");
+        note.hidden = false;
+        note.textContent = `On ${longDate(check.checked_at.slice(0, 10))}, DEX Screener reported the following 24-hour coverage for tracked pools. ${values.join(". ")}. Each pool counts once. This snapshot covers the two named chains and can differ from historical coverage.`;
+      }
+    }
     const src = m.sources || [];
     $("#source-table").innerHTML = src.length
       ? `<thead><tr><th>Product and data source</th><th>Latest collection scope</th><th>Distinct underlyings in archive</th><th class="left">Observed market dates</th><th class="left">Collector status</th><th>Last run</th></tr></thead><tbody>${src.map((s) => {

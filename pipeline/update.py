@@ -5,6 +5,7 @@ in data/state.json and shown on the site; the rest of the run carries on.
 """
 from __future__ import annotations
 
+import json
 import logging
 import time
 from datetime import datetime, timezone
@@ -100,11 +101,12 @@ def update_dex(http: HTTP, uni: dict, state: dict, now: float, rediscover: bool)
             for m in previous:
                 if not m.token_address:
                     m.token_address = legacy.get((m.network, m.cg_id), "")
-            markets = discover_issuer_pools(http, contracts, previous, _now_iso())
+            markets, checks = discover_issuer_pools(http, contracts, previous, _now_iso())
             if not markets:
                 raise ValueError("No issuer-verified Coinbase or Ondo pools discovered")
             catalog = pd.DataFrame([dict(network=net, address=addr, **t) for (net, addr), t in contracts.items()])
             catalog.to_csv(C.DATA / "issuer_contracts.csv", index=False)
+            (C.DATA / "issuer_pool_check.json").write_text(json.dumps({"checked_at": _now_iso(), "networks": checks}, indent=2))
             state["issuer_catalog_at"] = state["dex_discovered_at"] = _now_iso()
             state["dex_active"] = [m.market_id for m in markets]
             store.save_markets(markets)

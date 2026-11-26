@@ -8,7 +8,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%2315212B'/%3E%3Crect x='3' y='3' width='4' height='10' fill='%235C8FC4'/%3E%3Crect x='9' y='3' width='4' height='10' fill='%23F0A23A'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="style.css?v=20261126-2">
 <script src="vendor/chart.umd.js" defer></script>
-<script src="app.js?v=20261126-7" defer></script>
+<script src="app.js?v=20261126-8" defer></script>
 </head>
 <body>
 <div class="demo-banner" id="demo-banner" hidden><p>Synthetic demo data, generated to preview the layout. These are not market figures.</p></div>
@@ -201,6 +201,7 @@
   <p id="coverage"></p>
   <p>“Listed” counts issuer contracts on the tracked chain. “With a pool” counts contracts matched to an indexed pool against a supported dollar or major crypto asset. The archive column counts securities with positive recorded volume through the dashboard end date. One security can trade in several pools. Coverage varies by product and date. <a href="https://github.com/TianhaoYin1120/offhours/blob/main/data/markets.csv">Trading pairs and pool addresses</a>.</p>
   <div class="table-wrap"><table id="source-table"></table></div>
+  <p id="pool-volume-check" hidden></p>
   <p>Company and fund names come from issuer directories and the <a href="https://www.nasdaqtrader.com/dynamic/symdir/nasdaqtraded.txt">Nasdaq Trader symbol directory</a>. Short descriptions identify each company’s business or the fund’s investment objective.</p>
   <h3>Dataset scope</h3>
   <ul>

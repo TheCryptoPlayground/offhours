@@ -211,8 +211,14 @@ def test_discover_issuer_checks_every_contract_and_matches_authoritative_sides()
                     "relationships": {s:{"data":{"id":"base_"+v}} for s,v in [("base_token", usdc),("quote_token",token)]}}
         return {"data":[record(pool, a),record(wrong, fake)]}
     http = FakeHTTP(response)
-    markets = discover_issuer_pools(http, contracts, [], "now")
+    markets, checks = discover_issuer_pools(http, contracts, [], "now")
     assert {u.rsplit("/",1)[-1] for u,_,_ in http.calls if "/token-pairs/" in u} == {a,b}
     assert len(markets) == 1
     m = markets[0]
     assert (m.underlying,m.token_side,m.token_address,m.counterpart,m.vol24) == ("RKT","quote",a,"usd",0)
+
+
+def test_pool_snapshot_compares_dollars_within_the_same_index():
+    from pipeline.sources.issuer_pools import index_coverage
+    r = index_coverage("base", {"a": 10, "b": 30, "c": 0}, {"dex-base:a", "dex-eth:b", "dex-base:c"})
+    assert r == dict(reported_pools=3, tracked_pools=2, reported_usd=40, tracked_usd=10)

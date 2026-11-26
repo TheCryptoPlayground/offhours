@@ -254,7 +254,9 @@ def build(demo: bool = False, end_date: str | None = None) -> dict:
                             pending_pools=len(set(state.get("dex_active", [])) - state.get("cursor", {}).keys()) if sid == "dex" else None,
                             error=st.get("error") or st.get("last_error"),
                             started=st.get("started"), finished=st.get("finished")))
+    check_file = C.DATA / "issuer_pool_check.json"
     meta = dict(
+        pool_volume_check=json.loads(check_file.read_text()) if check_file.exists() else None,
         generated_at=datetime.now(timezone.utc).isoformat(timespec="seconds"), demo=demo,
         first_date=daily["dates"][0] if daily["dates"] else None, last_date=daily["dates"][-1] if daily["dates"] else None,
         history=dict(calendar_days=len(dates), token_dates=int(tf.market_date.nunique()) if len(tf) else 0,

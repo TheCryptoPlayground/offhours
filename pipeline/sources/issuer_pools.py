@@ -105,11 +105,19 @@ def verified_markets(http, net, candidates, contracts, known, now):
     return markets
 
 
+def index_coverage(network, reported, tracked):
+    """Compare once per pool on the same index and rolling-volume snapshot."""
+    matched = [volume for pool, volume in reported.items() if f"dex-{network}:{pool}" in tracked]
+    return dict(reported_pools=len(reported), tracked_pools=len(matched),
+                reported_usd=sum(reported.values()), tracked_usd=sum(matched))
+
+
 def discover_issuer_pools(http, contracts, known, now):
     """Search every issuer contract, including listings without recent trading volume."""
     markets = {m.market_id: m for m in known if (m.network, m.token_address) in contracts}
+    checks = {}
     for net, chain in (("base", "base"), ("eth", "ethereum")):
-        candidates = set()
+        candidates, reported = set(), {}
         for batch in _batches(addr for network, addr in contracts if network == net):
             for address in batch:
                 pairs = http.get(f"https://api.dexscreener.com/token-pairs/v1/{chain}/{address}", pace=0.25)
@@ -117,10 +125,17 @@ def discover_issuer_pools(http, contracts, known, now):
                     raise ValueError("Invalid DEX Screener pool response")
                 for pair in pairs:
                     sides = {norm_addr(pair[s]["address"]) for s in ("baseToken", "quoteToken")}
-                    if pair["chainId"] == chain and address in sides and sides.intersection(QUOTES[net]):
-                        candidates.add(norm_addr(pair["pairAddress"]))
+                    if pair["chainId"] != chain or address not in sides:
+                        continue
+                    pool = norm_addr(pair["pairAddress"])
+                    volume = (pair.get("volume") or {}).get("h24")
+                    if volume is not None:
+                        reported.setdefault(pool, float(volume))
+                    if sides.intersection(QUOTES[net]):
+                        candidates.add(pool)
             data = _gecko_multi(http, net, "tokens", batch, include="top_pools")
             candidates.update(norm_addr(p["attributes"]["address"]) for p in data.get("included", [])
                               if p["type"] == "pool")
         markets.update(verified_markets(http, net, candidates, contracts, markets, now))
-    return list(markets.values())
+        checks[net] = index_coverage(net, reported, markets)
+    return list(markets.values()), checks
