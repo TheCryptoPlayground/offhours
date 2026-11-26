@@ -8,7 +8,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%2315212B'/%3E%3Crect x='3' y='3' width='4' height='10' fill='%235C8FC4'/%3E%3Crect x='9' y='3' width='4' height='10' fill='%23F0A23A'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="style.css?v=20261126-1">
 <script src="vendor/chart.umd.js" defer></script>
-<script src="app.js?v=20261126-2" defer></script>
+<script src="app.js?v=20261126-3" defer></script>
 </head>
 <body>
 <div class="demo-banner" id="demo-banner" hidden><p>Synthetic demo data, generated to preview the layout. These are not market figures.</p></div>
@@ -145,13 +145,13 @@
   <label>Compare <select id="volume-mode">
     <option value="calendar">Full calendar window</option><option value="matched">Matched trading dates</option>
     <option value="RTH">Regular hours</option><option value="PRE">Pre-market</option>
-    <option value="POST">After-hours</option><option value="OVERNIGHT">Overnight</option>
+    <option value="POST">After-hours</option><option value="OVERNIGHT">Overnight (partial stock coverage)</option>
     <option value="CLOSED">Closed periods</option></select></label>
-  <label>Rows <select id="volume-limit"><option value="10">Top 10</option><option value="20">Top 20</option><option value="all">All</option></select></label>
+  <label>Rows <select id="volume-limit"><option value="10">10</option><option value="20">20</option><option value="all">All</option></select></label>
   </div>
   <p class="note" id="volume-summary" aria-live="polite"></p>
   <div class="table-wrap"><table id="volume-comparison"></table></div>
-  <p class="note">Dates are inclusive US market dates. Coverage varies by stock and venue. Daily counts use dates with positive recorded dollar volume on both sides. A ratio above 100% means the observed tokens traded more dollars than the underlying stock.</p>
+  <p class="note">Dollar volume measures the value traded. The period ratio divides total recorded token dollars by total recorded stock dollars. The date count measures how often token dollars were higher on dates with observations in both feeds. Missing stock observations do not count as zero-volume days. Coverage varies by stock, session and venue.</p>
   <h3>Which market moves first?</h3>
   <p class="note" id="lead-window"></p>
   <label>Session <select id="lead-session"><option value="RTH">Regular hours</option><option value="PRE">Pre-market</option><option value="POST">After-hours</option></select></label>

@@ -669,6 +669,22 @@
     }));
   }
 
+  function renderOvernightObservations(history, start, end, limit) {
+    const matched = [];
+    for (const day of Object.keys(history).sort().reverse()) {
+      if (day < start || day > end) continue;
+      for (const [ticker, session, token, stock] of history[day]) {
+        if (session === "OVERNIGHT" && token > 0 && stock > 0) matched.push({day, ticker, token, stock});
+      }
+    }
+    $("#volume-summary").textContent = `${longDate(start)} to ${longDate(end)}. Overnight runs from 8 p.m. to 4 a.m. New York time and counts toward the following trading date. The stock feed provides only partial overnight coverage. A market-wide volume comparison is unavailable. Both feeds recorded volume on ${matched.length} stock–date pairs.`;
+    const dollars = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"});
+    const visible = limit === "all" ? matched : matched.slice(0, Number(limit));
+    $("#volume-comparison").innerHTML = "<thead><tr><th>US trading date</th><th>Stock</th><th>Recorded token dollars</th><th>Recorded stock dollars</th></tr></thead><tbody>" +
+      visible.map(r => `<tr><td>${longDate(r.day)}</td>${stockCell(r.ticker)}<td>${dollars.format(r.token / 100)}</td><td>${dollars.format(r.stock / 100)}</td></tr>`).join("") +
+      (matched.length ? "" : '<tr><td colspan="4">No overnight observations with volume in both feeds.</td></tr>') + "</tbody>";
+  }
+
   function setComparisonRange() {
     const dates = D.daily.dates;
     const range = $("#volume-range").value;
@@ -693,9 +709,10 @@
       return message(`Choose a start date on or before the end date. Both dates must fall between ${longDate(dates[0])} and ${longDate(dates[dates.length - 1])}.`);
     }
     let rows;
-    if (start === D.tickers.start && end === D.tickers.end) {
+    if (mode !== "OVERNIGHT" && start === D.tickers.start && end === D.tickers.end) {
       rows = (D.tickers.comparisons?.[mode] || []).slice();
     } else if (D.volumeHistory) {
+      if (mode === "OVERNIGHT") return renderOvernightObservations(D.volumeHistory.days, start, end, limit);
       rows = historicalComparison(D.volumeHistory.days, start, end, mode);
     } else {
       message("Loading historical volume…");
@@ -704,7 +721,7 @@
           D.volumeHistory = history;
           renderComparisons();
         }).catch(() => {
-          if ($("#volume-start").value !== D.tickers.start || $("#volume-end").value !== D.tickers.end)
+          if ($("#volume-mode").value === "OVERNIGHT" || $("#volume-start").value !== D.tickers.start || $("#volume-end").value !== D.tickers.end)
             message("Historical data could not load. Change the range to retry.");
         }).finally(() => { D.loadingVolume = null; });
       }
@@ -712,9 +729,12 @@
     }
     rows.sort((a,b) => b.token/b.stock - a.token/a.stock || a.t.localeCompare(b.t));
     const description = mode === "calendar" ? "Each total includes all recorded volume in the selected dates. A ticker needs at least one date with trading on both sides." :
-      mode === "matched" ? "Both markets traded on each included date." : "Both markets traded in the selected session on each included date.";
-    $("#volume-summary").textContent = `${longDate(start)} to ${longDate(end)}. ${description} ${rows.filter(r => r.token > r.stock).length} of ${rows.length} comparable tickers exceeded 100% over the window.`;
-    $("#volume-comparison").innerHTML = "<thead><tr><th>Stock</th><th>Token dollars</th><th>Stock dollars</th><th>Token / stock</th><th>Days above 100% / matched</th></tr></thead><tbody>" +
+      mode === "matched" ? "Only dates with positive volume in both feeds are included." : "Only dates with positive volume in both feeds during this session are included.";
+    const result = rows.length
+      ? `${rows.filter(r => r.token > r.stock).length} of ${rows.length} comparable tickers had higher recorded token dollars over the window.`
+      : "No stock had positive volume in both feeds on a matching date.";
+    $("#volume-summary").textContent = `${longDate(start)} to ${longDate(end)}. ${description} ${result}`;
+    $("#volume-comparison").innerHTML = "<thead><tr><th>Stock</th><th>Token dollars</th><th>Stock dollars</th><th>Token / stock</th><th>Dates above 100% / matched dates</th></tr></thead><tbody>" +
       rows.slice(0, limit === "all" ? rows.length : Number(limit)).map(r =>
         `<tr>${stockCell(r.t)}<td>${usd(r.token)}</td><td>${usd(r.stock)}</td><td>${pct(r.token/r.stock,2)}</td><td>${r.above} / ${r.days}</td></tr>`).join("") +
       (rows.length ? "" : '<tr><td colspan="5">No comparable recorded volume.</td></tr>') + "</tbody>";
