@@ -73,7 +73,7 @@ def load_markets() -> pd.DataFrame:
     p = C.DATA / "markets.csv"
     if not p.exists():
         return pd.DataFrame(columns=MARKET_COLUMNS)
-    df = pd.read_csv(p, dtype=str, keep_default_na=False)
+    df = pd.read_csv(p, dtype=str, keep_default_na=False).reindex(columns=MARKET_COLUMNS, fill_value="")
     df = df[df.source.isin(C.BAR_SOURCES)].copy()
     for col in ("bar_s",):
         df[col] = pd.to_numeric(df[col], errors="coerce").fillna(C.BAR_S).astype(int)

@@ -42,7 +42,7 @@ SESSION_HOURS = {
 
 # --- History ----------------------------------------------------------------------------
 BACKFILL_DAYS = int(os.environ.get("OFFHOURS_BACKFILL_DAYS", 120))
-DEX_BACKFILL_DAYS = int(os.environ.get("OFFHOURS_DEX_BACKFILL_DAYS", 30))
+DEX_BACKFILL_DAYS = int(os.environ.get("OFFHOURS_DEX_BACKFILL_DAYS", 35))
 REFETCH_BARS = 2               # re-read the last bars each run in case a venue amends them
 UNIVERSE_MAX_AGE_DAYS = 7
 

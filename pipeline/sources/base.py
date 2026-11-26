@@ -32,6 +32,7 @@ class Market:
     bar_s: int = 1800
     vol24: float = 0.0
     discovered: str = field(default="")
+    token_address: str = ""    # issuer-verified stock token contract for on-chain pools
 
     def row(self) -> dict:
         return asdict(self)

@@ -41,19 +41,17 @@ python -m pipeline all                 # update, then build site/data
 python -m pipeline status              # health of each source
 ```
 
-Estimated run time is one to two hours the first time (backfill; GeckoTerminal's free limit of
-30 calls a minute is the bottleneck) and around half an hour a day after that.
+Run time depends on the number of indexed pools, available history and the public providers’ rate limits.
 
 The first successful run backfills the configured history window (120 days for centralised
-exchanges, 30 days for DEX pools, and 120 days for stocks). Later runs resume from per-market
+exchanges, 35 days for DEX pools, and 120 days for stocks). Later runs resume from per-market
 cursors and fetch only new or recently amended bars, so the site keeps accumulating history.
 The dashboard opens on all history and offers optional shorter chart views; its source table distinguishes sources
 that are working, failing, or have not been run yet.
 
 **On GitHub:**
 
-1. Push this folder to a new repository. Public repositories get unlimited Actions minutes; a daily
-   run also fits a private repository's 2,000 free minutes.
+1. Push this folder to a new repository. This public project uses a standard GitHub-hosted runner.
 2. In Settings, Secrets and variables, Actions, add `ALPACA_API_KEY_ID`, `ALPACA_API_SECRET_KEY`
    and optionally `COINGECKO_DEMO_API_KEY`.
 3. In Settings, Pages, set the source to GitHub Actions.
@@ -105,7 +103,7 @@ tape uses with 23/5 trading. Weekends and holidays count under their own dates. 
 |---------------|----------------------------------------------|--------------------------------------------|----------------------|
 | Binance       | bStocks                                      | `data-api.binance.vision` klines           | 120 days |
 | Kraken        | xStocks                                      | OHLC with `asset_class=tokenized_asset`    | 15 days (the API keeps only the latest 720 bars) |
-| GeckoTerminal | Selected Coinbase stock tokens on Base and Ondo stock tokens on Ethereum | pool OHLCV, 15 minutes | up to 30 days |
+| GeckoTerminal | Selected Coinbase stock tokens on Base and Ondo stock tokens on Ethereum | pool OHLCV, 15 minutes | up to 35 days per new pool |
 | Alpaca        | the stocks, consolidated tape                | v2 `stocks/bars`, `feed=sip`               | 120 days (the free plan reaches back to 2016) |
 | CoinGecko     | token list, issuer, contract addresses       | categories, `coins/markets`, `coins/list`  | refreshed weekly |
 
@@ -135,7 +133,7 @@ Calendar totals include token-only dates. Matched totals use dates with positive
 
 The lead–lag panel pairs consecutive half hours for each ticker within one regular, pre-market or after-hours session. Returns are log(close/open). Each USD or major-quoted token market contributes its own return weighted by that interval’s dollar volume. Both quarters are required for 15-minute markets. Both directions use the same pairs, with at least 30 observations. These are descriptive Pearson correlations. Shared news, sparse trades and asynchronous last prints can affect them.
 
-The scheduled pool panel targets AAPL, AMZN, GOOGL, MSFT, NVDA, QQQ, SPY and TSLA. Weekly discovery selects up to two qualifying pools per token deployment from GeckoTerminal’s first volume-ranked page. Tokens need $5,000 in trailing daily volume and pools need $2,000. Stablecoin and major-asset pairs qualify. Only realized bar volume enters totals.
+Weekly discovery checks the full Coinbase stock-token directory on Base and the Ondo stock and ETF directory on Ethereum. It queries DEX Screener for pairs of each contract and GeckoTerminal for top pools, then verifies the pool ID and both assets with GeckoTerminal. Pools against the configured stablecoin and major-asset addresses qualify regardless of daily volume. A pool counts once. The [issuer coverage CSV](https://tianhaoyin1120.github.io/offhours/data/issuer_coverage.csv) includes every listing, the pool count, observed dates and measured volume. Empty volume means no observation. Issuer creations, redemptions, other networks and unindexed venues are outside these totals.
 
 ## The weekend test
 

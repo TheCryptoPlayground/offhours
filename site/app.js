@@ -409,8 +409,8 @@
     });
     const other = sum(d.token_other.slice(start));
     const explanation = byVenue
-      ? "Each row pairs a token product with the place its trades were recorded. For Coinbase stock tokens, we measure swaps in selected pools on the Base blockchain."
-      : "Each product combines its recorded trades across tracked venues. The xStocks total measures trades recorded on Kraken. Each product’s first and latest observed dates are shown below.";
+      ? "Coinbase and Ondo totals measure indexed swaps on Base and Ethereum respectively. Listings, pools and observation dates differ by product."
+      : "Each product combines the trades recorded on its tracked venues. Coverage differs by product and date. Coinbase and Ondo totals cover indexed pools on Base and Ethereum respectively.";
     $("#venue-note").textContent = `${rangeLabel(d.dates, ui.venueRange)}. ${explanation}` +
       (other > 0 ? ` Pools with other counterpart assets contributed a further ${usd(other)}, excluded here.` : "");
     const rows = entries.map(({ product, venue, total, observed }) =>
@@ -621,7 +621,7 @@
     const src = m.sources || [];
     $("#source-table").innerHTML = src.length
       ? `<thead><tr><th>Product and data source</th><th>Latest collection scope</th><th>Distinct underlyings in archive</th><th class="left">Observed market dates</th><th class="left">Collector status</th><th>Last run</th></tr></thead><tbody>${src.map((s) => {
-        const status = s.ok && (s.errors || s.discovery_errors) ? '<span class="sub">Partial</span>' : s.ok === true ? '<span class="status-ok">Working</span>'
+        const status = s.pending_pools ? `<span class="sub">History pending for ${s.pending_pools} pools</span>` : s.ok && (s.errors || s.discovery_errors) ? '<span class="sub">Partial</span>' : s.ok === true ? '<span class="status-ok">Working</span>'
           : s.ok === false ? '<span class="status-bad">Failing</span>' : '<span class="sub">No recorded run</span>';
         const detail = s.error ? ` <span class="sub">${esc(String(s.error).slice(0, 160))}</span>` : "";
         const errs = (s.errors ? ` <span class="sub">(${s.errors} market errors)</span>` : "") +
@@ -635,13 +635,15 @@
           const unit = pool || s.id === "dex" ? "pools" : s.id === "stocks" ? "symbols requested" : "trading pairs";
           const dates = g.first_date ? `${longDate(g.first_date)} to ${longDate(g.last_date)}` : "—";
           const tickers = g.tickers || [];
-          const stockList = pool && tickers.length ? ` · ${esc(tickers.join(", "))}` : "";
+          const stockList = pool && tickers.length ? `<details><summary>Show tickers</summary>${esc(tickers.join(", "))}</details>` : "";
+          const listing = g.listed != null ? `<br><small>${g.listed} listed · ${g.with_pool} with a pool</small>` : "";
           const run = i ? "" : `<td rowspan="${groups.length}" class="left">${status}${errs}${detail}</td><td rowspan="${groups.length}">${when}</td>`;
-          return `<tr><td>${esc(label)}</td><td>${g.markets ?? "—"} ${unit}</td><td>${g.tickers ? tickers.length : "—"}${stockList}</td><td class="left">${dates}</td>${run}</tr>`;
+          return `<tr><td>${esc(label)}</td><td>${g.markets ?? "—"} ${unit}${listing}</td><td>${g.tickers ? tickers.length : "—"}${stockList}</td><td class="left">${dates}</td>${run}</tr>`;
         }).join("");
       }).join("")}</tbody>`
       : "<tbody><tr><td>No runs recorded yet.</td></tr></tbody>";
     const links = ['<a href="data/token_daily.csv">Token volume by day, session, venue, issuer and stock</a>'];
+    if (m.issuer_catalog_at) links.push(`<a href="data/issuer_coverage.csv">Every Coinbase and Ondo listing, pool coverage and recorded volume (catalogue checked ${esc(m.issuer_catalog_at.slice(0, 10))})</a>`);
     if (m.history?.stock_dates > 0) links.push('<a href="data/stock_daily.csv">Stock volume by day and session</a>');
     if (((D.closures || {}).points || []).length) links.push('<a href="data/closures.csv">Closure observations</a>');
     $("#downloads").innerHTML = links.join(", ") + ".";

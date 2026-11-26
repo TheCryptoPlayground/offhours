@@ -132,31 +132,6 @@ def test_dex_discovery_counterparts_and_floors():
     assert len(http.calls) == 1                   # TSLA sits under the discovery volume floor
 
 
-def test_focused_dex_panel_selects_two_liquid_unique_pools_per_issuer():
-    tokens = pd.DataFrame([
-        dict(cg_id="nvda-c", family="coinbase", underlying="NVDA", vol24=1e6),
-        dict(cg_id="nvda-on", family="ondo", underlying="NVDA", vol24=1e6),
-        dict(cg_id="nvda-x", family="xstocks", underlying="NVDA", vol24=1e6),
-    ])
-    addresses = pd.DataFrame([
-        ("nvda-c", "base", "0xc"), ("nvda-on", "eth", "0xo"), ("nvda-x", "eth", "0xx")
-    ], columns=["cg_id", "network", "address"])
-
-    class Pools:
-        def token_pools(self, network, address):
-            assert address in {"0xc", "0xo"}
-            return [dict(pool=p, vol24=v, base_addr=address, base_sym="NVDA", quote_addr="0x1",
-                         quote_sym=q) for p,v,q in [("p0", 1e6, "MEME"), ("p1", 3e3, "USDC"),
-                                                       ("p2", 4e3, "USDC"), ("p2", 4e3, "USDC"),
-                                                       ("p3", 5e3, "WETH")]]
-
-    assert universe.derive_ticker("NVDAc", "coinbase", None) == "NVDA"
-    result = dex.discover_pools(Pools(), addresses, tokens, "now", focused=True)
-    assert {(m.network, m.native, m.family) for m in result} == {
-        (net, pool, family) for net, family in [("base", "coinbase"), ("eth", "ondo")] for pool in ["p2", "p3"]}
-    assert len(result) == 4
-
-
 def test_dex_ohlcv_pages_backwards():
     start, end = T0, T0 + 1500 * 900
     def h(url, p):
@@ -200,3 +175,44 @@ def test_family_from_category_name_and_overrides():
     assert universe.name_family("Circle Internet Group (Ondo Tokenized Stock)") == "ondo"
     assert universe.name_family("Tesla xStock") == "xstocks"
     assert universe.category_family("bstocks-ecosystem", "bStocks Ecosystem") == "bstocks"
+
+
+def test_discover_contracts_paginates_and_excludes_cash_and_other_chains():
+    from pipeline.sources.issuer_pools import issuer_contracts, COINBASE_LIST
+    a, b, c = ("0x" + ch * 40 for ch in "abc")
+    def response(url, params):
+        if url == COINBASE_LIST:
+            if params.get("page_token") == "next":
+                return {"tokens": [{"contract_address": b, "symbol": "RKTc", "name": "Rocket"}]}
+            return {"tokens": [{"contract_address": a, "symbol": "BRK-Bc", "name": "Berkshire"}],
+                    "next_page_token": "next"}
+        return {"tokens": [
+            {"chainId": 1, "address": c, "name": "Fund (Ondo Tokenized)", "symbol": "XYon"},
+            {"chainId": 1, "address": b, "name": "Ondo U.S. Dollar Token", "symbol": "USDon"},
+            {"chainId": 56, "address": a, "name": "Fund (Ondo Tokenized)", "symbol": "XYon"}]}
+    out = issuer_contracts(FakeHTTP(response))
+    assert {k: r["ticker"] for k, r in out.items()} == {("base", a): "BRK.B", ("base", b): "RKT", ("eth", c): "XY"}
+
+
+def test_discover_issuer_checks_every_contract_and_matches_authoritative_sides():
+    from pipeline.sources.issuer_pools import discover_issuer_pools, QUOTES
+    a, b, fake = ("0x" + ch * 40 for ch in "abf")
+    pool, wrong = ("0x" + ch * 64 for ch in "ab")
+    usdc = next(k for k, v in QUOTES["base"].items() if v == "USDC")
+    contracts = {("base", addr): dict(ticker=t, symbol=t+"c", name=t) for addr, t in [(a, "RKT"), (b, "HPE")]}
+    def response(url, params):
+        if "/token-pairs/" in url:
+            return [dict(chainId="base", pairAddress=pool, baseToken={"address": a}, quoteToken={"address": usdc})]
+        if "/tokens/multi/" in url:
+            return {"included": [{"type":"pool","attributes":{"address":p}} for p in [pool, wrong]]}
+        assert "/pools/multi/" in url
+        def record(addr, token):
+            return {"attributes":{"address":addr,"volume_usd":{"h24":"0"}},
+                    "relationships": {s:{"data":{"id":"base_"+v}} for s,v in [("base_token", usdc),("quote_token",token)]}}
+        return {"data":[record(pool, a),record(wrong, fake)]}
+    http = FakeHTTP(response)
+    markets = discover_issuer_pools(http, contracts, [], "now")
+    assert {u.rsplit("/",1)[-1] for u,_,_ in http.calls if "/token-pairs/" in u} == {a,b}
+    assert len(markets) == 1
+    m = markets[0]
+    assert (m.underlying,m.token_side,m.token_address,m.counterpart,m.vol24) == ("RKT","quote",a,"usd",0)

@@ -57,6 +57,48 @@ def _observed(facts):
                 tickers=sorted(set(facts.underlying.dropna()) - {""}))
 
 
+def issuer_coverage(markets, state, end):
+    """One row per issuer contract, with volume attributed only by its verified pool IDs."""
+    catalog_file = C.DATA / "issuer_contracts.csv"
+    output = C.SITE_DATA / "issuer_coverage.csv"
+    if not catalog_file.exists():
+        output.unlink(missing_ok=True)
+        return pd.DataFrame()
+    catalog = pd.read_csv(catalog_file, dtype=str, keep_default_na=False)
+    pools = markets[markets.token_address != ""]
+    active = pools[pools.market_id.isin(state.get("dex_active", []))]
+    keys = ["network", "token_address"]
+    indexed = catalog.rename(columns={"address": "token_address"}).set_index(keys)
+    indexed["tracked_pools"] = active.groupby(keys).size().reindex(indexed.index, fill_value=0)
+    collected = active[active.market_id.isin(state.get("cursor", {}))]
+    indexed["pools_collected"] = collected.groupby(keys).size().reindex(indexed.index, fill_value=0)
+    facts = []
+    for _, _, path in store.bar_files(sources=["dex-base", "dex-eth"]):
+        bars = pd.read_parquet(path, columns=["market_id", "ts", "vol_usd"])
+        bars = bars[bars.market_id.isin(pools.market_id) & (bars.vol_usd > 0)].copy()
+        if len(bars):
+            bars["market_date"] = pd.to_datetime(calendar.classify(bars.ts.values)[1])
+            bars = bars[bars.market_date <= end]
+            facts.append(bars.groupby("market_id").agg(first_date=("market_date", "min"),
+                         last_date=("market_date", "max"), observed_usd=("vol_usd", "sum")))
+    if facts:
+        by_pool = pd.concat(facts).join(pools.set_index("market_id")[keys])
+        measured = by_pool.groupby(keys).agg(dict(first_date="min", last_date="max", observed_usd="sum"))
+        indexed = indexed.join(measured)
+    else:
+        indexed = indexed.assign(first_date=pd.NaT, last_date=pd.NaT, observed_usd=np.nan)
+    indexed["status"] = np.select(
+        [indexed.observed_usd.notna(), indexed.tracked_pools == 0, indexed.pools_collected < indexed.tracked_pools],
+        ["Volume observed", "No eligible indexed pool found", "Pool history pending"],
+        default="No positive volume returned in archive")
+    indexed["catalog_checked_at"] = state.get("issuer_catalog_at", "")
+    indexed["archive_through"] = end.strftime("%Y-%m-%d")
+    result = indexed.reset_index().sort_values(["network", "ticker", "token_address"])
+    C.SITE_DATA.mkdir(parents=True, exist_ok=True)
+    result.to_csv(output, index=False, float_format="%.2f")
+    return result
+
+
 def build(demo: bool = False, end_date: str | None = None) -> dict:
     """end_date pins the last market date (tests, backfills); by default it is yesterday in New York."""
     state = store.load_state()
@@ -125,6 +167,9 @@ def build(demo: bool = False, end_date: str | None = None) -> dict:
 
     # tickers
     profiles = pd.read_csv(C.ROOT / "config/security_profiles.csv", keep_default_na=False).set_index("ticker").to_dict("index")
+    roster = issuer_coverage(markets, state, end)
+    for entry in roster.itertuples():
+        profiles.setdefault(entry.ticker, {"name": entry.name.split(" (Ondo Tokenized")[0]})
     rows = []
     if len(head):
         g = head[head.underlying != ""].groupby("underlying")
@@ -192,15 +237,21 @@ def build(demo: bool = False, end_date: str | None = None) -> dict:
             active = markets[markets.market_id.isin(state.get("dex_active", []))]
             active_counts = active.groupby(["source", "family"]).market_id.nunique()
             grouped = observed.groupby(["source", "family"])
-            for network, family in sorted(set(grouped.groups) | set(active_counts.index)):
+            catalog_groups = {("dex-" + n, "coinbase" if n == "base" else "ondo") for n in roster.network} if len(roster) else set()
+            for network, family in sorted(set(grouped.groups) | set(active_counts.index) | catalog_groups):
                 key = (network, family)
                 group = grouped.get_group(key) if key in grouped.groups else observed.iloc[:0]
                 count = int(active_counts.get(key, 0)) if "dex_active" in state and st.get("markets") is not None else None
-                pool_groups.append(dict(network=network, family=family, markets=count, **_observed(group)))
+                listing = roster[roster.network == network.removeprefix("dex-")] if len(roster) else roster
+                pool_groups.append(dict(network=network, family=family, markets=count,
+                                        listed=len(listing) if len(listing) else None,
+                                        with_pool=int((listing.tracked_pools > 0).sum()) if len(listing) else None,
+                                        **_observed(group)))
         sources.append(dict(**_observed(observed), pool_groups=pool_groups, id=sid,
                             label=C.VENUE_LABELS.get(sid, sid.title()),
                             type=st.get("type"), ok=st.get("ok"), markets=st.get("markets"),
                             errors=st.get("errors"), discovery_errors=st.get("discovery_errors"),
+                            pending_pools=len(set(state.get("dex_active", [])) - state.get("cursor", {}).keys()) if sid == "dex" else None,
                             error=st.get("error") or st.get("last_error"),
                             started=st.get("started"), finished=st.get("finished")))
     meta = dict(
@@ -212,7 +263,7 @@ def build(demo: bool = False, end_date: str | None = None) -> dict:
         events=[dict(date=C.US_23X5_START.isoformat(), label="Scheduled extension of US consolidated tape hours")],
         venue_labels=C.VENUE_LABELS, kpis=kpis, universe=umeta, coverage=coverage, sources=sources,
         markets=dict(total=int(len(markets)), by_source=markets.source.value_counts().to_dict() if len(markets) else {}),
-        last_run=state.get("last_run"),
+        last_run=state.get("last_run"), issuer_catalog_at=state.get("issuer_catalog_at"),
     )
 
     week = aggregate.week_profile(markets, archive_end_ts, days=len(dates))

@@ -8,7 +8,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%2315212B'/%3E%3Crect x='3' y='3' width='4' height='10' fill='%235C8FC4'/%3E%3Crect x='9' y='3' width='4' height='10' fill='%23F0A23A'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="style.css?v=20261126-2">
 <script src="vendor/chart.umd.js" defer></script>
-<script src="app.js?v=20261126-6" defer></script>
+<script src="app.js?v=20261126-7" defer></script>
 </head>
 <body>
 <div class="demo-banner" id="demo-banner" hidden><p>Synthetic demo data, generated to preview the layout. These are not market figures.</p></div>
@@ -26,8 +26,9 @@
 <main id="main">
 <section aria-labelledby="overview-h" class="overview">
   <h2 id="overview-h">Dataset overview</h2>
-  <p class="note" id="overview-note">Current contents of the local dataset.</p>
+  <p class="note" id="overview-note">Current contents of the dataset.</p>
   <div class="kpi-grid" id="kpi-grid"></div>
+  <p class="note">Totals cover recorded trades. The securities, pools and dates available differ by product. <a href="#sources-h">See which securities are covered</a>.</p>
 </section>
 
 <section aria-labelledby="week-h">
@@ -186,7 +187,7 @@
 
 <section aria-labelledby="coverage-h" class="method">
   <h2 id="coverage-h">Coverage and downloads</h2>
-  <p>Coinbase-issued tokens on Base and Ondo-issued tokens on Ethereum are sampled for AAPL, AMZN, GOOGL, MSFT, NVDA, QQQ, SPY and TSLA where eligible pools exist. Weekly discovery selects up to two leading eligible pools per token by reported 24-hour volume. Each pool counts once. Issuer minting, redemptions and ordinary transfers are excluded.</p>
+  <p>Each week the collector searches every stock and ETF contract in the Coinbase directory on Base and the Ondo directory on Ethereum. Each eligible pool counts once. Trading totals use its reported swap volume. Securities without a matching pool remain in the coverage file with an empty volume field.</p>
   <h3>Sessions</h3>
   <div class="table-wrap"><table id="session-table"></table></div>
   <h3 id="sources-h">Data sources and APIs</h3>
@@ -194,13 +195,13 @@
   <ul>
     <li><strong>US stock volume.</strong> Alpaca supplies 30-minute price and share-volume bars from the consolidated US tape. We estimate dollars traded by multiplying shares by the bar’s volume-weighted average price, using its closing price when that average is unavailable. <a href="https://docs.alpaca.markets/us/reference/stockbars">Alpaca historical stock bars</a>.</li>
     <li><strong>Token trades on exchange order books.</strong> Historical candles come from the spot market APIs of <a href="https://developers.binance.com/en/docs/catalog/core-trading-spot-trading/api/rest-api/market">Binance</a> and <a href="https://docs.kraken.com/api-reference/market-data/get-ohlc-data">Kraken</a>. The status table below shows the latest collection result.</li>
-    <li><strong>Token swaps on Base and Ethereum.</strong> GeckoTerminal supplies prices and dollar volume in 15-minute intervals for individual trading pools. CoinGecko supplies token lists and contract addresses used to identify those pools. <a href="https://api.geckoterminal.com/docs/index.html">GeckoTerminal API</a> · <a href="https://docs.coingecko.com/reference/coins-markets">CoinGecko API</a>.</li>
+    <li><strong>Token swaps on Base and Ethereum.</strong> GeckoTerminal supplies prices and dollar volume in 15-minute intervals for individual trading pools. The collector matches contracts from the <a href="https://api.coinbase.com/v1/tokenized-stocks">Coinbase directory</a> and the <a href="https://github.com/ondoprotocol/ondo-global-markets-token-list">Ondo directory</a> to pools from <a href="https://docs.dexscreener.com/api/reference">DEX Screener</a> and GeckoTerminal. GeckoTerminal confirms the pool address and both assets. <a href="https://api.geckoterminal.com/docs/index.html">GeckoTerminal API</a>.</li>
   </ul>
   <p><strong>Dashboard data files</strong> · <a href="data/meta.json">Coverage and refresh status (JSON)</a> · <a href="data/daily.json">Daily totals (JSON)</a> · <a href="data/volume_history.json">Full comparison history in cents (JSON)</a> · <a href="#downloads">CSV downloads</a></p>
   <p id="coverage"></p>
-  <p>Several trading pairs or pools can track the same stock. The archive counts each underlying once per row. Coinbase and Ondo share one GeckoTerminal collection run. Their volumes cover swaps in the selected pools. Comparing product totals requires accounting for different stocks and start dates. <a href="https://github.com/TianhaoYin1120/offhours/blob/main/data/markets.csv">Trading pairs and pool addresses</a>.</p>
+  <p>“Listed” counts issuer contracts on the tracked chain. “With a pool” counts contracts matched to an indexed pool against a supported dollar or major crypto asset. The archive column counts securities with positive recorded volume through the dashboard end date. One security can trade in several pools. Coverage varies by product and date. <a href="https://github.com/TianhaoYin1120/offhours/blob/main/data/markets.csv">Trading pairs and pool addresses</a>.</p>
   <div class="table-wrap"><table id="source-table"></table></div>
-  <p>Company and fund names are based on the <a href="https://www.nasdaqtrader.com/dynamic/symdir/nasdaqtraded.txt">Nasdaq Trader symbol directory</a>. Short descriptions identify each company’s business or the fund’s investment objective.</p>
+  <p>Company and fund names come from issuer directories and the <a href="https://www.nasdaqtrader.com/dynamic/symdir/nasdaqtraded.txt">Nasdaq Trader symbol directory</a>. Short descriptions identify each company’s business or the fund’s investment objective.</p>
   <h3>Dataset scope</h3>
   <ul>
     <li>Spot trading of tokenized US stocks and ETFs on centralised exchanges with public market data (30-minute bars) and on DEX pools indexed by GeckoTerminal (15-minute bars). Quotes in dollar stablecoins count one for one as dollars.</li>

@@ -16,7 +16,8 @@ from . import store, universe
 from .http import HTTP
 from .sources.base import BAR_COLUMNS, Market, floor_to, frame
 from .sources.cex import EXCHANGES, match_markets
-from .sources.dex import GeckoTerminal, discover_pools
+from .sources.dex import GeckoTerminal
+from .sources.issuer_pools import issuer_contracts, discover_issuer_pools
 from .sources.stocks import Alpaca
 
 log = logging.getLogger("offhours")
@@ -90,28 +91,33 @@ def update_dex(http: HTTP, uni: dict, state: dict, now: float, rediscover: bool)
     stale = not last or pd.Timestamp.now(tz="UTC") - pd.Timestamp(last) > pd.Timedelta(days=C.UNIVERSE_MAX_AGE_DAYS)
     known = store.load_markets()
     active = set(state.get("dex_active", []))
-    if rediscover or stale or not active:
+    previous = [Market(**r) for r in known[known.market_id.isin(active)].to_dict("records")]
+    markets = previous
+    if rediscover or stale or not active or not state.get("issuer_catalog_at"):
         try:
-            markets = discover_pools(gt, uni["addresses"], uni["tokens"], _now_iso(), focused=True)
-            if gt.failed_deployments:
-                status["discovery_errors"] = len(gt.failed_deployments)
-                previous = known[known.market_id.isin(active)].to_dict("records")
-                markets.extend(Market(**r) for r in previous if (r["network"], r["cg_id"]) in gt.failed_deployments)
+            contracts = issuer_contracts(http)
+            legacy = {(r.network, r.cg_id): r.address.lower() for r in uni["addresses"].itertuples()}
+            for m in previous:
+                if not m.token_address:
+                    m.token_address = legacy.get((m.network, m.cg_id), "")
+            markets = discover_issuer_pools(http, contracts, previous, _now_iso())
             if not markets:
-                raise ValueError("No eligible Coinbase or Ondo pools returned during discovery")
-            state["dex_discovered_at"] = None if gt.failed_deployments else _now_iso()
+                raise ValueError("No issuer-verified Coinbase or Ondo pools discovered")
+            catalog = pd.DataFrame([dict(network=net, address=addr, **t) for (net, addr), t in contracts.items()])
+            catalog.to_csv(C.DATA / "issuer_contracts.csv", index=False)
+            state["issuer_catalog_at"] = state["dex_discovered_at"] = _now_iso()
             state["dex_active"] = [m.market_id for m in markets]
+            store.save_markets(markets)
         except Exception as e:
-            status.update(ok=False, error=str(e)[:300])
-            log.error("dex: discovery failed: %s", e)
-            return []
-    else:
-        rows = known[known.market_id.isin(active)].to_dict("records")
-        markets = [Market(**{k: r[k] for k in r if k in Market.__dataclass_fields__}) for r in rows]
+            status.update(discovery_errors=1, error=str(e)[:300])
+            log.error("dex: issuer discovery failed: %s", e)
+            if not previous:
+                status.update(ok=False, finished=_now_iso())
+                return []
     status["markets"] = len(markets)
     _pull(markets, lambda m, a, b: gt.fetch(m.network, m.native, m.token_side, a, b), state, status,
           C.DEX_BACKFILL_DAYS, now)
-    status.update(ok=bool(status["rows"]), finished=_now_iso())
+    status.update(ok=bool(markets) and status["errors"] < len(markets), finished=_now_iso())
     return markets
 
 
