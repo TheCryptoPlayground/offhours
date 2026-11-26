@@ -6,9 +6,9 @@
 <title>Tokenized Stock Observatory: trading beyond US market hours</title>
 <meta name="description" content="Historical and daily market data for tokenized US stocks, split by US trading session, venue, issuer and underlying stock.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%2315212B'/%3E%3Crect x='3' y='3' width='4' height='10' fill='%235C8FC4'/%3E%3Crect x='9' y='3' width='4' height='10' fill='%23F0A23A'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="style.css?v=20261126-3">
+<link rel="stylesheet" href="style.css?v=20261126-4">
 <script src="vendor/chart.umd.js" defer></script>
-<script src="app.js?v=20261126-11" defer></script>
+<script src="app.js?v=20261126-12" defer></script>
 </head>
 <body>
 <div class="demo-banner" id="demo-banner" hidden><p>Synthetic demo data, generated to preview the layout. These are not market figures.</p></div>
@@ -19,7 +19,7 @@
   <p class="stamp" id="stamp">Loading data</p>
   <p class="project-link"><a href="https://github.com/TianhaoYin1120/offhours">Source code, methodology and data pipeline on GitHub</a></p>
   <nav class="jump" aria-label="Dashboard sections">
-    <a href="#overview-h">Overview</a><a href="#daily-h">History</a><a href="#offhours-h">Off-hours volume</a><a href="#venue-h">Products &amp; venues</a><a href="#stocks-h">Stocks</a><a href="#compare-h">Token vs. stock</a><a href="#sources-h">Data &amp; APIs</a><a href="#coverage-h">Coverage</a>
+    <a href="#overview-h">Overview</a><a href="#daily-h">History</a><a href="#offhours-h">Off-hours volume</a><a href="?sample=shared#venue-h">Four-venue comparison</a><a href="#stocks-h">Stocks</a><a href="#compare-h">Token vs. stock</a><a href="#sources-h">Data &amp; APIs</a><a href="#coverage-h">Coverage</a>
   </nav>
 </header>
 
@@ -28,7 +28,7 @@
   <h2 id="overview-h">Dataset overview</h2>
   <p class="note" id="overview-note">Current contents of the dataset.</p>
   <div class="kpi-grid" id="kpi-grid"></div>
-  <p class="note">Totals cover recorded trades. The securities, pools and dates available differ by product. <a href="#sources-h">See which securities are covered</a>.</p>
+  <p class="note">Totals cover recorded trades. The securities, pools and dates available differ by product. <a id="overview-shared" href="?sample=shared#venue-h">Compare securities traded on all four venues</a>.</p>
 </section>
 
 <section aria-labelledby="week-h">
@@ -87,7 +87,7 @@
 
 <section aria-labelledby="venue-h">
   <div class="row">
-    <h2 id="venue-h">Token products and where they trade</h2>
+    <h2 id="venue-h">Trading volume across four venues</h2>
     <div class="control-stack">
       <div class="seg" role="group" aria-label="Product and venue date range">
         <button type="button" data-venue-range="all" aria-pressed="true">All history</button>
@@ -101,7 +101,10 @@
     </div>
   </div>
   <div class="comparison-controls">
-    <label>Comparison sample <select id="venue-sample"><option value="all">All tickers</option><option value="shared">Shared across all four venues</option></select></label>
+    <div class="seg" role="group" aria-label="Comparison sample">
+      <button type="button" data-sample="all" aria-pressed="true">All tickers</button>
+      <button type="button" data-sample="shared" aria-pressed="false">Shared tickers</button>
+    </div>
     <label id="shared-ticker-label" hidden>Underlying security <select id="shared-ticker"></select></label>
   </div>
   <p class="note" id="venue-note" aria-live="polite"></p>
@@ -165,28 +168,6 @@
   </div>
   <p id="lead-result" aria-live="polite"></p>
   <p class="note">Each correlation compares one market’s half-hour price change with the other market’s change in the next half hour of the same session. Positive values indicate moves in the same direction. Values near zero indicate little linear association. Shared news can affect both markets.</p>
-</section>
-
-<section aria-labelledby="wk-h">
-  <h2 id="wk-h">Do token moves line up with the next stock open?</h2>
-  <p id="closure-result" aria-live="polite"></p>
-  <details id="closure-details"><summary>Explore the price chart and stock-by-stock results</summary>
-  <p class="note" id="wk-note">Each point is one stock over a closure of at least 20 hours. The token log return ends two hours before the overnight session resumes and weights each market by its recorded dollars. At least $10,000 in eligible token trades is required. The stock log return runs from its last eligible pre-closure bar close to the first regular-session bar open. Stock prices are unadjusted. Token prices use each venue’s reported units. Corporate actions and trades in thinly traded pools can affect these returns.</p>
-  <div class="split">
-    <div class="chart square"><canvas id="scatter" aria-label="Token move during the closure against the stock's move to the next open"></canvas></div>
-    <div><dl class="stats" id="stats"></dl><p class="note" id="stats-note" style="margin-top:1rem"></p></div>
-  </div>
-  <div class="row table-head">
-    <h3>Stock by stock</h3>
-    <div class="seg" role="group" aria-label="Closure rows to show">
-      <button type="button" data-closure-limit="10" aria-pressed="true">Top 10</button>
-      <button type="button" data-closure-limit="20" aria-pressed="false">Top 20</button>
-      <button type="button" data-closure-limit="all" aria-pressed="false">All</button>
-    </div>
-  </div>
-  <p class="result-count" id="closure-count" aria-live="polite"></p>
-  <div class="table-wrap"><table id="closure-table"></table></div>
-  </details>
 </section>
 
 <section aria-labelledby="coverage-h" class="method">

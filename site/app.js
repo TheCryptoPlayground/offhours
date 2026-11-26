@@ -54,7 +54,7 @@
   }
 
   const D = {};
-  const ui = { week: "token", daily: "usd", range: "all", venueRange: "all", tickerRange: "all", venue: "venues", query: "", sort: { key: "token", dir: -1 }, ticker: null, tickerLimit: "10", closureLimit: "10" };
+  const ui = { week: "token", daily: "usd", range: "all", venueRange: "all", tickerRange: "all", venue: "venues", query: "", sort: { key: "token", dir: -1 }, ticker: null, tickerLimit: "10", sample: new URLSearchParams(location.search).get("sample") === "shared" ? "shared" : "all" };
   const charts = {};
 
   async function load(name) {
@@ -369,26 +369,29 @@
     const d = D.daily;
     const start = rangeStart(d.dates, ui.venueRange);
     const windowDates = d.dates.slice(start);
-    const shared = $("#venue-sample").value === "shared";
+    const shared = ui.sample === "shared";
     const sample = d.venue_comparison;
     const byVenue = ui.venue === "venues";
     const names = D.meta.venue_labels || {};
     const firstDate = windowDates[0];
-    let rows = (shared ? sample.matched : sample.all).filter(r => r[0] >= firstDate);
+    const matched = sample.matched.filter(row => row[0] >= firstDate);
+    const matchedDays = new Map();
+    for (const [date, , , , , ticker] of matched) {
+      if (!matchedDays.has(ticker)) matchedDays.set(ticker, new Set());
+      matchedDays.get(ticker).add(date);
+    }
+    $('[data-sample="shared"]').textContent = `Shared tickers (${matchedDays.size})`;
+    pressed("sample", ui.sample);
+    let rows = shared ? matched : sample.all.filter(row => row[0] >= firstDate);
     const tickerMenu = $("#shared-ticker");
     $("#shared-ticker-label").hidden = !shared;
-    const matchedDays = new Map();
     if (shared) {
-      for (const [date, , , , , ticker] of rows) {
-        if (!matchedDays.has(ticker)) matchedDays.set(ticker, new Set());
-        matchedDays.get(ticker).add(date);
-      }
       const previous = tickerMenu.value;
-      tickerMenu.replaceChildren(new Option("All shared tickers", ""), ...sample.tickers.map(ticker => {
-        const n = matchedDays.get(ticker)?.size || 0;
+      tickerMenu.replaceChildren(new Option("All shared tickers", ""), ...[...matchedDays.keys()].sort().map(ticker => {
+        const n = matchedDays.get(ticker).size;
         return new Option(`${ticker} · ${n} matched ${n === 1 ? "date" : "dates"}`, ticker);
       }));
-      if (sample.tickers.includes(previous)) tickerMenu.value = previous;
+      if (matchedDays.has(previous)) tickerMenu.value = previous;
       if (tickerMenu.value) rows = rows.filter(r => r[5] === tickerMenu.value);
     }
     const dates = shared ? [...new Set(rows.map(r => r[0]))].sort() : windowDates;
@@ -432,7 +435,7 @@
     const pairs = shared ? new Set(rows.map(r => r[0] + "|" + r[5])).size : 0;
     const count = shared ? new Set(rows.map(r => r[5])).size : 0;
     const explanation = shared
-      ? `Each included ticker traded on all four venues on the same market date. This selection has ${count} securities, ${pairs} ticker-date matches and ${dates.length} market dates. A date qualifies on full-day volume, so venues can trade in different sessions. The off-hours share is weighted by dollars traded.`
+      ? `Each included ticker had recorded trades on Binance, Kraken, Coinbase token pools on Base and Ondo token pools on Ethereum on the same market date. This selection has ${count} securities, ${pairs} ticker-date matches and ${dates.length} market dates. A date qualifies on full-day volume, so venues can trade in different sessions. The off-hours share is weighted by dollars traded.`
       : "Recorded token volume across all tracked tickers in the selected period. Coinbase and Ondo cover indexed pools on Base and Ethereum respectively. Listings and start dates differ across venues.";
     $("#venue-note").textContent = `${rangeLabel(d.dates, ui.venueRange)}. ${explanation}` +
       (!shared && other > 0 ? ` Pools with other counterpart assets contributed a further ${usd(other)}, excluded here.` : "");
@@ -549,79 +552,7 @@
     const n = row.venues.length;
     const out = [`Across all ${D.tickers.window_days} days, ${usd(row.token)} of ${row.t} tokens on ${n} venue${n === 1 ? "" : "s"}, ${pct(offShare(row))} outside regular hours and ${pct(closedShare(row))} while closed. Chart: ${rangeLabel(s.dates, ui.tickerRange)}.`];
     if (fin(row.ratio_bp)) out.push(`That is ${bp(row.ratio_bp)} of ${row.t}'s own dollar volume.`);
-    const c = ((D.closures || {}).by_ticker || []).find((x) => x.underlying === row.t);
-    if (c && fin(c.beta)) out.push(`Weekend test over ${c.windows} closures: slope ${fix(c.beta)} (standard error ${fix(c.se)}), R² ${fix(c.r2)}.`);
     $("#ticker-note").textContent = out.join(" ");
-  }
-
-  /* ---------- Weekend price test ---------- */
-  function renderClosures() {
-    const C = D.closures || {};
-    const pts = C.points || [];
-    const p = C.pooled || {};
-    $("#closure-result").textContent = fin(p.hit_rate) && fin(p.up_rate)
-      ? `Across ${p.windows} distinct closures, tokens moved in the same direction as the next stock opening gap in ${pct(p.hit_rate, 1)} of ${p.n_hit.toLocaleString()} stock observations with absolute stock log returns above 0.5%. For comparison, ${pct(p.up_rate, 1)} of those stock gaps were upward.`
-      : `${p.n || 0} qualifying stock observations across ${p.windows || 0} closures.`;
-    if (!$("#closure-details").open) return;
-    const amber = css("--closed");
-    const lim = Math.max(2, ...pts.map((q) => Math.abs(q.x) * 100), ...pts.map((q) => Math.abs(q.y) * 100)) * 1.05;
-    const datasets = [
-      {
-        label: "One stock over one closure", pointRadius: 3.5, pointHoverRadius: 5, borderWidth: 0.5,
-        backgroundColor: rgba(amber, 0.5), borderColor: rgba(amber, 0.95),
-        data: pts.map((q) => ({ x: q.x * 100, y: q.y * 100, t: q.t, w: q.w, v: q.v })),
-      },
-      { label: "Token move equals the gap", data: [{ x: -lim, y: -lim }, { x: lim, y: lim }], showLine: true, borderColor: css("--muted"), borderDash: [4, 4], borderWidth: 1, pointRadius: 0 },
-    ];
-    if (fin(p.beta)) {
-      datasets.push({ label: "Fitted line", showLine: true, borderColor: css("--ink"), borderWidth: 1.5, pointRadius: 0,
-        data: [{ x: -lim, y: p.alpha * 100 - p.beta * lim }, { x: lim, y: p.alpha * 100 + p.beta * lim }] });
-    }
-    const tick = (v) => `${+v.toFixed(1)}%`;
-    make("scatter", {
-      type: "scatter",
-      data: { datasets },
-      options: {
-        scales: {
-          x: { min: -lim, max: lim, title: { display: true, text: "Token log return during closure (%)" }, ticks: { callback: tick } },
-          y: { min: -lim, max: lim, title: { display: true, text: "Stock log return to next open (%)" }, ticks: { callback: tick } },
-        },
-        plugins: {
-          legend: { display: true, position: "bottom", labels: { boxWidth: 10, boxHeight: 10, padding: 14 } },
-          tooltip: {
-            filter: (c) => c.datasetIndex === 0,
-            callbacks: {
-              title: (items) => `${items[0].raw.t}, closure from ${longDate(items[0].raw.w)}`,
-              label: (c) => ` Token ${c.raw.x.toFixed(2)}%, stock ${c.raw.y.toFixed(2)}%, ${usd(c.raw.v)} traded`,
-            },
-          },
-        },
-      },
-    });
-    const stats = [];
-    if (fin(p.beta)) {
-      stats.push(["Slope", `${fix(p.beta)} <small>standard error ${fix(p.se)}</small>`]);
-      stats.push(["R²", fix(p.r2)]);
-    }
-    if (p.n_hit !== undefined) {
-      stats.push(["Squared error reduction", pct(p.anticipated)]);
-      stats.push(["Same direction", `${pct(p.hit_rate)} <small>of ${p.n_hit} absolute log returns above 0.5%</small>`]);
-    }
-    stats.push(["Observations", `${p.n || 0} <small>over ${p.windows || 0} closures</small>`]);
-    $("#stats").innerHTML = stats.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("");
-    $("#stats-note").textContent = fin(p.beta)
-      ? `Slope uncertainty is clustered by closure. Squared error reduction compares the token return as a forecast with a zero-return forecast. Negative values mean larger errors.`
-      : "A fitted line requires enough qualifying observations and variation in token returns.";
-    const bt = C.by_ticker || [];
-    const closureLimit = ui.closureLimit === "all" ? bt.length : Number(ui.closureLimit);
-    const shown = bt.slice(0, closureLimit);
-    $("#closure-table").innerHTML = bt.length
-      ? `<thead><tr><th>Stock</th><th>Closures</th><th>Slope</th><th>R²</th><th>Squared error reduction</th><th>Same direction</th><th>Token volume</th></tr></thead><tbody>${shown.map((r) =>
-        `<tr>${stockCell(r.underlying)}<td>${r.windows}</td><td>${fix(r.beta)}</td><td>${fix(r.r2)}</td><td>${pct(r.anticipated)}</td><td>${pct(r.hit_rate)}</td><td>${usd(r.token_vol)}</td></tr>`).join("")}</tbody>`
-      : "<tbody><tr><td>A stock appears here once it has six qualifying closures.</td></tr></tbody>";
-    $("#closure-count").textContent = bt.length
-      ? `${bt.length} stocks meet the minimum-history rule. Showing ${shown.length === bt.length ? `all ${bt.length} stocks` : `the top ${shown.length}`} by token volume.`
-      : "No stocks meet the minimum-history rule yet.";
   }
 
   /* ---------- Method ---------- */
@@ -682,7 +613,6 @@
     const links = ['<a href="data/token_daily.csv">Token volume by day, session, venue, issuer and stock</a>'];
     if (m.issuer_catalog_at) links.push(`<a href="data/issuer_coverage.csv">Every Coinbase and Ondo listing, pool coverage and recorded volume (catalogue checked ${esc(m.issuer_catalog_at.slice(0, 10))})</a>`);
     if (m.history?.stock_dates > 0) links.push('<a href="data/stock_daily.csv">Stock volume by day and session</a>');
-    if (((D.closures || {}).points || []).length) links.push('<a href="data/closures.csv">Closure observations</a>');
     $("#downloads").innerHTML = links.join(", ") + ".";
   }
 
@@ -831,7 +761,6 @@
     renderTickers();
     renderComparisons();
     renderLead();
-    renderClosures();
     renderMethod();
     const row = ui.ticker && (D.tickers.rows || []).find((r) => r.t === ui.ticker);
     if (row) renderTickerChart(row);
@@ -842,7 +771,6 @@
     for (const id of ["trend-range", "trend-stock"]) {
       $(`#${id}`).addEventListener("change", renderTrend);
     }
-    $("#closure-details").addEventListener("toggle", renderClosures);
     const dates = D.daily.dates;
     const dex = D.meta.sources?.find(source => source.id === "dex");
     if (dates.length) {
@@ -873,7 +801,15 @@
       }));
     }
     bindRange("range", "range", renderDaily);
-    $("#venue-sample").addEventListener("change", renderVenues);
+    const sharedCount = new Set(D.daily.venue_comparison.matched.map(row => row[5])).size;
+    $("#overview-shared").textContent = `Compare the ${sharedCount} tickers traded on all four venues on matching dates`;
+    bindRange("sample", "sample", () => {
+      const url = new URL(location.href);
+      if (ui.sample === "shared") url.searchParams.set("sample", "shared");
+      else url.searchParams.delete("sample");
+      if (location.protocol !== "file:") history.replaceState(null, "", url);
+      renderVenues();
+    });
     $("#shared-ticker").addEventListener("change", renderVenues);
     bindRange("venue-range", "venueRange", renderVenues);
     bindRange("ticker-range", "tickerRange", () => {
@@ -885,11 +821,6 @@
       ui.tickerLimit = b.dataset.limit;
       pressed("limit", ui.tickerLimit);
       renderTickers();
-    }));
-    $$("[data-closure-limit]").forEach((b) => b.addEventListener("click", () => {
-      ui.closureLimit = b.dataset.closureLimit;
-      pressed("closure-limit", ui.closureLimit);
-      renderClosures();
     }));
     const table = $("#ticker-table");
     table.addEventListener("click", (e) => {
@@ -918,9 +849,9 @@
 
   async function init() {
     try {
-      const [meta, daily, week, tickers, closures] = await Promise.all(
-        ["meta.json", "daily.json", "week.json", "tickers.json", "closures.json"].map(load));
-      Object.assign(D, { meta, daily, week, tickers, closures });
+      const [meta, daily, week, tickers] = await Promise.all(
+        ["meta.json", "daily.json", "week.json", "tickers.json"].map(load));
+      Object.assign(D, { meta, daily, week, tickers });
     } catch (e) {
       showEmpty(e);
       return;

@@ -6,7 +6,7 @@ A daily tracker of tokenized US stock trading on Binance, Kraken and selected Ba
 
 1. How much tokenized-stock volume trades outside regular hours, and how much while every US venue is shut?
 2. How does that compare with the stocks' own volume, session by session?
-3. Do token prices set while US venues are closed anticipate where the stock opens?
+3. How does trading volume compare across the four venues for the same securities on the same dates?
 
 Everything is free: public exchange APIs, GeckoTerminal, CoinGecko and Alpaca's free plan for data,
 GitHub Actions to run it daily, GitHub Pages to host the site.
@@ -128,7 +128,7 @@ stablecoins count one for one.
 
 ## Comparing venues
 
-The product and venue panel opens on all recorded trading. Its shared sample counts an underlying once per New York market date when all four token venues report positive dollar volume for that security. All four venue totals use those exact ticker-date pairs, even when trades occur in different sessions. The selector shows each security’s matched-date count. Off-hours share is off-hours dollars divided by total dollars for the selected observations. The other dashboard sections keep their own stated samples.
+The product and venue panel opens on all recorded trading. The [four-venue comparison](https://tianhaoyin1120.github.io/offhours/?sample=shared#venue-h) opens directly on shared tickers. Its shared sample counts an underlying once per New York market date when all four token venues report positive dollar volume for that security. All four venue totals use those exact ticker-date pairs, even when trades occur in different sessions. The selector shows each security’s matched-date count. Off-hours share is off-hours dollars divided by total dollars for the selected observations. The other dashboard sections keep their own stated samples.
 
 ## Volume crossovers and two-way price discovery
 
@@ -138,9 +138,9 @@ The lead–lag panel pairs consecutive half hours for each ticker within one reg
 
 Weekly discovery checks the full Coinbase stock-token directory on Base and the Ondo stock and ETF directory on Ethereum. It queries DEX Screener for pairs of each contract and GeckoTerminal for top pools, then verifies the pool ID and both assets with GeckoTerminal. Pools against the configured stablecoin and major-asset addresses qualify regardless of daily volume. A pool counts once. The [issuer coverage CSV](https://tianhaoyin1120.github.io/offhours/data/issuer_coverage.csv) includes every listing, the pool count, observed dates and measured volume. Empty volume means no observation. The coverage table also compares tracked pools with all DEX Screener pools returning 24-hour volume for those issuer contracts. The numerator and denominator use the same index, network and weekly scan. Issuer creations, redemptions, other networks and unindexed venues are outside these totals.
 
-## The weekend test
+## Archived weekend-test data
 
-The test covers every closure of at least 20 hours (weekends and full-day holidays), and every stock
+The pipeline also exports closure observations for offline analysis. This test covers every closure of at least 20 hours (weekends and full-day holidays), and every stock
 with at least $10,000 of token trading during that closure.
 
 - **x** is the token's log return from the closure start (normally Friday 20:00 ET) to two hours

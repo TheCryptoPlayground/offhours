@@ -117,8 +117,7 @@ h3 { font-size: 1.0625rem; font-weight: 700; margin: 1.5rem 0 0.4rem; }
 
 .chart { position: relative; height: 20rem; }
 .chart.short { height: 9rem; }
-.chart.square { height: 24rem; }
-@media (max-width: 40rem) { .chart { height: 16rem; } .chart.square { height: 20rem; } }
+@media (max-width: 40rem) { .chart { height: 16rem; } }
 
 .split { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 1.5rem 2.5rem; align-items: start; }
 @media (max-width: 52rem) { .split { grid-template-columns: 1fr; } }
@@ -142,10 +141,6 @@ td.sub, .sub { color: var(--muted); }
 .bar { display: inline-block; height: 0.55rem; background: var(--closed); border-radius: 1px; vertical-align: baseline; margin-right: 0.35rem; }
 .bar.off { background: var(--ovn); }
 
-dl.stats { display: grid; grid-template-columns: auto 1fr; gap: 0.5rem 1rem; margin: 0; align-content: start; }
-dl.stats dt { color: var(--muted); font-size: 0.9375rem; }
-dl.stats dd { margin: 0; font-weight: 700; font-variant-numeric: tabular-nums; }
-dl.stats dd small { font-weight: 400; color: var(--muted); }
 
 .status-ok { color: var(--rth); }
 .status-bad { color: #B23A2E; font-weight: 500; }
@@ -177,6 +172,5 @@ th.left, td.left { text-align: left; white-space: normal; }
 
 .security-name { display: block; color: var(--muted); font-size: .84rem; font-weight: 400; white-space: normal; min-width: 11rem; max-width: 18rem; }
 #ticker-profile { max-width: var(--measure); }
-#closure-details > summary { cursor: pointer; font-weight: 600; margin-block: 1rem; }
 
 .comparison-controls label[hidden] { display: none; }
