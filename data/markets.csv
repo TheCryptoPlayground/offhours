@@ -110,17 +110,6 @@ binance:VSTBUSDT,binance,VSTBUSDT,VSTB,USDT,vistra-corp-bstocks-tokenized-stock,
 binance:WDCBUSDT,binance,WDCBUSDT,WDCB,USDT,western-digital-bstocks-tokenized-stock,bstocks,WDC,cex,usd,,,1800,0.0,2026-11-20T11:40:51+00:00
 binance:WENBUSDT,binance,WENBUSDT,WENB,USDT,wendy-s-bstocks-tokenized-stock,bstocks,WEN,cex,usd,,,1800,0.0,2026-11-20T11:40:51+00:00
 binance:ZMBUSDT,binance,ZMBUSDT,ZMB,USDT,zoom-bstocks-tokenized-stock,bstocks,ZM,cex,usd,,,1800,0.0,2026-11-20T11:40:51+00:00
-bybit:AAPLXUSDT,bybit,AAPLXUSDT,AAPLX,USDT,apple-xstock,xstocks,AAPL,cex,usd,,,1800,0.0,2026-11-20T12:07:39+00:00
-bybit:AMZNXUSDT,bybit,AMZNXUSDT,AMZNX,USDT,amazon-xstock,xstocks,AMZN,cex,usd,,,1800,0.0,2026-11-20T12:07:39+00:00
-bybit:COINXUSDT,bybit,COINXUSDT,COINX,USDT,coinbase-xstock,xstocks,COIN,cex,usd,,,1800,0.0,2026-11-20T12:07:39+00:00
-bybit:CRCLXUSDT,bybit,CRCLXUSDT,CRCLX,USDT,circle-xstock,xstocks,CRCL,cex,usd,,,1800,0.0,2026-11-20T12:07:39+00:00
-bybit:GOOGLXUSDT,bybit,GOOGLXUSDT,GOOGLX,USDT,alphabet-xstock,xstocks,GOOGL,cex,usd,,,1800,0.0,2026-11-20T12:07:39+00:00
-bybit:HOODXUSDT,bybit,HOODXUSDT,HOODX,USDT,robinhood-xstock,xstocks,HOOD,cex,usd,,,1800,0.0,2026-11-20T12:07:39+00:00
-bybit:MCDXUSDT,bybit,MCDXUSDT,MCDX,USDT,mcdonald-s-xstock,xstocks,MCD,cex,usd,,,1800,0.0,2026-11-20T12:07:39+00:00
-bybit:METAXUSDT,bybit,METAXUSDT,METAX,USDT,meta-xstock,xstocks,META,cex,usd,,,1800,0.0,2026-11-20T12:07:39+00:00
-bybit:NVDAXUSDT,bybit,NVDAXUSDT,NVDAX,USDT,nvidia-xstock,xstocks,NVDA,cex,usd,,,1800,0.0,2026-11-20T12:07:39+00:00
-bybit:SPCXXUSDT,bybit,SPCXXUSDT,SPCXX,USDT,spacex-xstocks,xstocks,SPCX,cex,usd,,,1800,0.0,2026-11-20T12:07:39+00:00
-bybit:TSLAXUSDT,bybit,TSLAXUSDT,TSLAX,USDT,tesla-xstock,xstocks,TSLA,cex,usd,,,1800,0.0,2026-11-20T12:07:39+00:00
 dex-base:0x0cabc1f570fc7e80af454b5bc839b4014b4acfd1,dex-base,0x0cabc1f570fc7e80af454b5bc839b4014b4acfd1,GOOGLC,WETH,alphabet-coinbase-tokenized-stock,coinbase,GOOGL,dex,major,base,base,900,588393.820889636,2026-11-24T18:40:46+00:00
 dex-base:0x16c70f04c3080a127486cdf5a4c33c066bbf47c3,dex-base,0x16c70f04c3080a127486cdf5a4c33c066bbf47c3,GOOGLC,USDC,alphabet-coinbase-tokenized-stock,coinbase,GOOGL,dex,usd,base,base,900,14910584.9399285,2026-11-24T18:40:46+00:00
 dex-base:0x2740c0faab738f6e346e545fde02aef9b1a01ee7,dex-base,0x2740c0faab738f6e346e545fde02aef9b1a01ee7,MSFTC,USDC,microsoft-coinbase-tokenized-stock,coinbase,MSFT,dex,usd,base,base,900,6488602.41593579,2026-11-24T18:40:46+00:00

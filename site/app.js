@@ -410,7 +410,7 @@
     const other = sum(d.token_other.slice(start));
     const explanation = byVenue
       ? "Each row pairs a token product with the place its trades were recorded. For Coinbase stock tokens, we measure swaps in selected pools on the Base blockchain."
-      : "Each product combines its recorded trades across tracked venues. For example, the xStocks total includes trades recorded on Kraken and Bybit.";
+      : "Each product combines its recorded trades across tracked venues. The xStocks total measures trades recorded on Kraken. Each product’s first and latest observed dates are shown below.";
     $("#venue-note").textContent = `${rangeLabel(d.dates, ui.venueRange)}. ${explanation}` +
       (other > 0 ? ` Pools with other counterpart assets contributed a further ${usd(other)}, excluded here.` : "");
     const rows = entries.map(({ product, venue, total, observed }) =>

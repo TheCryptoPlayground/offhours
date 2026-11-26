@@ -111,16 +111,6 @@
   "binance:WDCBUSDT": 1795627800,
   "binance:WENBUSDT": 1795627800,
   "binance:ZMBUSDT": 1795627800,
-  "bybit:AAPLXUSDT": 1795176000,
-  "bybit:AMZNXUSDT": 1795176000,
-  "bybit:COINXUSDT": 1795176000,
-  "bybit:CRCLXUSDT": 1795176000,
-  "bybit:GOOGLXUSDT": 1795176000,
-  "bybit:HOODXUSDT": 1795176000,
-  "bybit:METAXUSDT": 1795176000,
-  "bybit:NVDAXUSDT": 1795176000,
-  "bybit:SPCXXUSDT": 1795176000,
-  "bybit:TSLAXUSDT": 1795176000,
   "dex-base:0x0cabc1f570fc7e80af454b5bc839b4014b4acfd1": 1795628700,
   "dex-base:0x16c70f04c3080a127486cdf5a4c33c066bbf47c3": 1795628700,
   "dex-base:0x2740c0faab738f6e346e545fde02aef9b1a01ee7": 1795628700,
@@ -553,14 +543,6 @@
    "ok": true,
    "rows": 4972,
    "started": "2026-11-25T18:00:38+00:00",
-   "type": "cex"
-  },
-  "bybit": {
-   "error": "HTTP 403 for https://api.bybit.com/v5/market/instruments-info?category=spot&limit=1000 (this usually means the venue blocks the runner's country; see README): {\n    error:The Amazon CloudFront distribution is configured to block access from your country\n}",
-   "errors": 0,
-   "ok": false,
-   "rows": 0,
-   "started": "2026-11-25T18:02:51+00:00",
    "type": "cex"
   },
   "dex": {

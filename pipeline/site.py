@@ -176,8 +176,7 @@ def build(demo: bool = False, end_date: str | None = None) -> dict:
     sources = []
     source_state = state.get("sources", {})
     expected_sources = C.CEX_SOURCES + ["dex", "stocks"]
-    source_ids = expected_sources + sorted(set(source_state) - set(expected_sources))
-    for sid in source_ids:
+    for sid in expected_sources:
         st = source_state.get(sid, {})
         if sid == "stocks":
             observed = sf.market_date

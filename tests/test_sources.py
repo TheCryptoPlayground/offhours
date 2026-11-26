@@ -46,51 +46,6 @@ def test_binance_pages_forward_and_uses_quote_volume():
     assert df.ts.iloc[0] == start and df.ts.iloc[-1] == end - 1800 and df.vol_usd.iloc[0] == start % 7 + 100
 
 
-def test_bybit_newest_first_and_turnover():
-    start, end = T0, T0 + 1500 * 1800
-    def h(url, p):
-        a, b = p["start"] // 1000, (p["end"] + 1) // 1000
-        rows = [[str(t * 1000), "1", "2", "0.5", "1.5", "3", "42.5"] for t in range(a, b, 1800)]
-        return {"retCode": 0, "result": {"list": rows[::-1]}}
-    df = frame("bybit:TSLAXUSDT", 1800, cex.Bybit(FakeHTTP(h)).fetch("TSLAXUSDT", start, end), start, end)
-    assert len(df) == 1500 and df.ts.is_monotonic_increasing and (df.vol_usd == 42.5).all()
-    with pytest.raises(cex.SourceError):
-        cex.Bybit(FakeHTTP(lambda u, p: {"retCode": 10001, "retMsg": "bad"})).fetch("X", T0, T0 + 1800)
-
-
-def test_bitget_pages_backwards():
-    start, end = T0, T0 + 1100 * 1800
-    data = {t: [str(t * 1000), str(t), str(t + 2), str(t - 1), str(t + 1), "3", "7"]
-            for t in range(start - 10 * 1800, end + 5 * 1800, 900)}
-    def h(url, p):
-        assert url.endswith("/api/v3/market/candles")
-        assert p["category"] == "SPOT" and p["interval"] == "15m" and p["limit"] == 1000
-        older = sorted(k for k in data if k < p["endTime"] // 1000)[-p["limit"]:]
-        return {"code": "00000", "data": [data[k] for k in older]}
-    http = FakeHTTP(h)
-    df = frame("bitget:X", 1800, cex.Bitget(http).fetch("X", start, end), start, end)
-    assert len(df) == 1100 and (df.vol_usd == 14).all() and len(http.calls) == 3
-    first = df.iloc[0]
-    assert (first.open, first.high, first.low, first.close) == (start, start + 902, start - 1, start + 901)
-
-
-def test_okx_backwards_and_skips_unconfirmed_bars():
-    start, end = T0, T0 + 250 * 1800
-    def h(url, p):
-        ks = [k for k in range(start - 1800 * 300, end, 1800) if k < p["after"] // 1000][-p["limit"]:]
-        rows = [[str(k * 1000), "1", "2", "0.5", "1.5", "3", "4", "9.5", "0" if k == end - 1800 else "1"] for k in ks]
-        return {"code": "0", "data": rows[::-1]}
-    df = frame("okx:X", 1800, cex.OKX(FakeHTTP(h)).fetch("X", start, end), start, end)
-    assert len(df) == 249 and end - 1800 not in set(df.ts) and (df.vol_usd == 9.5).all()
-
-
-def test_gate_column_order():
-    start, end = T0, T0 + 3 * 1800
-    h = lambda url, p: [[str(t), "123.4", "10.5", "11", "9.5", "10", "12", "true"] for t in range(p["from"], p["to"] + 1, 1800)]
-    r = frame("gate:X", 1800, cex.Gate(FakeHTTP(h)).fetch("X", start, end), start, end).iloc[0]
-    assert (r.open, r.high, r.low, r.close, r.vol_usd) == (10, 11, 9.5, 10.5, 123.4)
-
-
 def test_kraken_ohlc_asset_class_and_vwap_volume():
     start, end = T0, T0 + 4 * 1800
     def h(url, p):
@@ -136,8 +91,8 @@ def test_match_markets_symbol_quote_and_price():
 
 
 def _pool(addr, base, bsym, quote, qsym, vol):
-    return {"id": f"robinhood_{addr}", "attributes": {"address": addr, "name": f"{bsym} / {qsym}", "volume_usd": {"h24": str(vol)}},
-            "relationships": {"base_token": {"data": {"id": f"robinhood_{base}"}}, "quote_token": {"data": {"id": f"robinhood_{quote}"}},
+    return {"id": f"base_{addr}", "attributes": {"address": addr, "name": f"{bsym} / {qsym}", "volume_usd": {"h24": str(vol)}},
+            "relationships": {"base_token": {"data": {"id": f"base_{base}"}}, "quote_token": {"data": {"id": f"base_{quote}"}},
                               "dex": {"data": {"id": "uniswap-v4"}}}}
 
 
@@ -154,13 +109,13 @@ def test_geckoterminal_networks_stops_at_last_linked_page():
 
 
 def test_dex_discovery_counterparts_and_floors():
-    tokens = pd.DataFrame([dict(cg_id="nvda-rh", symbol="NVDA", family="robinhood", underlying="NVDA", price=200.0, vol24=5e6),
-                           dict(cg_id="tsla-rh", symbol="TSLA", family="robinhood", underlying="TSLA", price=400.0, vol24=1e3)])
-    addresses = pd.DataFrame([dict(cg_id="nvda-rh", platform="rh", network="robinhood", address="0xAAA"),
-                              dict(cg_id="tsla-rh", platform="rh", network="robinhood", address="0xbbb")])
-    tok = lambda a, s: {"id": f"robinhood_{a}", "type": "token", "attributes": {"address": a, "symbol": s}}
+    tokens = pd.DataFrame([dict(cg_id="nvda-rh", symbol="NVDA", family="coinbase", underlying="NVDA", price=200.0, vol24=5e6),
+                           dict(cg_id="tsla-rh", symbol="TSLA", family="coinbase", underlying="TSLA", price=400.0, vol24=1e3)])
+    addresses = pd.DataFrame([dict(cg_id="nvda-rh", platform="base", network="base", address="0xAAA"),
+                              dict(cg_id="tsla-rh", platform="base", network="base", address="0xbbb")])
+    tok = lambda a, s: {"id": f"base_{a}", "type": "token", "attributes": {"address": a, "symbol": s}}
     def h(url, p):
-        assert url.endswith("/networks/robinhood/tokens/0xAAA/pools")
+        assert url.endswith("/networks/base/tokens/0xAAA/pools")
         return {"data": [_pool("0xp1", "0xaaa", "NVDA", "0xusdg", "USDG", 50_000),
                          _pool("0xp2", "0xmeme", "AIMEME", "0xaaa", "NVDA", 60_000),
                          _pool("0xp3", "0xmeme2", "TINY", "0xaaa", "NVDA", 10_000),
@@ -209,7 +164,7 @@ def test_dex_ohlcv_pages_backwards():
         ks = [k for k in range(start - 900 * 50, end, 900) if k < p["before_timestamp"]][-p["limit"]:]
         return {"data": {"attributes": {"ohlcv_list": [[k, 1, 2, 0.5, 1.5, 25.0] for k in ks[::-1]]}}}
     http = FakeHTTP(h)
-    df = frame("dex-robinhood:0xp2", 900, dex.GeckoTerminal(http).fetch("robinhood", "0xp2", "quote", start, end), start, end)
+    df = frame("dex-base:0xp2", 900, dex.GeckoTerminal(http).fetch("base", "0xp2", "quote", start, end), start, end)
     assert len(df) == 1500 and (df.vol_usd == 25).all() and len(http.calls) == 2
 
 

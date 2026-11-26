@@ -8,14 +8,14 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%2315212B'/%3E%3Crect x='3' y='3' width='4' height='10' fill='%235C8FC4'/%3E%3Crect x='9' y='3' width='4' height='10' fill='%23F0A23A'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="style.css?v=20261126-2">
 <script src="vendor/chart.umd.js" defer></script>
-<script src="app.js?v=20261126-4" defer></script>
+<script src="app.js?v=20261126-5" defer></script>
 </head>
 <body>
 <div class="demo-banner" id="demo-banner" hidden><p>Synthetic demo data, generated to preview the layout. These are not market figures.</p></div>
 <div class="page">
 <header class="masthead">
   <h1>Tokenized Stock Observatory</h1>
-  <p class="lede">A historical market-data dashboard for tokenized US stocks: volume by session, venue, issuer and underlying, with the US stocks alongside them when available.</p>
+  <p class="lede">Trading in tokenized US stocks on Binance, Kraken and selected Base and Ethereum pools, alongside US stock volume by trading session.</p>
   <p class="stamp" id="stamp">Loading data</p>
   <p class="project-link"><a href="https://github.com/TianhaoYin1120/offhours">Source code, methodology and data pipeline on GitHub</a></p>
   <nav class="jump" aria-label="Dashboard sections">
@@ -193,7 +193,7 @@
   <p>The dashboard publishes daily files that anyone can open without an account. The collector uses the following upstream APIs.</p>
   <ul>
     <li><strong>US stock volume.</strong> Alpaca supplies 30-minute price and share-volume bars from the consolidated US tape. We estimate dollars traded by multiplying shares by the bar’s volume-weighted average price, using its closing price when that average is unavailable. <a href="https://docs.alpaca.markets/us/reference/stockbars">Alpaca historical stock bars</a>.</li>
-    <li><strong>Token trades on exchange order books.</strong> Historical candles come from the spot market APIs of <a href="https://developers.binance.com/en/docs/catalog/core-trading-spot-trading/api/rest-api/market">Binance</a>, <a href="https://docs.kraken.com/api-reference/market-data/get-ohlc-data">Kraken</a> and <a href="https://bybit-exchange.github.io/docs/v5/market/kline">Bybit</a>. The status table below shows the latest collection result.</li>
+    <li><strong>Token trades on exchange order books.</strong> Historical candles come from the spot market APIs of <a href="https://developers.binance.com/en/docs/catalog/core-trading-spot-trading/api/rest-api/market">Binance</a> and <a href="https://docs.kraken.com/api-reference/market-data/get-ohlc-data">Kraken</a>. The status table below shows the latest collection result.</li>
     <li><strong>Token swaps on Base and Ethereum.</strong> GeckoTerminal supplies prices and dollar volume in 15-minute intervals for individual trading pools. CoinGecko supplies token lists and contract addresses used to identify those pools. <a href="https://api.geckoterminal.com/docs/index.html">GeckoTerminal API</a> · <a href="https://docs.coingecko.com/reference/coins-markets">CoinGecko API</a>.</li>
   </ul>
   <p><strong>Dashboard data files</strong> · <a href="data/meta.json">Coverage and refresh status (JSON)</a> · <a href="data/daily.json">Daily totals (JSON)</a> · <a href="data/volume_history.json">Full comparison history in cents (JSON)</a> · <a href="#downloads">CSV downloads</a></p>

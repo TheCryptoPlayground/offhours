@@ -77,13 +77,12 @@ NAME_FAMILY = [
 FAMILY_SUFFIX = {f: s for f, _, s in NAME_FAMILY}
 
 # --- Venues -----------------------------------------------------------------------------
-CEX_SOURCES = ["binance", "kraken", "bybit", "bitget", "gate", "okx"]
-DEX_NETWORKS = ["robinhood", "solana", "bsc", "eth", "base", "arbitrum"]  # GeckoTerminal ids
+CEX_SOURCES = ["binance", "kraken"]
+DEX_NETWORKS = ["eth", "base"]  # GeckoTerminal ids
+BAR_SOURCES = (*CEX_SOURCES, *("dex-" + net for net in DEX_NETWORKS), "stocks")
 VENUE_LABELS = {
-    "binance": "Binance", "kraken": "Kraken", "bybit": "Bybit", "bitget": "Bitget",
-    "gate": "Gate", "okx": "OKX",
-    "dex-robinhood": "Trading pools on Robinhood Chain", "dex-solana": "Trading pools on Solana", "dex-bsc": "Trading pools on BNB Chain",
-    "dex-eth": "Trading pools on Ethereum", "dex-base": "Trading pools on Base", "dex-arbitrum": "Trading pools on Arbitrum",
+    "binance": "Binance", "kraken": "Kraken",
+    "dex-eth": "Trading pools on Ethereum", "dex-base": "Trading pools on Base",
     "dex": "On-chain trading pools (GeckoTerminal)", "stocks": "US stocks (Alpaca, consolidated tape)",
 }
 

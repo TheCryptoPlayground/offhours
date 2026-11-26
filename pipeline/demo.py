@@ -21,10 +21,8 @@ TICKERS = {  # ticker: (token volume scale, stock dollar volume per RTH bar, sta
     "SPY": (3.0, 3.5e9, 680), "MU": (3.5, 3.0e8, 210), "HOOD": (2.0, 2.0e8, 120), "GOOGL": (2.0, 6.0e8, 280),
 }
 VENUES = [  # source, family, counterpart, scale, trades weekends
-    ("binance", "bstocks", "usd", 1.0, True), ("bybit", "xstocks", "usd", 0.35, True),
-    ("kraken", "xstocks", "usd", 0.30, False), ("okx", "ondo", "usd", 0.15, False),
-    ("dex-robinhood", "robinhood", "usd", 1.2, True), ("dex-robinhood", "robinhood", "other", 0.4, True),
-    ("dex-solana", "xstocks", "usd", 0.25, True), ("dex-bsc", "ondo", "usd", 0.3, False),
+    ("binance", "bstocks", "usd", 1.0, True), ("kraken", "xstocks", "usd", 0.30, False),
+    ("dex-base", "coinbase", "usd", 0.25, True), ("dex-eth", "ondo", "usd", 0.15, True),
 ]
 SESSION_MULT = {K.RTH: 1.0, K.PRE: 0.55, K.POST: 0.45, K.OVN: 0.4, K.CLOSED: 0.3}
 
@@ -93,8 +91,9 @@ def generate(days: int = 84, seed: int = 7) -> None:
     store.save_markets(markets)
     now = pd.Timestamp.now(tz="UTC").isoformat(timespec="seconds")
     store.save_state({"cursor": {}, "sources": {
-        s: {"type": "dex" if s.startswith("dex") else "cex", "ok": True, "markets": len(TICKERS), "errors": 0,
-            "finished": now} for s in sorted({v[0] for v in VENUES})} | {
+        s: {"type": "cex", "ok": True, "markets": len(TICKERS), "errors": 0,
+            "finished": now} for s in C.CEX_SOURCES} | {
+        "dex": {"type": "dex", "ok": True, "markets": sum(m.venue_type == "dex" for m in markets), "errors": 0, "finished": now},
         "stocks": {"type": "stock", "ok": True, "markets": len(TICKERS), "errors": 0, "finished": now}}})
     (C.DATA / "universe").mkdir(parents=True, exist_ok=True)
     (C.DATA / "universe" / "meta.json").write_text(json.dumps({"fetched_at": now, "tokens": len(markets), "demo": True}))

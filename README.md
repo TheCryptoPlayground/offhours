@@ -2,7 +2,7 @@
 
 **Live website:** [tianhaoyin1120.github.io/offhours](https://tianhaoyin1120.github.io/offhours/)
 
-A daily tracker of tokenized US stock trading by US market session. It answers three questions:
+A daily tracker of tokenized US stock trading on Binance, Kraken and selected Base and Ethereum pools by US market session. Venue coverage starts on different dates, so product totals measure the trades observed by this dashboard. It answers three questions:
 
 1. How much tokenized-stock volume trades outside regular hours, and how much while every US venue is shut?
 2. How does that compare with the stocks' own volume, session by session?
@@ -105,10 +105,6 @@ tape uses with 23/5 trading. Weekends and holidays count under their own dates. 
 |---------------|----------------------------------------------|--------------------------------------------|----------------------|
 | Binance       | bStocks                                      | `data-api.binance.vision` klines           | 120 days |
 | Kraken        | xStocks                                      | OHLC with `asset_class=tokenized_asset`    | 15 days (the API keeps only the latest 720 bars) |
-| Bybit         | xStocks                                      | v5 `market/kline`                          | 120 days |
-| Bitget        | xStocks, Ondo, Bitget's own tokens           | v2 spot `history-candles`                  | 120 days |
-| Gate          | xStocks                                      | v4 spot `candlesticks`                     | 120 days |
-| OKX           | Ondo                                         | v5 `market/history-candles`                | 120 days |
 | GeckoTerminal | Selected Coinbase stock tokens on Base and Ondo stock tokens on Ethereum | pool OHLCV, 15 minutes | up to 30 days |
 | Alpaca        | the stocks, consolidated tape                | v2 `stocks/bars`, `feed=sip`               | 120 days (the free plan reaches back to 2016) |
 | CoinGecko     | token list, issuer, contract addresses       | categories, `coins/markets`, `coins/list`  | refreshed weekly |
@@ -187,7 +183,7 @@ To compare Monday opens for stocks with and without liquid tokens, add control t
 pipeline/
   calendar.py        session clock and closure windows
   universe.py        token list, issuer, ticker, contract addresses
-  sources/cex.py     Binance, Kraken, Bybit, Bitget, Gate, OKX
+  sources/cex.py     Binance and Kraken
   sources/dex.py     GeckoTerminal pools and candles
   sources/stocks.py  Alpaca consolidated-tape bars
   update.py          one fetch run, with per-source status

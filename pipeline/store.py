@@ -47,29 +47,25 @@ def write_bars(source: str, df: pd.DataFrame) -> int:
     return len(df)
 
 
+def _sources(sources, exclude):
+    # Older checkouts may still contain parquet files from retired venues.
+    return [s for s in C.BAR_SOURCES if (sources is None or s in sources) and s not in exclude]
+
+
 def bar_files(sources: list[str] | None = None, exclude: tuple[str, ...] = ()) -> Iterator[tuple[str, str, Path]]:
-    root = bars_dir()
-    if not root.exists():
-        return
-    for src_dir in sorted(p for p in root.iterdir() if p.is_dir()):
-        if (sources and src_dir.name not in sources) or src_dir.name in exclude:
-            continue
-        for f in sorted(src_dir.glob("*/*.parquet")):
-            yield src_dir.name, f.stem, f
+    for source in _sources(sources, exclude):
+        for f in sorted((bars_dir() / source).glob("*/*.parquet")):
+            yield source, f.stem, f
 
 
 def read_days(sources: list[str] | None, days: list[str], exclude: tuple[str, ...] = (),
               columns: list[str] | None = None) -> pd.DataFrame:
     frames = []
-    root = bars_dir()
-    if root.exists():
-        for src_dir in root.iterdir():
-            if not src_dir.is_dir() or (sources and src_dir.name not in sources) or src_dir.name in exclude:
-                continue
-            for day in days:
-                p = day_path(src_dir.name, day)
-                if p.exists():
-                    frames.append(pd.read_parquet(p, columns=columns))
+    for source in _sources(sources, exclude):
+        for day in days:
+            path = day_path(source, day)
+            if path.exists():
+                frames.append(pd.read_parquet(path, columns=columns))
     return pd.concat(frames, ignore_index=True) if frames else pd.DataFrame(columns=columns or BAR_COLUMNS)
 
 
@@ -78,6 +74,7 @@ def load_markets() -> pd.DataFrame:
     if not p.exists():
         return pd.DataFrame(columns=MARKET_COLUMNS)
     df = pd.read_csv(p, dtype=str, keep_default_na=False)
+    df = df[df.source.isin(C.BAR_SOURCES)].copy()
     for col in ("bar_s",):
         df[col] = pd.to_numeric(df[col], errors="coerce").fillna(C.BAR_S).astype(int)
     df["vol24"] = pd.to_numeric(df["vol24"], errors="coerce").fillna(0.0)

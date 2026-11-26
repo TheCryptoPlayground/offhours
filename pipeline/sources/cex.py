@@ -16,7 +16,7 @@ import pandas as pd
 
 from .. import config as C
 from ..http import HTTP
-from .base import Market, SourceError, backward, forward_windows
+from .base import Market, SourceError, forward_windows
 
 log = logging.getLogger("offhours")
 
@@ -109,118 +109,7 @@ class Kraken(Exchange):
         return [(int(r[0]), _f(r[1]), _f(r[2]), _f(r[3]), _f(r[4]), _f(r[5]) * _f(r[6])) for r in rows]
 
 
-class Bybit(Exchange):
-    name, base_url, pace = "bybit", "https://api.bybit.com", 0.12
-
-    def _result(self, j):
-        if j.get("retCode") != 0:
-            raise SourceError(f"bybit: {j.get('retCode')} {j.get('retMsg')}")
-        return j["result"]
-
-    def list_markets(self):
-        inst, cursor = [], ""
-        for _ in range(20):
-            params = {"category": "spot", "limit": 1000}
-            if cursor:
-                params["cursor"] = cursor
-            r = self._result(self.get("/v5/market/instruments-info", **params))
-            inst += r.get("list", [])
-            cursor = r.get("nextPageCursor") or ""
-            if not cursor:
-                break
-        tick = {t["symbol"]: _f(t.get("lastPrice")) for t in self._result(self.get("/v5/market/tickers", category="spot"))["list"]}
-        return [dict(native=i["symbol"], base=i["baseCoin"], quote=i["quoteCoin"], price=tick.get(i["symbol"]))
-                for i in inst if i.get("status") == "Trading"]
-
-    def fetch(self, native, start, end):
-        out = []
-        for a, b in forward_windows(start, end, C.BAR_S, 1000):
-            r = self._result(self.get("/v5/market/kline", category="spot", symbol=native, interval="30",
-                                      start=a * 1000, end=b * 1000 - 1, limit=1000))
-            # newest first: [start, o, h, l, c, base volume, turnover (quote volume)]
-            out += [(int(x[0]) // 1000, _f(x[1]), _f(x[2]), _f(x[3]), _f(x[4]), _f(x[6])) for x in r.get("list", [])]
-        return out
-
-
-class Bitget(Exchange):
-    name, base_url, pace = "bitget", "https://api.bitget.com", 0.1
-
-    def _data(self, j):
-        if str(j.get("code")) != "00000":
-            raise SourceError(f"bitget: {j.get('code')} {j.get('msg')}")
-        return j["data"]
-
-    def list_markets(self):
-        syms = self._data(self.get("/api/v2/spot/public/symbols"))
-        tick = {t["symbol"]: _f(t.get("lastPr")) for t in self._data(self.get("/api/v2/spot/market/tickers"))}
-        return [dict(native=s["symbol"], base=s["baseCoin"], quote=s["quoteCoin"], price=tick.get(s["symbol"]))
-                for s in syms if s.get("status") in ("online", "gray")]
-
-    def fetch(self, native, start, end):
-        def before(t):
-            rows = self._data(self.get("/api/v3/market/candles", category="SPOT", symbol=native,
-                                       interval="15m", endTime=t * 1000, limit=1000))
-            # Reality stock tokens no longer accept 30m candles. v3 returns
-            # [ts, o, h, l, c, base volume, quote turnover], so fetch 15m and
-            # combine pairs below to retain the dashboard's 30m session grid.
-            return [(int(x[0]) // 1000, _f(x[1]), _f(x[2]), _f(x[3]), _f(x[4]), _f(x[6])) for x in rows]
-
-        raw = backward(before, start, end)
-        by_ts = {int(r[0]): r for r in raw}
-        buckets: dict[int, list[tuple]] = {}
-        for ts, row in by_ts.items():
-            buckets.setdefault(ts // C.BAR_S * C.BAR_S, []).append(row)
-        out = []
-        for ts, rows in sorted(buckets.items()):
-            rows.sort(key=lambda r: r[0])
-            out.append((ts, rows[0][1], max(r[2] for r in rows), min(r[3] for r in rows),
-                        rows[-1][4], sum(r[5] for r in rows)))
-        return out
-
-
-class Gate(Exchange):
-    name, base_url, pace = "gate", "https://api.gateio.ws/api/v4", 0.12
-
-    def list_markets(self):
-        pairs = self.get("/spot/currency_pairs")
-        tick = {t["currency_pair"]: _f(t.get("last")) for t in self.get("/spot/tickers")}
-        return [dict(native=p["id"], base=p["base"], quote=p["quote"], price=tick.get(p["id"]))
-                for p in pairs if p.get("trade_status") == "tradable"]
-
-    def fetch(self, native, start, end):
-        out = []
-        for a, b in forward_windows(start, end, C.BAR_S, 900):
-            rows = self.get("/spot/candlesticks", currency_pair=native, interval="30m", **{"from": a, "to": b - 1})
-            # [t, quote volume, close, high, low, open, base volume, window closed]
-            out += [(int(x[0]), _f(x[5]), _f(x[3]), _f(x[4]), _f(x[2]), _f(x[1])) for x in rows]
-        return out
-
-
-class OKX(Exchange):
-    name, base_url, pace = "okx", "https://www.okx.com", 0.12
-
-    def _data(self, j):
-        if str(j.get("code")) != "0":
-            raise SourceError(f"okx: {j.get('code')} {j.get('msg')}")
-        return j["data"]
-
-    def list_markets(self):
-        inst = self._data(self.get("/api/v5/public/instruments", instType="SPOT"))
-        tick = {t["instId"]: _f(t.get("last")) for t in self._data(self.get("/api/v5/market/tickers", instType="SPOT"))}
-        return [dict(native=i["instId"], base=i["baseCcy"], quote=i["quoteCcy"], price=tick.get(i["instId"]))
-                for i in inst if i.get("state") == "live"]
-
-    def fetch(self, native, start, end):
-        def before(t):
-            rows = self._data(self.get("/api/v5/market/history-candles", instId=native, bar="30m",
-                                       after=t * 1000, limit=100))
-            # newest first: [ts, o, h, l, c, vol, volCcy, volCcyQuote, confirm]
-            return [(int(x[0]) // 1000, _f(x[1]), _f(x[2]), _f(x[3]), _f(x[4]), _f(x[7]))
-                    for x in rows if str(x[8]) == "1"]
-        return backward(before, start, end)
-
-
-EXCHANGES = {cls.name: cls for cls in (Binance, Kraken, Bybit, Bitget, Gate, OKX)}
+EXCHANGES = {cls.name: cls for cls in (Binance, Kraken)}
 
 
 def match_markets(source: str, listed: list[dict], tokens: pd.DataFrame, now: str) -> list[Market]:

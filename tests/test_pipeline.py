@@ -35,7 +35,7 @@ def seed():
     fri_close, sun_cut = et("2026-11-13 20:00"), et("2026-11-15 18:00")
     tok_price = lambda ts: np.where(ts < fri_close, 100.0, np.where(ts < sun_cut, 105.0, 104.0))
     store.write_bars("binance", bars("binance:TSLABUSDT", a, b, price=tok_price))
-    store.write_bars("dex-robinhood", bars("dex-robinhood:0xpool", a, b, step=900, vol=10.0))
+    store.write_bars("dex-base", bars("dex-base:0xpool", a, b, step=900, vol=10.0))
     frames = []
     for day in ["2026-11-09", "2026-11-10", "2026-11-11", "2026-11-12", "2026-11-13"]:
         frames.append(bars("stocks:TSLA", et(f"{day} 04:00"), et(f"{day} 20:00"), vol=1e6))
@@ -44,9 +44,9 @@ def seed():
     store.save_markets([
         Market(market_id="binance:TSLABUSDT", source="binance", native="TSLABUSDT", base="TSLAB", quote="USDT",
                cg_id="tsla-b", family="bstocks", underlying="TSLA", venue_type="cex", counterpart="usd"),
-        Market(market_id="dex-robinhood:0xpool", source="dex-robinhood", native="0xpool", base="MEME", quote="TSLA",
+        Market(market_id="dex-base:0xpool", source="dex-base", native="0xpool", base="MEME", quote="TSLA",
                cg_id="tsla-rh", family="robinhood", underlying="TSLA", venue_type="dex", counterpart="other",
-               network="robinhood", token_side="quote", bar_s=900),
+               network="base", token_side="quote", bar_s=900),
     ])
 
 
@@ -222,3 +222,15 @@ def test_session_ratio_excludes_control_stocks_and_partial_overnight_feed(paths)
     token = kpis["token_total"] * kpis["share_token"]["RTH"]
     assert np.isclose(kpis["ratio_bp_by_session"]["RTH"], token / stock * 1e4)
     assert kpis["ratio_bp_by_session"]["OVERNIGHT"] is None
+
+
+def test_retired_venue_files_do_not_reenter_a_build(paths):
+    seed()
+    start = et("2026-11-16 09:30")
+    store.write_bars("retired", bars("retired:TSLA", start, start + H, vol=9e14))
+    store.save_state({"cursor": {}, "sources": {"retired": {"ok": True}}})
+    meta = site.build(end_date="2026-11-16")
+    assert "retired" not in {s["id"] for s in meta["sources"]}
+    assert not any(source == "retired" for source, _, _ in store.bar_files())
+    assert store.read_days(["retired"], ["2026-11-16"]).empty
+    assert meta["kpis"]["token_total"] < 9e14
