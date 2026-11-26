@@ -201,3 +201,24 @@ def test_site_build_removes_stale_optional_export(paths, monkeypatch):
     monkeypatch.setattr(aggregate, "stock_facts", lambda: pd.DataFrame(columns=aggregate.STOCK_KEYS + ["vol_usd"]))
     site.build(end_date="2026-11-16")
     assert not stock_csv.exists()
+
+
+def test_flat_token_returns_preserve_closure_counts():
+    frame = pd.DataFrame({"window": np.repeat([1, 2, 3], 3), "x": np.zeros(9),
+                          "y": np.linspace(-0.02, 0.02, 9)})
+    result = pricing.describe(frame)
+    assert result["n"] == 9 and result["anticipated"] == 0
+    assert "beta" not in result
+
+
+def test_session_ratio_excludes_control_stocks_and_partial_overnight_feed(paths):
+    seed()
+    start = et("2026-11-16 09:30")
+    store.write_bars("stocks", bars("stocks:CONTROL", start, start + H, vol=1e12))
+    night = et("2026-11-15 20:00")
+    store.write_bars("stocks", bars("stocks:TSLA", night, night + H, vol=100))
+    kpis = site.build(end_date="2026-11-16")["kpis"]
+    stock = aggregate.stock_facts().query("underlying == 'TSLA' and session == 'RTH'").vol_usd.sum()
+    token = kpis["token_total"] * kpis["share_token"]["RTH"]
+    assert np.isclose(kpis["ratio_bp_by_session"]["RTH"], token / stock * 1e4)
+    assert kpis["ratio_bp_by_session"]["OVERNIGHT"] is None

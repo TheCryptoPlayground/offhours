@@ -98,6 +98,9 @@ def build(demo: bool = False, end_date: str | None = None) -> dict:
     with_stock = set(sf.underlying) if len(sf) else set()
     mapped = head[head.underlying.isin(with_stock)] if len(head) else head
     tok_m = {s: float(mapped[mapped.session == s].vol_usd.sum()) if len(mapped) else 0.0 for s in S}
+    common_stocks = sf[sf.underlying.isin(mapped.underlying)] if len(sf) else sf
+    common_stock_s = common_stocks.groupby("session").vol_usd.sum().to_dict()
+    common_stock_total = sum(common_stock_s.values())
     total = sum(tok_s.values())
     kpis = dict(
         days=len(dates), target_days=len(dates), start=start.strftime("%Y-%m-%d"), end=end.strftime("%Y-%m-%d"),
@@ -107,9 +110,10 @@ def build(demo: bool = False, end_date: str | None = None) -> dict:
         outside_rth_share=(1 - tok_s["RTH"] / total) if total else None,
         closed_share=(tok_s["CLOSED"] / total) if total else None,
         stock_total=sum(stk_s.values()),
-        ratio_bp=(sum(tok_m.values()) / sum(stk_s.values()) * 1e4) if sum(stk_s.values()) else None,
+        ratio_bp=(sum(tok_m.values()) / common_stock_total * 1e4) if common_stock_total else None,
         share_token=_share(tok_s), share_stock=_share(stk_s),
-        ratio_bp_by_session={s: (tok_m[s] / stk_s[s] * 1e4 if stk_s[s] else None) for s in S},
+        ratio_bp_by_session={s: (tok_m[s] / common_stock_s[s] * 1e4
+                                 if s != "OVERNIGHT" and common_stock_s.get(s) else None) for s in S},
     )
 
     # tickers
@@ -161,12 +165,13 @@ def build(demo: bool = False, end_date: str | None = None) -> dict:
         umeta["families"] = toks.family.value_counts().to_dict()
     coverage = None
     if umeta.get("fetched_at") and umeta.get("coingecko_vol24"):
-        t1 = int(pd.Timestamp(umeta["fetched_at"]).timestamp())
+        t1 = int(pd.Timestamp(umeta["fetched_at"]).timestamp()) // C.BAR_S * C.BAR_S
         t0 = t1 - 86400
         days = pd.date_range(pd.Timestamp(t0, unit="s").normalize(), pd.Timestamp(t1, unit="s").normalize()).strftime("%Y-%m-%d").tolist()
         b = store.read_days(None, days, exclude=("stocks",), columns=["market_id", "ts", "vol_usd"])
         b = b[(b.ts >= t0) & (b.ts < t1)]
-        coverage = dict(as_of=umeta["fetched_at"], measured_24h=float(b.vol_usd.sum()),
+        coverage = dict(as_of=umeta["fetched_at"], window_end=pd.Timestamp(t1, unit="s", tz="UTC").isoformat(),
+                        measured_24h=float(b.vol_usd.sum()),
                         coingecko_24h=float(umeta["coingecko_vol24"]))
     sources = []
     source_state = state.get("sources", {})
@@ -192,7 +197,7 @@ def build(demo: bool = False, end_date: str | None = None) -> dict:
         history=dict(calendar_days=len(dates), token_dates=int(tf.market_date.nunique()) if len(tf) else 0,
                      stock_dates=int(sf.market_date.nunique()) if len(sf) else 0),
         sessions=[dict(id=s, label=C.SESSION_LABELS[s], hours=C.SESSION_HOURS[s]) for s in S],
-        events=[dict(date=C.US_23X5_START.isoformat(), label="US exchanges start 23-hour weekday trading")],
+        events=[dict(date=C.US_23X5_START.isoformat(), label="Scheduled extension of US consolidated tape hours")],
         venue_labels=C.VENUE_LABELS, kpis=kpis, universe=umeta, coverage=coverage, sources=sources,
         markets=dict(total=int(len(markets)), by_source=markets.source.value_counts().to_dict() if len(markets) else {}),
         last_run=state.get("last_run"),

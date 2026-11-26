@@ -8,7 +8,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%2315212B'/%3E%3Crect x='3' y='3' width='4' height='10' fill='%235C8FC4'/%3E%3Crect x='9' y='3' width='4' height='10' fill='%23F0A23A'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="style.css?v=20261126-1">
 <script src="vendor/chart.umd.js" defer></script>
-<script src="app.js?v=20261126-3" defer></script>
+<script src="app.js?v=20261126-4" defer></script>
 </head>
 <body>
 <div class="demo-banner" id="demo-banner" hidden><p>Synthetic demo data, generated to preview the layout. These are not market figures.</p></div>
@@ -65,14 +65,14 @@
 
 <section aria-labelledby="offhours-h">
   <h2 id="offhours-h">Off-hours token volume as a share of US stock volume</h2>
-  <p class="note">For each US trading date, divide off-hours token dollars by the recorded stock dollars for the same set of underlying stocks and ETFs. Weekends and full market holidays are skipped.</p>
+  <p class="note">For each US trading date, divide off-hours token dollars by the recorded stock dollars for a fixed basket of securities observed in both feeds somewhere in the archive. Individual stocks can have missing observations on either side on a given date. Weekends and full market holidays are skipped.</p>
   <div class="comparison-controls">
     <label>Date range <select id="trend-range"><option value="all">All history</option><option value="90">Last 90 calendar days</option><option value="30">Last 30 calendar days</option></select></label>
     <label>US stock volume <select id="trend-stock"><option value="stock_off">Off-hours only</option><option value="stock_all">All sessions</option></select></label>
   </div>
   <p id="trend-summary" aria-live="polite"></p>
   <div class="chart"><canvas id="trend-chart" aria-label="Daily and trailing five-trading-day ratios of off-hours token volume to US stock volume"></canvas></div>
-  <p class="note">The five-day line divides the sum of token dollars by the sum of stock dollars over five consecutive US trading dates. Gaps on an open date indicate missing comparable volume. Overnight US stock volume is only partially covered before 6 December 2026.</p>
+  <p class="note">The five-day line divides the sum of token dollars by the sum of stock dollars over five consecutive US trading dates. Gaps on an open date indicate missing comparable volume. The stock feed misses overnight activity. This can raise the displayed ratio, especially with the off-hours denominator.</p>
 </section>
 
 <section aria-labelledby="mix-h">
@@ -164,7 +164,7 @@
   <h2 id="wk-h">Do token moves line up with the next stock open?</h2>
   <p id="closure-result" aria-live="polite"></p>
   <details id="closure-details"><summary>Explore the price chart and stock-by-stock results</summary>
-  <p class="note" id="wk-note">Across the full archive, each point compares a token’s price change during a qualifying weekend or holiday closure with its underlying stock’s change at the next regular open.</p>
+  <p class="note" id="wk-note">Each point is one stock over a closure of at least 20 hours. The token log return ends two hours before the overnight session resumes and weights each market by its recorded dollars. At least $10,000 in eligible token trades is required. The stock log return runs from its last eligible pre-closure bar close to the first regular-session bar open. Both use unadjusted prices, so corporate actions can affect the result.</p>
   <div class="split">
     <div class="chart square"><canvas id="scatter" aria-label="Token move during the closure against the stock's move to the next open"></canvas></div>
     <div><dl class="stats" id="stats"></dl><p class="note" id="stats-note" style="margin-top:1rem"></p></div>
@@ -191,7 +191,7 @@
   <p>The dashboard publishes daily files that anyone can open without an account. The collector uses the following upstream APIs.</p>
   <ul>
     <li><strong>US stock volume.</strong> Alpaca supplies 30-minute price and share-volume bars from the consolidated US tape. We estimate dollars traded by multiplying shares by the bar’s volume-weighted average price, using its closing price when that average is unavailable. <a href="https://docs.alpaca.markets/us/reference/stockbars">Alpaca historical stock bars</a>.</li>
-    <li><strong>Token trades on exchange order books.</strong> Historical candles come from the spot market APIs of <a href="https://developers.binance.com/docs/binance-spot-api-docs/rest-api/market-data-endpoints">Binance</a>, <a href="https://docs.kraken.com/api/docs/rest-api/get-ohlc-data/">Kraken</a> and <a href="https://bybit-exchange.github.io/docs/v5/market/kline">Bybit</a>. The status table below shows the latest collection result.</li>
+    <li><strong>Token trades on exchange order books.</strong> Historical candles come from the spot market APIs of <a href="https://developers.binance.com/en/docs/catalog/core-trading-spot-trading/api/rest-api/market">Binance</a>, <a href="https://docs.kraken.com/api-reference/market-data/get-ohlc-data">Kraken</a> and <a href="https://bybit-exchange.github.io/docs/v5/market/kline">Bybit</a>. The status table below shows the latest collection result.</li>
     <li><strong>Token swaps on Base and Ethereum.</strong> GeckoTerminal supplies prices and dollar volume in 15-minute intervals for individual trading pools. CoinGecko supplies token lists and contract addresses used to identify those pools. <a href="https://api.geckoterminal.com/docs/index.html">GeckoTerminal API</a> · <a href="https://docs.coingecko.com/reference/coins-markets">CoinGecko API</a>.</li>
   </ul>
   <p><strong>Dashboard data files</strong> · <a href="data/meta.json">Coverage and refresh status (JSON)</a> · <a href="data/daily.json">Daily totals (JSON)</a> · <a href="data/volume_history.json">Full comparison history in cents (JSON)</a> · <a href="#downloads">CSV downloads</a></p>
@@ -201,9 +201,9 @@
   <h3>Dataset scope</h3>
   <ul>
     <li>Spot trading of tokenized US stocks and ETFs on centralised exchanges with public market data (30-minute bars) and on DEX pools indexed by GeckoTerminal (15-minute bars). Quotes in dollar stablecoins count one for one as dollars.</li>
-    <li>DEX pools are grouped by what the token trades against. Pools against stablecoins, majors (ETH, SOL, BNB, BTC) or other stock tokens make up the headline figures. Pools against anything else, mostly memecoins launched against stock tokens, are reported separately.</li>
-    <li>Not included: perpetual futures on stocks, which trade far more than spot tokens; trading inside apps that does not reach a public order book or chain; issuer mints and redemptions; venues without a free API.</li>
-    <li>The stocks' own volume is the consolidated tape. Before 6 December 2026 it does not comprehensively cover overnight ATS trading, although occasional eligible or late prints can appear after 20:00 ET.</li>
+    <li>DEX pools are grouped by what the token trades against. Scheduled discovery selects pools paired with dollar assets or major cryptoassets. The archive can also include stock-token pairs in headline totals. Other counterpart assets are counted separately.</li>
+    <li>The series excludes perpetual futures, issuer mints and redemptions, and trades outside the tracked order books and pools.</li>
+    <li>The stocks' own volume is the consolidated tape. Its overnight coverage is incomplete. <a href="https://docs.alpaca.markets/us/v1.4.2/docs/historical-stock-data-1">Alpaca documents separate overnight feeds</a>.</li>
     <li>Exchange-reported spot volume is shown as published by each venue.</li>
   </ul>
   <h3>Download</h3>
@@ -212,7 +212,7 @@
 </main>
 
 <footer>
-  <p>Data from the public market-data APIs of the exchanges listed above, <a href="https://www.geckoterminal.com">GeckoTerminal</a> and <a href="https://www.coingecko.com">CoinGecko</a> for on-chain pools and token lists, and Alpaca for the US consolidated tape.</p>
+  <p>Data from the public market-data APIs of the exchanges listed above, <a href="https://www.geckoterminal.com">GeckoTerminal</a> and <a href="https://docs.coingecko.com/">CoinGecko</a> for on-chain pools and token lists, and Alpaca for the US consolidated tape.</p>
   <p>This dashboard is open source. See the <a href="https://github.com/TianhaoYin1120/offhours">GitHub repository</a> for its code, data pipeline, tests and methodology.</p>
 </footer>
 </div>

@@ -152,7 +152,7 @@
     const two = (n) => String(n).padStart(2, "0");
     const when = `${t.getUTCDate()} ${MONTHS[t.getUTCMonth()]} ${t.getUTCFullYear()}, ${two(t.getUTCHours())}:${two(t.getUTCMinutes())} UTC`;
     const span = m.first_date ? `, covering ${longDate(m.first_date)} to ${longDate(m.last_date)}` : "";
-    $("#stamp").textContent = m.demo ? `Synthetic demo data built ${when}${span}.` : `Updated ${when}${span}.`;
+    $("#stamp").textContent = m.demo ? `Synthetic demo data built ${when}${span}.` : `Dashboard built ${when}${span}.`;
   }
 
   function renderLegend() {
@@ -190,6 +190,11 @@
       notes.push(source.error?.includes("ALPACA_API_KEY_ID / ALPACA_API_SECRET_KEY not set")
         ? "The latest refresh skipped US stocks because the collection job lacked Alpaca credentials."
         : "The latest Alpaca refresh failed. See Sources for details.");
+    }
+    for (const feed of m.sources || []) {
+      if (feed.id !== "stocks" && feed.ok === false && feed.last_date) {
+        notes.push(`${feed.label} last recorded volume on ${longDate(feed.last_date)}. Its latest collection failed.`);
+      }
     }
     $("#overview-note").textContent = notes.join(" ");
   }
@@ -230,8 +235,8 @@
     svg.setAttribute("viewBox", `0 0 ${left + 48 * pitch} ${top + 7 * pitch}`);
     svg.innerHTML = out.join("");
     const market = ui.week === "token" ? "tokenized stocks" : "US stocks on the consolidated tape";
-    $("#week-note").textContent = `Average recorded dollar volume for ${market} by New York half hour across all ${w.days} calendar days. Darker cells show more volume. The outline marks regular hours.` +
-      (ui.week === "stock" ? " Overnight coverage on the consolidated tape is incomplete before 6 December 2026." : "");
+    $("#week-note").textContent = `Average recorded dollar volume for ${market} by New York half hour across all ${w.days} calendar days. Darker cells show more volume. Cells use local calendar dates. Colors and the regular-hours outline follow a typical non-holiday week.` +
+      (ui.week === "stock" ? " Overnight coverage on the consolidated tape is incomplete in this dataset." : "");
   }
 
   function renderSummary() {
@@ -240,7 +245,7 @@
       $("#summary").textContent = "No token volume recorded yet.";
       return;
     }
-    const out = [`From ${longDate(k.start)} to ${longDate(k.end)}, tokens traded <strong>${usd(k.token_total)}</strong>. Of that volume, <strong>${pct(k.outside_rth_share)}</strong> traded outside regular hours and <strong>${pct(k.closed_share)}</strong> while US venues were closed.`];
+    const out = [`From ${longDate(k.start)} to ${longDate(k.end)}, tokens traded <strong>${usd(k.token_total)}</strong>. Of that volume, <strong>${pct(k.outside_rth_share)}</strong> traded outside regular hours and <strong>${pct(k.closed_share)}</strong> during scheduled US equity closures.`];
     if (fin(k.ratio_bp) && k.stock_total > 0) {
       const r = k.ratio_bp_by_session || {};
       out.push(`Token volume as a share of the same stocks' dollar volume: <strong>${bp(k.ratio_bp)}</strong> overall, ${bp(r.RTH)} regular hours, ${bp(r.PRE)} pre-market and ${bp(r.POST)} after-hours.`);
@@ -327,7 +332,7 @@
       }}}
     }});
     $("#trend-summary").textContent = stockSum > 0
-      ? `${rangeLabel(dates, range)}. Off-hours token volume was ${pct(tokenSum / stockSum, 3)} of ${stockLabel.toLowerCase()} across ${comparable.length} comparable trading dates (${usd(tokenSum)} / ${usd(stockSum)}).`
+      ? `${rangeLabel(dates, range)}. Off-hours token volume was ${pct(tokenSum / stockSum, 3)} of ${stockLabel.toLowerCase()} across ${comparable.length} trading dates with volume in both feeds (${usd(tokenSum)} / ${usd(stockSum)}).`
       : "No trading dates with comparable volume in this range.";
   }
 
@@ -352,12 +357,12 @@
       const tok = (st[s] || 0) * (k.token_total || 0);
       const stk = (ss[s] || 0) * (k.stock_total || 0);
       const none = "no stock volume recorded";
-      const ratio = fin(rb[s]) ? bp(rb[s]) : hasStock && stk === 0 ? none : "n/a";
+      const ratio = s === "OVERNIGHT" ? "Partial stock coverage" : fin(rb[s]) ? bp(rb[s]) : hasStock && stk === 0 ? none : "n/a";
       return `<tr><td><span class="sw-inline" style="background:var(${VAR[s]})"></span>${LABEL[s]}</td><td>${usd(tok)}</td>` +
         `<td>${hasStock ? (stk > 0 ? usd(stk) : "none recorded") : "n/a"}</td><td>${ratio}</td></tr>`;
     });
     $("#mix-table").innerHTML = `<thead><tr><th>Session</th><th>Tokens</th><th>The stocks</th><th title="Token volume as basis points of the stocks' own dollar volume">Tokens as a share</th></tr></thead><tbody>${rows.join("")}</tbody>`;
-    $("#mix-note").textContent = `All history · ${longDate(k.start)} to ${longDate(k.end)}. A basis point (bp) is a hundredth of a percent of the stocks' own dollar volume in that session, counting only tokens whose stock is in the data.`;
+    $("#mix-note").textContent = `All history · ${longDate(k.start)} to ${longDate(k.end)}. A basis point (bp) is a hundredth of a percent of the stocks' own dollar volume in that session, using securities observed in both feeds. Dollar columns include all recorded volume on each side.`;
   }
 
   function renderVenues() {
@@ -531,7 +536,7 @@
     const pts = C.points || [];
     const p = C.pooled || {};
     $("#closure-result").textContent = fin(p.hit_rate) && fin(p.up_rate)
-      ? `Across ${p.windows} distinct closures, tokens moved in the same direction as the next stock opening gap in ${pct(p.hit_rate, 1)} of ${p.n_hit.toLocaleString()} stock observations with gaps over 0.5%. For comparison, ${pct(p.up_rate, 1)} of those stock gaps were upward.`
+      ? `Across ${p.windows} distinct closures, tokens moved in the same direction as the next stock opening gap in ${pct(p.hit_rate, 1)} of ${p.n_hit.toLocaleString()} stock observations with absolute stock log returns above 0.5%. For comparison, ${pct(p.up_rate, 1)} of those stock gaps were upward.`
       : `${p.n || 0} qualifying stock observations across ${p.windows || 0} closures.`;
     if (!$("#closure-details").open) return;
     const amber = css("--closed");
@@ -554,8 +559,8 @@
       data: { datasets },
       options: {
         scales: {
-          x: { min: -lim, max: lim, title: { display: true, text: "Token move while US venues were shut" }, ticks: { callback: tick } },
-          y: { min: -lim, max: lim, title: { display: true, text: "Stock move to the next open" }, ticks: { callback: tick } },
+          x: { min: -lim, max: lim, title: { display: true, text: "Token log return during closure (%)" }, ticks: { callback: tick } },
+          y: { min: -lim, max: lim, title: { display: true, text: "Stock log return to next open (%)" }, ticks: { callback: tick } },
         },
         plugins: {
           legend: { display: true, position: "bottom", labels: { boxWidth: 10, boxHeight: 10, padding: 14 } },
@@ -573,19 +578,21 @@
     if (fin(p.beta)) {
       stats.push(["Slope", `${fix(p.beta)} <small>standard error ${fix(p.se)}</small>`]);
       stats.push(["R²", fix(p.r2)]);
-      stats.push(["Gap already priced", pct(p.anticipated)]);
-      stats.push(["Same direction", `${pct(p.hit_rate)} <small>of ${p.n_hit} gaps over 0.5%</small>`]);
+    }
+    if (p.n_hit !== undefined) {
+      stats.push(["Squared error reduction", pct(p.anticipated)]);
+      stats.push(["Same direction", `${pct(p.hit_rate)} <small>of ${p.n_hit} absolute log returns above 0.5%</small>`]);
     }
     stats.push(["Observations", `${p.n || 0} <small>over ${p.windows || 0} closures</small>`]);
     $("#stats").innerHTML = stats.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("");
     $("#stats-note").textContent = fin(p.beta)
-      ? `Metrics calculated from ${p.n} stock-closure observations over ${p.windows} closures.`
-      : "No comparable closure series yet. This panel requires overlapping token and underlying-stock history.";
+      ? `Slope uncertainty is clustered by closure. Squared error reduction compares the token return as a forecast with a zero-return forecast. Negative values mean larger errors.`
+      : "A fitted line requires enough qualifying observations and variation in token returns.";
     const bt = C.by_ticker || [];
     const closureLimit = ui.closureLimit === "all" ? bt.length : Number(ui.closureLimit);
     const shown = bt.slice(0, closureLimit);
     $("#closure-table").innerHTML = bt.length
-      ? `<thead><tr><th>Stock</th><th>Closures</th><th>Slope</th><th>R²</th><th>Gap already priced</th><th>Same direction</th><th>Token volume</th></tr></thead><tbody>${shown.map((r) =>
+      ? `<thead><tr><th>Stock</th><th>Closures</th><th>Slope</th><th>R²</th><th>Squared error reduction</th><th>Same direction</th><th>Token volume</th></tr></thead><tbody>${shown.map((r) =>
         `<tr>${stockCell(r.underlying)}<td>${r.windows}</td><td>${fix(r.beta)}</td><td>${fix(r.r2)}</td><td>${pct(r.anticipated)}</td><td>${pct(r.hit_rate)}</td><td>${usd(r.token_vol)}</td></tr>`).join("")}</tbody>`
       : "<tbody><tr><td>A stock appears here once it has six qualifying closures.</td></tr></tbody>";
     $("#closure-count").textContent = bt.length
@@ -602,11 +609,13 @@
     const cov = m.coverage;
     const bits = [];
     if (u.tokens) {
-      bits.push(`The token list comes from CoinGecko's tokenized-stock categories: ${u.tokens} tokens, ${u.mapped} of them matched to a US ticker` +
-        (u.tickers_checked ? ". The token-list refresh checked ticker mappings against Alpaca listings." : ". The token-list refresh assigned these symbols without an Alpaca listing check."));
+      const mapping = u.tickers_checked ? "The refresh checked symbols against Alpaca’s listing directory." :
+        "The refresh inferred symbols from token names and tickers without checking Alpaca’s listing directory.";
+      bits.push(`CoinGecko discovery returned ${u.tokens} candidate tokens and assigned ${u.mapped} underlying symbols. ${mapping} The stock table contains ${D.tickers.rows.length} distinct symbols with observed token trading.`);
     }
     if (cov && cov.coingecko_24h > 0) {
-      bits.push(`In the 24 hours to ${esc(cov.as_of.slice(0, 16).replace("T", " "))} UTC these sources measured ${usd(cov.measured_24h)}, against ${usd(cov.coingecko_24h)} that CoinGecko reports for the same tokens on every venue it tracks (${pct(cov.measured_24h / cov.coingecko_24h)}). The two count slightly different things, so read it as a rough coverage check.`);
+      const stamp = iso => iso.slice(0, 16).replace("T", " ");
+      bits.push(`Tracked venues recorded ${usd(cov.measured_24h)} during the 24 hours ending ${stamp(cov.window_end || cov.as_of)} UTC. CoinGecko’s discovery snapshot at ${stamp(cov.as_of)} UTC reported ${usd(cov.coingecko_24h)} across its broader list. Venue coverage and reporting windows differ.`);
     }
     $("#coverage").textContent = bits.join(" ") || "Coverage figures appear after the first full run.";
     const src = m.sources || [];

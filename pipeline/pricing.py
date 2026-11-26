@@ -44,7 +44,7 @@ def closure_points(markets: pd.DataFrame, now_ts: int) -> pd.DataFrame:
     if first is None:
         return pd.DataFrame(columns=["window", "underlying", "x", "y", "token_vol", "venues"])
     W = K.closure_windows()
-    W = W[(W.start >= first + 86400) & (W.next_open + C.BAR_S <= now_ts - 16 * 60)]
+    W = W[(W.start >= first) & (W.next_open + C.BAR_S <= now_ts - 16 * 60)]
     rows = []
     for w in W.itertuples():
         m_end = int(w.end - C.CLOSURE_END_BUFFER_H * H)
@@ -65,7 +65,7 @@ def closure_points(markets: pd.DataFrame, now_ts: int) -> pd.DataFrame:
         m["u"] = tok_under.reindex(m.index).values
         tv = m.v.groupby(m.u).sum()
         x = (m.r * m.v).groupby(m.u).sum() / tv
-        nv = m.groupby("u").size()
+        nv = m.assign(source=m.index.str.split(":").str[0]).groupby("u").source.nunique()
 
         und = und.assign(u=und.market_id.str.removeprefix("stocks:"))
         q0 = und[(und.ts + und.bar_s <= w.start) & (und.ts >= w.start - C.UNDERLYING_STALE_H * H) & (und.vol_usd > 0)]
@@ -111,7 +111,8 @@ def describe(df: pd.DataFrame, cluster: bool = True, min_n: int = 8) -> dict:
     if len(df) < min_n or out["windows"] < (3 if cluster else 1):
         return out
     x, y = df.x.to_numpy(), df.y.to_numpy()
-    out.update(ols(x, y, df.window.to_numpy() if cluster else None))
+    if np.ptp(x) > 0:
+        out.update(ols(x, y, df.window.to_numpy() if cluster else None))
     msy = float(np.mean(y ** 2))
     out["anticipated"] = float(1 - np.mean((y - x) ** 2) / msy) if msy > 0 else np.nan
     big = np.abs(y) > 0.005

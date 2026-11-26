@@ -63,9 +63,7 @@ that are working, failing, or have not been run yet.
 
 ## Before you trust the numbers
 
-The adapters follow each venue's published API and pass offline tests against those response
-formats, but they were written without network access and have not yet run against the live
-endpoints. Do the first run one venue at a time:
+The public dashboard uses archived responses from live sources. For a new installation, you can check an individual collector:
 
 ```bash
 python -m pipeline update --only kraken --skip-stocks -v
@@ -137,7 +135,7 @@ stablecoins count one for one.
 
 ## Volume crossovers and two-way price discovery
 
-Calendar totals include token-only dates. Matched totals use dates with positive volume on both sides, optionally in the same session. Daily crossover counts always use matched observations. A small stock denominator or an incomplete feed can materially affect the ratio.
+Calendar totals include token-only dates. Matched totals use dates with positive volume on both sides, optionally in the same session. Daily crossover counts always use matched observations. The overnight view shows dated observations because the stock feed has incomplete coverage. Aggregate token-to-stock ratios use only underlying securities present in both feeds. The stock dollar totals can also include control securities.
 
 The lead–lag panel pairs consecutive half hours for each ticker within one regular, pre-market or after-hours session. Returns are log(close/open). Each USD or major-quoted token market contributes its own return weighted by that interval’s dollar volume. Both quarters are required for 15-minute markets. Both directions use the same pairs, with at least 30 observations. These are descriptive Pearson correlations. Shared news, sparse trades and asynchronous last prints can affect them.
 
@@ -149,8 +147,8 @@ The test covers every closure of at least 20 hours (weekends and full-day holida
 with at least $10,000 of token trading during that closure.
 
 - **x** is the token's log return from the closure start (normally Friday 20:00 ET) to two hours
-  before it ends (Sunday 18:00, when CME equity futures reopen). Each venue contributes its own
-  return, weighted by its volume in the window. That way, tokens that accrue dividends, such as
+  before it ends (Sunday 18:00, when CME equity futures reopen). Each token market contributes its own
+  return, weighted by its volume in the window. The venues column counts distinct exchange or pool-network sources. That way, tokens that accrue dividends, such as
   Ondo's total-return design, do not distort the level.
 - **y** is the stock's log return from its last trade before the closure to the next regular open.
 
@@ -178,9 +176,7 @@ prices carry information, not that tokens move the open.
 
 ## What the timing makes possible
 
-US exchanges are scheduled to start night sessions on 6 December 2026. That allows a clean
-difference-in-differences: compare the tokens' weekday-overnight share before and after, with the
-weekend share as the control.
+Extended consolidated tape hours are scheduled for 6 December 2026. Comparing periods around that date requires accounting for changes in feed and venue coverage.
 
 To compare Monday opens for stocks with and without liquid tokens, add control tickers with
 `OFFHOURS_EXTRA_STOCKS=KO,PEP,...`. A repository variable of the same name works in Actions.
