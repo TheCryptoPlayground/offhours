@@ -160,6 +160,7 @@ def test_site_build_writes_consistent_files(paths):
     load = lambda n: json.loads((C.SITE_DATA / n).read_text())
     daily, week, tickers, closures = load("daily.json"), load("week.json"), load("tickers.json"), load("closures.json")
     assert daily["dates"][0] == "2026-11-09" and daily["dates"][-1] == "2026-11-16"
+    assert daily["us_trading_day"] == [True, True, True, True, True, False, False, True]
     assert daily["product_venues"] == {"binance": {"bstocks": daily["venues"]["binance"]}}
     i = daily["dates"].index("2026-11-10")
     assert daily["token"]["RTH"][i] == 13_000 and daily["stock"]["RTH"][i] == 13e6

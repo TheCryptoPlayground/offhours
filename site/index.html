@@ -8,7 +8,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%2315212B'/%3E%3Crect x='3' y='3' width='4' height='10' fill='%235C8FC4'/%3E%3Crect x='9' y='3' width='4' height='10' fill='%23F0A23A'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="style.css?v=20261126-1">
 <script src="vendor/chart.umd.js" defer></script>
-<script src="app.js?v=20261126-1" defer></script>
+<script src="app.js?v=20261126-2" defer></script>
 </head>
 <body>
 <div class="demo-banner" id="demo-banner" hidden><p>Synthetic demo data, generated to preview the layout. These are not market figures.</p></div>
@@ -64,16 +64,15 @@
 </section>
 
 <section aria-labelledby="offhours-h">
-  <h2 id="offhours-h">Off-hours token volume vs. US stock volume</h2>
-  <p class="note">Daily dollars traded before the open, after the close, overnight and during market closures. The comparison includes stocks and ETFs with recorded trading on both sides of the archive.</p>
+  <h2 id="offhours-h">Off-hours token volume as a share of US stock volume</h2>
+  <p class="note">For each US trading date, divide off-hours token dollars by the recorded stock dollars for the same set of underlying stocks and ETFs. Weekends and full market holidays are skipped.</p>
   <div class="comparison-controls">
-    <label>Date range <select id="trend-range"><option value="all">All history</option><option value="90">Last 90 days</option><option value="30">Last 30 days</option></select></label>
+    <label>Date range <select id="trend-range"><option value="all">All history</option><option value="90">Last 90 calendar days</option><option value="30">Last 30 calendar days</option></select></label>
     <label>US stock volume <select id="trend-stock"><option value="stock_off">Off-hours only</option><option value="stock_all">All sessions</option></select></label>
-    <label>Show <select id="trend-unit"><option value="dollars">Dollars traded</option><option value="percent">Token volume as % of stock volume</option></select></label>
   </div>
   <p id="trend-summary" aria-live="polite"></p>
-  <div class="chart"><canvas id="trend-chart" aria-label="Daily off-hours token trading and underlying US stock volume"></canvas></div>
-  <p class="note">A gap means the feed recorded no volume for that series. Token trades on weekends remain visible in dollars. A percentage requires recorded US stock volume that day. US tape coverage of overnight trading is incomplete before 6 December 2026.</p>
+  <div class="chart"><canvas id="trend-chart" aria-label="Daily and trailing five-trading-day ratios of off-hours token volume to US stock volume"></canvas></div>
+  <p class="note">The five-day line divides the sum of token dollars by the sum of stock dollars over five consecutive US trading dates. Gaps on an open date indicate missing comparable volume. Overnight US stock volume is only partially covered before 6 December 2026.</p>
 </section>
 
 <section aria-labelledby="mix-h">

@@ -9,7 +9,7 @@ from datetime import datetime, timezone
 import numpy as np
 import pandas as pd
 
-from . import aggregate, comparisons, pricing, store, universe
+from . import aggregate, calendar, comparisons, pricing, store, universe
 from . import config as C
 
 log = logging.getLogger("offhours")
@@ -80,6 +80,7 @@ def build(demo: bool = False, end_date: str | None = None) -> dict:
     families = sorted(head.family.unique()) if len(head) else []
     daily = dict(
         dates=[d.strftime("%Y-%m-%d") for d in dates],
+        us_trading_day=dates.isin(pd.to_datetime(calendar.tables().days)).tolist(),
         token=_series(head, dates, "session", S) if len(head) else {s: [] for s in S},
         offhours=comparisons.offhours_trend(head, sf, dates),
         token_other=_series(other.assign(k="x"), dates, "k", ["x"])["x"] if len(other) else [0.0] * len(dates),

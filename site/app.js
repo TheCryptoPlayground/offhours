@@ -285,30 +285,50 @@
   }
 
   function renderTrend() {
-    const {dates, offhours} = D.daily;
+    const {dates, offhours, us_trading_day} = D.daily;
     const range = $("#trend-range").value;
-    const start = rangeStart(dates, range);
     const stockKey = $("#trend-stock").value;
-    const percent = $("#trend-unit").value === "percent";
-    const token = offhours.token.slice(start);
-    const stock = offhours[stockKey].slice(start);
-    const stockLabel = stockKey === "stock_off" ? "US stocks · off-hours" : "US stocks · all sessions";
-    const unit = percent ? value => pct(value / 100, 2) : usd;
-    const line = (label, values, color) => ({ label, data: values, borderColor: color, backgroundColor: color,
-      borderWidth: 2, pointRadius: 1.7, pointHoverRadius: 4, spanGaps: false });
-    const datasets = percent
-      ? [line("Off-hours token volume / US stock volume", token.map((v,i) => v && stock[i] ? 100 * v / stock[i] : null), css("--ovn"))]
-      : [line("Tokens · off-hours", token.map(v => v || null), css("--ovn")),
-         line(stockLabel, stock.map(v => v || null), css("--rth"))];
-    make("trend-chart", {type: "line", data: {labels: dates.slice(start), datasets}, options: {
+    const stockLabel = stockKey === "stock_off" ? "Off-hours US stock volume" : "All-session US stock volume";
+    const start = rangeStart(dates, range);
+    const trading = [];
+    dates.forEach((date, index) => {
+      if (!us_trading_day[index]) return;
+      const token = offhours.token[index], stock = offhours[stockKey][index];
+      trading.push({date, index, token, stock, comparable: token > 0 && stock > 0});
+    });
+    // Compute the trailing share before clipping so changing the visible range
+    // preserves values on dates in common. Missing sessions interrupt the trend.
+    const rolling = trading.map((_, i) => {
+      if (i < 4) return null;
+      const five = trading.slice(i - 4, i + 1);
+      return five.every(day => day.comparable)
+        ? 100 * sum(five.map(day => day.token)) / sum(five.map(day => day.stock)) : null;
+    });
+    const shown = trading.filter(day => day.index >= start);
+    const comparable = shown.filter(day => day.comparable);
+    const tokenSum = sum(comparable.map(day => day.token)), stockSum = sum(comparable.map(day => day.stock));
+    const formatShare = value => pct(value / 100, 3);
+    const series = (label, data, color, width, radius) => ({label, data,
+      borderColor: color, backgroundColor: color, borderWidth: width, pointRadius: radius,
+      pointHoverRadius: 4, spanGaps: false});
+    const datasets = [
+      series("5-trading-day share", rolling.slice(trading.length - shown.length), css("--ovn"), 3, 0),
+      series("Daily share", shown.map(day => day.comparable ? 100 * day.token / day.stock : null), css("--muted"), 1, 2)
+    ];
+    make("trend-chart", {type: "line", data: {labels: shown.map(day => day.date), datasets}, options: {
       interaction: {mode: "index", intersect: false},
-      scales: {x: {...dateAxis(), stacked: false}, y: {beginAtZero: true, ticks: {callback: unit}}},
-      plugins: {legend: {display: true, position: "bottom"},
-        tooltip: {callbacks: {title: dateTitle, label: c => ` ${c.dataset.label}: ${unit(c.parsed.y)}`}}}
+      scales: {x: {...dateAxis(), stacked: false}, y: {beginAtZero: true, ticks: {callback: formatShare}}},
+      plugins: {legend: {display: true, position: "bottom"}, tooltip: {callbacks: {
+        title: dateTitle, label: c => ` ${c.dataset.label}: ${formatShare(c.parsed.y)}`,
+        afterBody: items => {
+          const day = shown[items[0].dataIndex];
+          return [`Token volume: ${usd(day.token)}`, `${stockLabel}: ${usd(day.stock)}`];
+        }
+      }}}
     }});
-    const all = sum(offhours.total_token.slice(start)), common = sum(token), stockTotal = sum(stock);
-    $("#trend-summary").textContent = `${rangeLabel(dates, range)}. Tracked tokens traded ${usd(all)} off-hours. Across ${offhours.tickers} comparable tickers, ${usd(common)} in off-hours token volume compares with ${usd(stockTotal)} in ${stockKey === "stock_off" ? "off-hours" : "all-session"} US stock volume.` +
-      (stockTotal > 0 ? ` The ratio of the period totals is ${pct(common / stockTotal, 3)}.` : "");
+    $("#trend-summary").textContent = stockSum > 0
+      ? `${rangeLabel(dates, range)}. Off-hours token volume was ${pct(tokenSum / stockSum, 3)} of ${stockLabel.toLowerCase()} across ${comparable.length} comparable trading dates (${usd(tokenSum)} / ${usd(stockSum)}).`
+      : "No trading dates with comparable volume in this range.";
   }
 
   function renderMix() {
@@ -737,7 +757,7 @@
 
   function bind() {
     D.profiles = new Map(D.tickers.rows.map(row => [row.t, row]));
-    for (const id of ["trend-range", "trend-stock", "trend-unit"]) {
+    for (const id of ["trend-range", "trend-stock"]) {
       $(`#${id}`).addEventListener("change", renderTrend);
     }
     $("#closure-details").addEventListener("toggle", renderClosures);
