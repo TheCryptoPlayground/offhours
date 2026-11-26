@@ -234,3 +234,28 @@ def test_retired_venue_files_do_not_reenter_a_build(paths):
     assert not any(source == "retired" for source, _, _ in store.bar_files())
     assert store.read_days(["retired"], ["2026-11-16"]).empty
     assert meta["kpis"]["token_total"] < 9e14
+
+
+def test_issuer_roster_counts_pools_and_preserves_unobserved_volume(paths):
+    # The same ticker exists on both chains. Only its Base contract has archived trades.
+    C.DATA.mkdir()
+    listings = [("base", "a", "DUAL"), ("eth", "b", "DUAL"), ("eth", "c", "NONE"), ("eth", "d", "PENDING")]
+    pd.DataFrame([dict(network=n, address=a, ticker=t, symbol=t, name=t) for n,a,t in listings]).to_csv(
+        C.DATA / "issuer_contracts.csv", index=False)
+    ms = [Market(market_id=f"dex-{n}:{pool}", source="dex-"+n, native=pool, base=t, quote="USDC",
+                 underlying=t, token_address=addr, network=n)
+          for n,addr,t,pool in [("base","a","DUAL","p1"),("base","a","DUAL","p2"),
+                                ("eth","b","DUAL","p3"),("eth","d","PENDING","p4")]]
+    markets = store.save_markets(ms)
+    start = et("2026-11-10 10:00")
+    later = et("2026-11-11 10:00")
+    for mid in ["dex-base:p1", "dex-base:p2"]:
+        store.write_bars("dex-base", pd.concat([bars(mid,start,start+900,step=900,vol=5),
+                                               bars(mid,later,later+900,step=900,vol=100)]))
+    state = dict(dex_active=[m.market_id for m in ms], cursor={m.market_id:later for m in ms[:3]})
+    result = site.issuer_coverage(markets, state, pd.Timestamp("2026-11-10")).set_index("token_address")
+    assert result.loc["a", ["tracked_pools","observed_usd","status"]].tolist() == [2,10,"Volume observed"]
+    assert result.loc["b","status"] == "No positive volume returned in archive"
+    assert result.loc["c","status"] == "No eligible indexed pool found"
+    assert result.loc["d","status"] == "Pool history pending"
+    assert result.loc[["b","c","d"],"observed_usd"].isna().all()
