@@ -6,9 +6,9 @@
 <title>Tokenized Stock Observatory: trading beyond US market hours</title>
 <meta name="description" content="Historical and daily market data for tokenized US stocks, split by US trading session, venue, issuer and underlying stock.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%2315212B'/%3E%3Crect x='3' y='3' width='4' height='10' fill='%235C8FC4'/%3E%3Crect x='9' y='3' width='4' height='10' fill='%23F0A23A'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="style.css?v=20261124-2">
+<link rel="stylesheet" href="style.css?v=20261126-1">
 <script src="vendor/chart.umd.js" defer></script>
-<script src="app.js?v=20261124-5" defer></script>
+<script src="app.js?v=20261126-1" defer></script>
 </head>
 <body>
 <div class="demo-banner" id="demo-banner" hidden><p>Synthetic demo data, generated to preview the layout. These are not market figures.</p></div>
@@ -19,7 +19,7 @@
   <p class="stamp" id="stamp">Loading data</p>
   <p class="project-link"><a href="https://github.com/TianhaoYin1120/offhours">Source code, methodology and data pipeline on GitHub</a></p>
   <nav class="jump" aria-label="Dashboard sections">
-    <a href="#overview-h">Overview</a><a href="#daily-h">History</a><a href="#venue-h">Products &amp; venues</a><a href="#stocks-h">Stocks</a><a href="#compare-h">Token vs. stock</a><a href="#sources-h">Data &amp; APIs</a><a href="#coverage-h">Coverage</a>
+    <a href="#overview-h">Overview</a><a href="#daily-h">History</a><a href="#offhours-h">Off-hours volume</a><a href="#venue-h">Products &amp; venues</a><a href="#stocks-h">Stocks</a><a href="#compare-h">Token vs. stock</a><a href="#sources-h">Data &amp; APIs</a><a href="#coverage-h">Coverage</a>
   </nav>
 </header>
 
@@ -63,6 +63,19 @@
   <div class="chart"><canvas id="daily-chart" aria-label="Daily tokenized stock volume by US session"></canvas></div>
 </section>
 
+<section aria-labelledby="offhours-h">
+  <h2 id="offhours-h">Off-hours token volume vs. US stock volume</h2>
+  <p class="note">Daily dollars traded before the open, after the close, overnight and during market closures. The comparison includes stocks and ETFs with recorded trading on both sides of the archive.</p>
+  <div class="comparison-controls">
+    <label>Date range <select id="trend-range"><option value="all">All history</option><option value="90">Last 90 days</option><option value="30">Last 30 days</option></select></label>
+    <label>US stock volume <select id="trend-stock"><option value="stock_off">Off-hours only</option><option value="stock_all">All sessions</option></select></label>
+    <label>Show <select id="trend-unit"><option value="dollars">Dollars traded</option><option value="percent">Token volume as % of stock volume</option></select></label>
+  </div>
+  <p id="trend-summary" aria-live="polite"></p>
+  <div class="chart"><canvas id="trend-chart" aria-label="Daily off-hours token trading and underlying US stock volume"></canvas></div>
+  <p class="note">A gap means the feed recorded no volume for that series. Token trades on weekends remain visible in dollars. A percentage requires recorded US stock volume that day. US tape coverage of overnight trading is incomplete before 6 December 2026.</p>
+</section>
+
 <section aria-labelledby="mix-h">
   <h2 id="mix-h">Session comparison</h2>
   <p class="note" id="mix-note"></p>
@@ -94,14 +107,14 @@
 
 <section aria-labelledby="stocks-h">
   <div class="row stock-head">
-    <div><h2 id="stocks-h">By underlying stock</h2><p class="note" id="stocks-note">Select a row to see its daily series.</p></div>
+    <div><h2 id="stocks-h">By underlying stock</h2><p class="note" id="stocks-note">Select a row for its description and daily series.</p></div>
     <div class="stock-controls">
       <div class="seg" role="group" aria-label="Rows to show">
         <button type="button" data-limit="10" aria-pressed="true">Top 10</button>
         <button type="button" data-limit="20" aria-pressed="false">Top 20</button>
         <button type="button" data-limit="all" aria-pressed="false">All</button>
       </div>
-      <label class="search">Filter stocks<input id="ticker-search" type="search" autocomplete="off" placeholder="Ticker, e.g. NVDA"></label>
+      <label class="search">Filter stocks<input id="ticker-search" type="search" autocomplete="off" placeholder="Ticker or name, e.g. NVIDIA"></label>
     </div>
   </div>
   <p class="result-count" id="ticker-count" aria-live="polite"></p>
@@ -114,6 +127,7 @@
         <button type="button" data-ticker-range="30" aria-pressed="false">30D</button>
       </div>
     </div>
+    <p id="ticker-profile"></p>
     <p class="note" id="ticker-note"></p>
     <div class="chart"><canvas id="ticker-chart"></canvas></div>
   </div>
@@ -148,7 +162,9 @@
 </section>
 
 <section aria-labelledby="wk-h">
-  <h2 id="wk-h">Closure price comparison</h2>
+  <h2 id="wk-h">Do token moves line up with the next stock open?</h2>
+  <p id="closure-result" aria-live="polite"></p>
+  <details id="closure-details"><summary>Explore the price chart and stock-by-stock results</summary>
   <p class="note" id="wk-note">Across the full archive, each point compares a token’s price change during a qualifying weekend or holiday closure with its underlying stock’s change at the next regular open.</p>
   <div class="split">
     <div class="chart square"><canvas id="scatter" aria-label="Token move during the closure against the stock's move to the next open"></canvas></div>
@@ -164,6 +180,7 @@
   </div>
   <p class="result-count" id="closure-count" aria-live="polite"></p>
   <div class="table-wrap"><table id="closure-table"></table></div>
+  </details>
 </section>
 
 <section aria-labelledby="coverage-h" class="method">
@@ -181,6 +198,7 @@
   <p><strong>Dashboard data files</strong> · <a href="data/meta.json">Coverage and refresh status (JSON)</a> · <a href="data/daily.json">Daily totals (JSON)</a> · <a href="data/volume_history.json">Full comparison history in cents (JSON)</a> · <a href="#downloads">CSV downloads</a></p>
   <p id="coverage"></p>
   <div class="table-wrap"><table id="source-table"></table></div>
+  <p>Company and fund names are based on the <a href="https://www.nasdaqtrader.com/dynamic/symdir/nasdaqtraded.txt">Nasdaq Trader symbol directory</a>. Short descriptions identify each company’s business or the fund’s investment objective.</p>
   <h3>Dataset scope</h3>
   <ul>
     <li>Spot trading of tokenized US stocks and ETFs on centralised exchanges with public market data (30-minute bars) and on DEX pools indexed by GeckoTerminal (15-minute bars). Quotes in dollar stablecoins count one for one as dollars.</li>

@@ -74,6 +74,20 @@ def test_history_uses_published_cents_and_preserves_one_sided_dates():
     assert comparisons.volume_history(token.iloc[:0], stock.iloc[:0])["days"] == {}
 
 
+def test_offhours_trend_uses_common_underlyings_and_keeps_weekends():
+    cols = ["underlying", "market_date", "session", "vol_usd"]
+    token = pd.DataFrame([("X", 1, "RTH", 50), ("X", 1, "PRE", 5),
+                          ("X", 2, "CLOSED", 3), ("Y", 2, "CLOSED", 10)], columns=cols)
+    stock = pd.DataFrame([("X", 1, "RTH", 100), ("X", 1, "PRE", 20),
+                          ("Z", 1, "POST", 80)], columns=cols)
+    assert comparisons.offhours_trend(token, stock, [1, 2]) == dict(
+        tickers=1, total_token=[5, 13], token=[5, 3], stock_off=[20, 0], stock_all=[120, 0])
+
+
+def test_rebuild_respects_collection_cutoff():
+    assert site.last_full_date("2026-11-25T18:05:56Z") == pd.Timestamp("2026-11-24")
+
+
 def test_adjacent_return_direction(paths):
     seed()
     days = pd.bdate_range("2026-11-09", "2026-11-13")

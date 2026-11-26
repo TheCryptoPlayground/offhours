@@ -117,6 +117,7 @@ def describe(df: pd.DataFrame, cluster: bool = True, min_n: int = 8) -> dict:
     big = np.abs(y) > 0.005
     out["hit_rate"] = float(np.mean(np.sign(x[big]) == np.sign(y[big]))) if big.any() else np.nan
     out["n_hit"] = int(big.sum())
+    out["up_rate"] = float(np.mean(y[big] > 0)) if big.any() else np.nan
     return {k: (round(v, 4) if isinstance(v, float) and v == v else v) for k, v in out.items()}
 
 

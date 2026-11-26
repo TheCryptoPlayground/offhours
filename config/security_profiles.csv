@@ -1,0 +1,172 @@
+ticker,name,description
+AAOI,"Applied Optoelectronics, Inc.",Makes optical networking components for data centres and broadband networks.
+AAPL,Apple Inc.,"Makes iPhones, Macs and other devices and sells software and services."
+ABBV,AbbVie Inc.,"Develops medicines for immune disorders, cancer and other conditions."
+ABT,Abbott Laboratories,"Makes medical devices, diagnostics, nutrition products and medicines."
+ACN,Accenture plc,"Provides technology consulting, outsourcing and business services."
+ADBE,Adobe Inc.,"Develops creative, document and digital marketing software."
+AGPU,Axe Compute Inc.,Provides access to computing capacity for AI workloads.
+ALAB,"Astera Labs, Inc.",Designs connectivity chips for cloud and AI servers.
+AMAT,"Applied Materials, Inc.",Makes equipment used to manufacture semiconductors and displays.
+AMBR,Amber International Holding Limited,Provides digital-asset financial services.
+AMC,"AMC Entertainment Holdings, Inc.",Operates movie theatres.
+AMD,"Advanced Micro Devices, Inc.",Designs processors and graphics chips for computers and data centres.
+AMZN,"Amazon.com, Inc.",Runs an online retail marketplace and the AWS cloud computing business.
+ANT,"Anthropic, PBC",Develops Claude AI models and related software.
+APP,Applovin Corporation,Provides software for mobile advertising.
+ARM,Arm Holdings plc,Licenses processor designs and chip architecture.
+ASML,ASML Holding N.V.,Makes lithography machines used in semiconductor manufacturing.
+ASTS,"AST SpaceMobile, Inc.",Develops satellite broadband for mobile phones.
+AVGO,Broadcom Inc.,Designs semiconductors and sells infrastructure software.
+AXTI,AXT Inc,Makes semiconductor substrates for electronic and optical devices.
+AZN,AstraZeneca PLC,"Develops prescription medicines, including cancer treatments."
+BABA,Alibaba Group Holding Limited,Operates e-commerce marketplaces and cloud computing services.
+BAC,Bank of America Corporation,"Provides consumer banking, commercial lending and investment services."
+BB,BlackBerry Limited,Makes embedded systems software and secure communications products.
+BE,Bloom Energy Corporation,Makes fuel-cell systems that generate electricity on site.
+BMNR,"BitMine Immersion Technologies, Inc.","Holds digital assets, with a focus on Ethereum."
+BNC,BNB Standard Corporation,Holds BNB as a corporate treasury asset.
+BOT,"RoboStrategy, Inc.",Invests in robotics and automation businesses.
+BRK.B,Berkshire Hathaway Inc. (Class B),"Class B shares in a holding company with insurance, rail, energy and other businesses."
+BSP,Bending Spoons S.p.A.,Acquires and operates software and digital services businesses.
+BTBT,"Bit Digital, Inc.",Invests in Ethereum and operates digital-asset infrastructure.
+BTGO,"BitGo Holdings, Inc.",Provides digital-asset custody and trading infrastructure.
+CBRS,Cerebras Systems Inc.,Designs large processors and computing systems for AI.
+CEG,Constellation Energy Corporation,"Generates electricity, including from nuclear power plants."
+CMCSA,Comcast Corporation,"Operates broadband, media and entertainment businesses."
+COHR,Coherent Corp.,"Makes lasers, optical components and electronic materials."
+COIN,"Coinbase Global, Inc.",Operates a digital-asset exchange and provides custody services.
+COPX,Global X Copper Miners ETF,Fund holding shares of copper mining companies.
+CRCL,"Circle Internet Group, Inc.",Issues USDC and provides stablecoin payment infrastructure.
+CRDO,Credo Technology Group Holding Ltd,Designs high-speed connectivity chips and cables for data centres.
+CRM,"Salesforce, Inc.","Provides cloud software for customer relationships, sales and service."
+CRWD,"CrowdStrike Holdings, Inc.",Provides cloud-based cybersecurity products.
+CRWV,"CoreWeave, Inc.",Operates cloud infrastructure for AI workloads.
+CSCO,"Cisco Systems, Inc.",Makes networking equipment and sells security and collaboration software.
+CVX,Chevron Corporation,"Produces, refines and markets oil and natural gas."
+CYPH,Cypherpunk Technologies Inc.,Invests in digital assets with a focus on Zcash.
+DELL,Dell Technologies Inc.,"Makes computers, servers and data storage systems."
+DFDV,DeFi Development Corp.,Operates Solana validators and holds SOL as a treasury asset.
+DHR,Danaher Corporation,Makes equipment and supplies for life sciences and diagnostics.
+DJT,Trump Media & Technology Group Corp.,Operates digital media services including Truth Social.
+DRAM,Roundhill Memory ETF,Fund holding companies involved in memory chips and storage technology.
+EWJ,iShares MSCI Japan Index Fund,Fund holding Japanese equities.
+EWT,iShares MSCI Taiwan ETF,Fund holding Taiwanese equities.
+EWY,iShares MSCI South Korea ETF,Fund holding South Korean equities.
+EWZ,iShares MSCI Brazil ETF,Fund holding Brazilian equities.
+EWZS,iShares MSCI Brazil Small-Cap ETF,Fund holding smaller Brazilian companies.
+FLNC,"Fluence Energy, Inc.",Supplies battery energy storage systems and software.
+FWDI,"Forward Industries, Inc.",Holds and manages a Solana-focused digital-asset treasury.
+GEV,GE Vernova Inc.,Makes equipment for generating and transmitting electricity.
+GLD,SPDR Gold Shares,Trust holding gold bullion.
+GLW,Corning Incorporated,"Makes specialty glass, optical fibre and ceramics."
+GLXY,Galaxy Digital Inc.,Provides digital-asset financial services and data-centre infrastructure.
+GME,GameStop Corporation,"Sells video games, hardware and collectibles."
+GOOGL,Alphabet Inc. (Class A),"Class A shares in the parent of Google, YouTube and Google Cloud."
+GPRO,"GoPro, Inc.",Makes action cameras and related software.
+GS,"The Goldman Sachs Group, Inc.","Provides investment banking, trading and asset management."
+HIMS,"Hims & Hers Health, Inc.",Offers online healthcare consultations and treatments.
+HON,Honeywell International Inc.,Makes industrial automation and technology products.
+HOOD,"Robinhood Markets, Inc.","Operates a brokerage platform for stocks, options and digital assets."
+HPE,Hewlett Packard Enterprise Company,"Sells enterprise servers, networking and storage systems."
+IBM,International Business Machines Corporation,"Provides enterprise software, consulting and computing infrastructure."
+IEMG,iShares Core MSCI Emerging Markets ETF,"Fund holding large, medium and small companies in emerging markets."
+IJR,iShares Core S&P Small-Cap ETF,Fund tracking the S&P SmallCap 600 index.
+INTC,Intel Corporation,Designs and manufactures processors and other semiconductors.
+INTW,GraniteShares 2x Long INTC Daily ETF,Fund targeting twice Intel’s daily share-price return.
+IREN,IREN Limited,Operates data centres for AI computing and Bitcoin mining.
+IWM,iShares Russell 2000 Index Fund,Fund tracking the Russell 2000 index of smaller US companies.
+JMKE,Jersey Mike's Subs Inc.,Operates and franchises sandwich restaurants.
+JNJ,Johnson & Johnson,Develops medicines and medical technology.
+JPM,JP Morgan Chase & Co.,"Provides banking, investment and payments services."
+KO,The Coca-Cola Company,"Sells soft drinks, concentrates and other beverages."
+KORU,Direxion Daily South Korea Bull 3X ETF,Fund targeting three times the daily return of a South Korean equity index.
+KSTR,KraneShares China Technology & Semiconductor STAR 50 Index ETF,Fund tracking large technology companies listed on Shanghai’s STAR Market.
+LIN,Linde plc,Supplies industrial gases and related engineering services.
+LITE,Lumentum Holdings Inc.,Makes optical and laser products for communications and manufacturing.
+LLY,Eli Lilly and Company,Develops medicines including diabetes and obesity treatments.
+MARA,"MARA Holdings, Inc.",Mines Bitcoin and operates energy and computing infrastructure.
+MCD,McDonald's Corporation,Operates and franchises fast-food restaurants.
+MDB,"MongoDB, Inc.",Develops database software and cloud database services.
+MDT,Medtronic plc.,Makes medical devices for cardiovascular and other conditions.
+MELI,"MercadoLibre, Inc.",Operates e-commerce and financial services in Latin America.
+META,"Meta Platforms, Inc.","Operates Facebook, Instagram and WhatsApp and sells digital advertising."
+MRK,"Merck & Company, Inc.","Develops medicines, vaccines and animal health products."
+MRNA,"Moderna, Inc.",Develops messenger RNA vaccines and medicines.
+MRVL,"Marvell Technology, Inc.","Designs chips for data centres, networking and storage."
+MSFT,Microsoft Corporation,"Develops Windows, Microsoft 365 and Azure cloud services."
+MSTR,Strategy Inc,Holds Bitcoin and sells business analytics software.
+MU,"Micron Technology, Inc.",Makes memory chips including DRAM and NAND flash.
+MUU,Direxion Daily MU Bull 2X ETF,Fund targeting twice Micron Technology’s daily share-price return.
+MVLL,GraniteShares 2x Long MRVL Daily ETF,Fund targeting twice Marvell Technology’s daily share-price return.
+NBIS,Nebius Group N.V.,Operates cloud computing infrastructure for AI.
+NFLX,"Netflix, Inc.",Operates a subscription video streaming service.
+NOK,Nokia Corporation,Makes telecommunications network equipment and software.
+NU,Nu Holdings Ltd.,Provides digital banking services in Latin America.
+NVDA,NVIDIA Corporation,"Designs graphics processors, AI accelerators and networking systems."
+NVO,Novo Nordisk A/S,"Develops medicines for diabetes, obesity and other conditions."
+OKLO,Oklo Inc.,Develops advanced nuclear power systems.
+OPEN,Opendoor Technologies Inc,Buys and sells homes through an online real estate platform.
+ORCL,Oracle Corporation,"Provides databases, enterprise software and cloud infrastructure."
+PALL,abrdn Physical Palladium Shares ETF,Fund holding physical palladium.
+PANW,"Palo Alto Networks, Inc.",Makes cybersecurity software and network security products.
+PDD,PDD Holdings Inc.,Operates e-commerce platforms including Pinduoduo and Temu.
+PENG,"Penguin Solutions, Inc.","Provides computing, memory and infrastructure for enterprise workloads."
+PEP,"PepsiCo, Inc.","Sells beverages, snacks and packaged foods."
+PFE,"Pfizer, Inc.",Develops prescription medicines and vaccines.
+PG,The Procter & Gamble Company,"Makes household, personal care and health products."
+PLTR,Palantir Technologies Inc.,"Develops software for data integration, analytics and operations."
+PM,Philip Morris International Inc,Sells tobacco and nicotine products.
+PPLT,abrdn Physical Platinum Shares ETF,Fund holding physical platinum.
+PYPL,"PayPal Holdings, Inc.",Provides digital payments and merchant services.
+QCOM,QUALCOMM Incorporated,Designs wireless chips and licenses mobile communications technology.
+QNT,Quantinuum Inc.,Develops quantum computers and quantum computing software.
+QQQ,"Invesco QQQ Trust, Series 1",Fund tracking the Nasdaq-100 index.
+RBLX,Roblox Corporation,Operates an online platform for user-created games and experiences.
+RDDT,"Reddit, Inc.",Operates an online discussion and advertising platform.
+RIOT,"Riot Platforms, Inc.",Mines Bitcoin and operates computing infrastructure.
+RKLB,Rocket Lab Corporation,Builds spacecraft and provides satellite launch services.
+SCHF,Schwab International Equity ETF,Fund holding international developed-market equities outside the US.
+SECZ,Securitize Corp.,Provides infrastructure for issuing and managing tokenized securities.
+SHAZ,"SharonAI Holdings, Inc.",Provides cloud computing infrastructure for AI.
+SKDD,GraniteShares 2x Short SK Hynix Daily ETF,Fund targeting twice the inverse of SK hynix’s daily return.
+SKHY,SK hynix Inc.,Makes memory chips including DRAM and high-bandwidth memory.
+SKUU,GraniteShares 2x Long SK Hynix Daily ETF,Fund targeting twice SK hynix’s daily return.
+SLV,iShares Silver Trust,Trust holding silver bullion.
+SMCI,"Super Micro Computer, Inc.",Makes servers and storage systems for data centres.
+SMH,VanEck Semiconductor ETF,Fund holding semiconductor manufacturers and equipment suppliers.
+SNDK,Sandisk Corporation,Makes flash memory and solid-state storage products.
+SNXX,Tradr 2X Long SNDK Daily ETF,Fund targeting twice Sandisk’s daily share-price return.
+SOXL,Direxion Daily Semiconductor Bull 3X ETF,Fund targeting three times the daily return of a semiconductor equity index.
+SOXS,Direxion Daily Semiconductor Bear 3X ETF,Fund targeting three times the inverse daily return of a semiconductor equity index.
+SPCE,"Virgin Galactic Holdings, Inc.",Develops commercial human spaceflight services.
+SPCX,Space Exploration Technologies Corp. (SpaceX),"SpaceX builds rockets, launches spacecraft and operates Starlink satellite internet."
+SPY,State Street SPDR S&P 500 ETF Trust,Fund tracking the S&P 500 index of large US companies.
+SQQQ,ProShares UltraPro Short QQQ,Fund targeting three times the inverse daily return of the Nasdaq-100 index.
+STRC,Strategy Variable Rate Series A Perpetual Stretch Preferred Stock,Variable-rate perpetual preferred shares issued by Bitcoin treasury company Strategy.
+STX,Seagate Technology Holdings PLC,Makes hard disk drives and data storage products.
+TBLL,Invesco Short Term Treasury ETF,Fund holding short-term US Treasury bills.
+TMF,Direxion Daily 20-Yr Treasury Bull 3x Shrs,Fund targeting three times the daily return of an index of long-dated US Treasuries.
+TMO,Thermo Fisher Scientific Inc,"Supplies scientific instruments, laboratory products and pharmaceutical services."
+TONX,TON Strategy Company,Holds Toncoin and participates in the TON blockchain ecosystem.
+TQQQ,ProShares UltraPro QQQ,Fund targeting three times the daily return of the Nasdaq-100 index.
+TSLA,"Tesla, Inc.","Makes electric vehicles, batteries and energy storage systems."
+TSM,Taiwan Semiconductor Manufacturing Company Ltd.,Manufactures semiconductors for other chip designers.
+UBER,"Uber Technologies, Inc.","Operates ride-hailing, delivery and freight platforms."
+UNH,UnitedHealth Group Incorporated,Provides health insurance and healthcare services.
+URA,Global X Uranium ETF,Fund holding uranium and nuclear industry companies.
+USAR,"USA Rare Earth, Inc.",Develops rare-earth materials and permanent magnets.
+USDE,StablecoinX Inc.,Provides infrastructure and services for the Ethena digital dollar ecosystem.
+UVXY,ProShares Ultra VIX Short Term Futures ETF,Fund targeting leveraged daily exposure to short-term VIX futures.
+V,Visa Inc.,Operates a global electronic payments network.
+VCX,"Fundrise Innovation Fund, LLC",Investment fund holding stakes in private growth companies.
+VIDA,VIDA Global Inc.,Develops AI agents for business communications.
+VST,Vistra Corp.,Generates electricity and sells power to retail customers.
+VT,Vanguard Total World Stock Index ETF,Fund holding companies across global equity markets.
+VTI,Vanguard Total Stock Market ETF,Fund tracking the broad US stock market.
+WDC,Western Digital Corporation,Makes data storage products including hard disk drives.
+WEN,The Wendy's Company,Operates and franchises fast-food restaurants.
+WULF,TeraWulf Inc.,Operates data centres for high-performance computing and Bitcoin mining.
+XLE,State Street Energy Select Sector SPDR ETF,Fund holding energy companies in the S&P 500.
+XOM,ExxonMobil Holdings Corporation,"Produces, refines and markets oil, natural gas and chemical products."
+ZM,"Zoom Communications, Inc.","Provides video meetings, business communications and collaboration software."

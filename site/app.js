@@ -284,6 +284,33 @@
     $("#daily-note").textContent = `${rangeLabel(d.dates, ui.range)}. Overnight trading from 20:00 ET counts toward the next trading date; weekends and holidays retain their own dates.`;
   }
 
+  function renderTrend() {
+    const {dates, offhours} = D.daily;
+    const range = $("#trend-range").value;
+    const start = rangeStart(dates, range);
+    const stockKey = $("#trend-stock").value;
+    const percent = $("#trend-unit").value === "percent";
+    const token = offhours.token.slice(start);
+    const stock = offhours[stockKey].slice(start);
+    const stockLabel = stockKey === "stock_off" ? "US stocks · off-hours" : "US stocks · all sessions";
+    const unit = percent ? value => pct(value / 100, 2) : usd;
+    const line = (label, values, color) => ({ label, data: values, borderColor: color, backgroundColor: color,
+      borderWidth: 2, pointRadius: 1.7, pointHoverRadius: 4, spanGaps: false });
+    const datasets = percent
+      ? [line("Off-hours token volume / US stock volume", token.map((v,i) => v && stock[i] ? 100 * v / stock[i] : null), css("--ovn"))]
+      : [line("Tokens · off-hours", token.map(v => v || null), css("--ovn")),
+         line(stockLabel, stock.map(v => v || null), css("--rth"))];
+    make("trend-chart", {type: "line", data: {labels: dates.slice(start), datasets}, options: {
+      interaction: {mode: "index", intersect: false},
+      scales: {x: {...dateAxis(), stacked: false}, y: {beginAtZero: true, ticks: {callback: unit}}},
+      plugins: {legend: {display: true, position: "bottom"},
+        tooltip: {callbacks: {title: dateTitle, label: c => ` ${c.dataset.label}: ${unit(c.parsed.y)}`}}}
+    }});
+    const all = sum(offhours.total_token.slice(start)), common = sum(token), stockTotal = sum(stock);
+    $("#trend-summary").textContent = `${rangeLabel(dates, range)}. Tracked tokens traded ${usd(all)} off-hours. Across ${offhours.tickers} comparable tickers, ${usd(common)} in off-hours token volume compares with ${usd(stockTotal)} in ${stockKey === "stock_off" ? "off-hours" : "all-session"} US stock volume.` +
+      (stockTotal > 0 ? ` The ratio of the period totals is ${pct(common / stockTotal, 3)}.` : "");
+  }
+
   function renderMix() {
     const k = D.meta.kpis || {};
     const st = k.share_token || {}, ss = k.share_stock || {}, rb = k.ratio_bp_by_session || {};
@@ -369,8 +396,13 @@
   /* ---------- Stocks table and detail ---------- */
   const offShare = (r) => (r.token ? 1 - r.rth / r.token : 0);
   const closedShare = (r) => (r.token ? r.closed / r.token : 0);
+  function stockCell(ticker) {
+    const profile = D.profiles.get(ticker);
+    return `<td class="t">${esc(ticker)}${profile?.name ? `<span class="security-name">${esc(profile.name)}</span>` : ""}</td>`;
+  }
+
   const COLS = [
-    { key: "t", label: "Stock", get: (r) => r.t, cell: (r) => `<td class="t">${esc(r.t)}</td>` },
+    { key: "t", label: "Stock", get: (r) => r.t, cell: (r) => stockCell(r.t) },
     { key: "token", label: "Token volume", get: (r) => r.token, cell: (r) => `<td>${usd(r.token)}</td>` },
     { key: "off", label: "Outside regular hours", get: offShare, cell: (r) => `<td><span class="bar off" style="width:${(offShare(r) * 3).toFixed(2)}rem"></span>${pct(offShare(r))}</td>` },
     { key: "closed", label: "While closed", get: closedShare, cell: (r) => `<td><span class="bar" style="width:${(closedShare(r) * 3).toFixed(2)}rem"></span>${pct(closedShare(r))}</td>` },
@@ -383,7 +415,7 @@
     const T = D.tickers;
     const allRows = (T.rows || []).slice();
     const q = ui.query.trim().toUpperCase();
-    const rows = q ? allRows.filter((r) => r.t.toUpperCase().includes(q)) : allRows;
+    const rows = q ? allRows.filter((r) => [r.t, r.name, r.description].some(value => value?.toUpperCase().includes(q))) : allRows;
     const col = COLS.find((c) => c.key === ui.sort.key) || COLS[1];
     rows.sort((a, b) => {
       const x = col.get(a), y = col.get(b);
@@ -399,7 +431,7 @@
     $("#ticker-table").innerHTML = rows.length
       ? `<thead><tr>${head}</tr></thead><tbody>${body}</tbody>`
       : "<tbody><tr><td>No stock-level volume yet.</td></tr></tbody>";
-    if (T.start) $("#stocks-note").textContent = `All history · ${longDate(T.start)} to ${longDate(T.end)} (${T.window_days} day${T.window_days === 1 ? "" : "s"}). Select a row to see its daily series.`;
+    if (T.start) $("#stocks-note").textContent = `All history · ${longDate(T.start)} to ${longDate(T.end)} (${T.window_days} day${T.window_days === 1 ? "" : "s"}). Select a row for its description and daily series.`;
     const scope = q ? `${rows.length} of ${allRows.length} stocks match “${ui.query.trim()}”` : `${allRows.length} stocks across all history`;
     const shownLabel = shown.length === rows.length ? `all ${rows.length} stocks` : `the top ${shown.length}`;
     $("#ticker-count").textContent = `${scope}. Showing ${shownLabel} by ${col.label.toLowerCase()}.`;
@@ -412,7 +444,8 @@
     const row = (D.tickers.rows || []).find((r) => r.t === t);
     const box = $("#ticker-detail");
     box.hidden = false;
-    $("#ticker-h").textContent = `${t}: token volume by session`;
+    $("#ticker-h").textContent = row?.name ? `${t} · ${row.name}` : t;
+    $("#ticker-profile").textContent = row?.description || "";
     if (charts["ticker-chart"]) { charts["ticker-chart"].destroy(); delete charts["ticker-chart"]; }
     D.series = null;
     $("#ticker-ranges").hidden = !row?.series;
@@ -477,6 +510,10 @@
     const C = D.closures || {};
     const pts = C.points || [];
     const p = C.pooled || {};
+    $("#closure-result").textContent = fin(p.hit_rate) && fin(p.up_rate)
+      ? `Across ${p.windows} distinct closures, tokens moved in the same direction as the next stock opening gap in ${pct(p.hit_rate, 1)} of ${p.n_hit.toLocaleString()} stock observations with gaps over 0.5%. For comparison, ${pct(p.up_rate, 1)} of those stock gaps were upward.`
+      : `${p.n || 0} qualifying stock observations across ${p.windows || 0} closures.`;
+    if (!$("#closure-details").open) return;
     const amber = css("--closed");
     const lim = Math.max(2, ...pts.map((q) => Math.abs(q.x) * 100), ...pts.map((q) => Math.abs(q.y) * 100)) * 1.05;
     const datasets = [
@@ -529,7 +566,7 @@
     const shown = bt.slice(0, closureLimit);
     $("#closure-table").innerHTML = bt.length
       ? `<thead><tr><th>Stock</th><th>Closures</th><th>Slope</th><th>R²</th><th>Gap already priced</th><th>Same direction</th><th>Token volume</th></tr></thead><tbody>${shown.map((r) =>
-        `<tr><td class="t">${esc(r.underlying)}</td><td>${r.windows}</td><td>${fix(r.beta)}</td><td>${fix(r.r2)}</td><td>${pct(r.anticipated)}</td><td>${pct(r.hit_rate)}</td><td>${usd(r.token_vol)}</td></tr>`).join("")}</tbody>`
+        `<tr>${stockCell(r.underlying)}<td>${r.windows}</td><td>${fix(r.beta)}</td><td>${fix(r.r2)}</td><td>${pct(r.anticipated)}</td><td>${pct(r.hit_rate)}</td><td>${usd(r.token_vol)}</td></tr>`).join("")}</tbody>`
       : "<tbody><tr><td>A stock appears here once it has six qualifying closures.</td></tr></tbody>";
     $("#closure-count").textContent = bt.length
       ? `${bt.length} stocks meet the minimum-history rule. Showing ${shown.length === bt.length ? `all ${bt.length} stocks` : `the top ${shown.length}`} by token volume.`
@@ -659,7 +696,7 @@
     $("#volume-summary").textContent = `${longDate(start)} to ${longDate(end)}. ${description} ${rows.filter(r => r.token > r.stock).length} of ${rows.length} comparable tickers exceeded 100% over the window.`;
     $("#volume-comparison").innerHTML = "<thead><tr><th>Stock</th><th>Token dollars</th><th>Stock dollars</th><th>Token / stock</th><th>Days above 100% / matched</th></tr></thead><tbody>" +
       rows.slice(0, limit === "all" ? rows.length : Number(limit)).map(r =>
-        `<tr><td>${esc(r.t)}</td><td>${usd(r.token)}</td><td>${usd(r.stock)}</td><td>${pct(r.token/r.stock,2)}</td><td>${r.above} / ${r.days}</td></tr>`).join("") +
+        `<tr>${stockCell(r.t)}<td>${usd(r.token)}</td><td>${usd(r.stock)}</td><td>${pct(r.token/r.stock,2)}</td><td>${r.above} / ${r.days}</td></tr>`).join("") +
       (rows.length ? "" : '<tr><td colspan="5">No comparable recorded volume.</td></tr>') + "</tbody>";
   }
 
@@ -670,7 +707,7 @@
     const results = t.lead_lag?.[$("#lead-session").value] || {};
     const names = Object.keys(results).sort();
     const previous = select.value;
-    select.replaceChildren(...names.map(name => new Option(name, name)));
+    select.replaceChildren(...names.map(ticker => new Option(D.profiles.get(ticker)?.name ? `${ticker} · ${D.profiles.get(ticker).name}` : ticker, ticker)));
     if (names.includes(previous)) select.value = previous;
     else if (names.includes("BNC")) select.value = "BNC";
     const r = results[select.value];
@@ -686,6 +723,7 @@
     renderWeek();
     renderSummary();
     renderDaily();
+    renderTrend();
     renderMix();
     renderVenues();
     renderTickers();
@@ -698,6 +736,11 @@
   }
 
   function bind() {
+    D.profiles = new Map(D.tickers.rows.map(row => [row.t, row]));
+    for (const id of ["trend-range", "trend-stock", "trend-unit"]) {
+      $(`#${id}`).addEventListener("change", renderTrend);
+    }
+    $("#closure-details").addEventListener("toggle", renderClosures);
     const dates = D.daily.dates;
     const dex = D.meta.sources?.find(source => source.id === "dex");
     if (dates.length) {

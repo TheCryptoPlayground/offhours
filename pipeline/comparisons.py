@@ -28,6 +28,21 @@ def volume_history(tokens, stocks):
     return {"days": days, "columns": ["ticker", "session", "token_cents", "stock_cents"]}
 
 
+def offhours_trend(tokens, stocks, dates):
+    """Daily observed dollars for the same underlyings on both sides of the comparison."""
+    tokens = tokens.assign(cents=_published_cents(tokens))
+    stocks = stocks.assign(cents=_published_cents(stocks))
+    common = (set(tokens.loc[tokens.cents > 0, "underlying"]) &
+              set(stocks.loc[stocks.cents > 0, "underlying"])) - {""}
+    def daily(frame):
+        return (frame.groupby("market_date").cents.sum().reindex(dates, fill_value=0) / 100).tolist()
+    outside = tokens[tokens.session != "RTH"]
+    tape = stocks[stocks.underlying.isin(common)]
+    return dict(tickers=len(common), total_token=daily(outside),
+                token=daily(outside[outside.underlying.isin(common)]),
+                stock_off=daily(tape[tape.session != "RTH"]), stock_all=daily(tape))
+
+
 def volume_views(tokens, stocks):
     tokens = tokens.assign(cents=_published_cents(tokens))
     stocks = stocks.assign(cents=_published_cents(stocks))

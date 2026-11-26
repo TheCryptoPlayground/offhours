@@ -44,12 +44,16 @@ def _share(d: dict[str, float]) -> dict[str, float]:
     return {k: (v / tot if tot else None) for k, v in d.items()}
 
 
-def last_full_date() -> pd.Timestamp:
-    return pd.Timestamp.now(tz=C.MARKET_TZ).tz_localize(None).normalize() - pd.Timedelta(days=1)
+def last_full_date(finished=None) -> pd.Timestamp:
+    # A rebuild can happen days after collection stopped mid-session.
+    cutoff = pd.Timestamp(finished).tz_convert(C.MARKET_TZ) if finished else pd.Timestamp.now(tz=C.MARKET_TZ)
+    return cutoff.tz_localize(None).normalize() - pd.Timedelta(days=1)
 
 
 def build(demo: bool = False, end_date: str | None = None) -> dict:
     """end_date pins the last market date (tests, backfills); by default it is yesterday in New York."""
+    state = store.load_state()
+    completed_date = last_full_date((state.get("last_run") or {}).get("finished"))
     markets = store.load_markets()
     tf = aggregate.token_facts(markets)
     sf = aggregate.stock_facts()
@@ -61,9 +65,9 @@ def build(demo: bool = False, end_date: str | None = None) -> dict:
         end = pd.Timestamp(end_date)
     elif last_dates:
         latest = max(last_dates)
-        end = latest if demo else min(last_full_date(), latest)
+        end = latest if demo else min(completed_date, latest)
     else:
-        end = last_full_date()
+        end = completed_date
     tf = tf[tf.market_date <= end] if len(tf) else tf
     sf = sf[sf.market_date <= end] if len(sf) else sf
     head = tf[tf.counterpart.isin(C.HEADLINE_COUNTERPARTS)]
@@ -77,6 +81,7 @@ def build(demo: bool = False, end_date: str | None = None) -> dict:
     daily = dict(
         dates=[d.strftime("%Y-%m-%d") for d in dates],
         token=_series(head, dates, "session", S) if len(head) else {s: [] for s in S},
+        offhours=comparisons.offhours_trend(head, sf, dates),
         token_other=_series(other.assign(k="x"), dates, "k", ["x"])["x"] if len(other) else [0.0] * len(dates),
         stock=_series(sf, dates, "session", S) if len(sf) else {s: [0.0] * len(dates) for s in S},
         venues=_series(head, dates, "source", venues) if venues else {},
@@ -107,6 +112,7 @@ def build(demo: bool = False, end_date: str | None = None) -> dict:
     )
 
     # tickers
+    profiles = pd.read_csv(C.ROOT / "config/security_profiles.csv", keep_default_na=False).set_index("ticker").to_dict("index")
     rows = []
     if len(head):
         g = head[head.underlying != ""].groupby("underlying")
@@ -115,7 +121,7 @@ def build(demo: bool = False, end_date: str | None = None) -> dict:
             ss = d.groupby("session").vol_usd.sum()
             tot = float(d.vol_usd.sum())
             stock = float(stock_by.get(u, 0.0))
-            rows.append(dict(t=u, token=tot, rth=float(ss.get("RTH", 0)), pre=float(ss.get("PRE", 0)),
+            rows.append(dict(t=u, **profiles.get(u, {}), token=tot, rth=float(ss.get("RTH", 0)), pre=float(ss.get("PRE", 0)),
                              post=float(ss.get("POST", 0)), ovn=float(ss.get("OVERNIGHT", 0)),
                              closed=float(ss.get("CLOSED", 0)), stock=stock or None,
                              ratio_bp=(tot / stock * 1e4) if stock else None,
@@ -161,7 +167,6 @@ def build(demo: bool = False, end_date: str | None = None) -> dict:
         b = b[(b.ts >= t0) & (b.ts < t1)]
         coverage = dict(as_of=umeta["fetched_at"], measured_24h=float(b.vol_usd.sum()),
                         coingecko_24h=float(umeta["coingecko_vol24"]))
-    state = store.load_state()
     sources = []
     source_state = state.get("sources", {})
     expected_sources = C.CEX_SOURCES + ["dex", "stocks"]

@@ -16,6 +16,8 @@ all archived history, and inclusive custom dates. Each ticker requires at least 
 Matched-date and session views use only dates with positive volume on both sides. The default for every analysis is the full archive, including stock rankings, the weekly heatmap and the adjacent half-hour price comparison. The daily, product and individual stock charts have independent range controls.
 [Data sources and APIs](https://tianhaoyin1120.github.io/offhours/#sources-h) lists upstream feeds and public JSON and CSV downloads.
 
+The [off-hours trend](https://tianhaoyin1120.github.io/offhours/#offhours-h) compares recorded token and consolidated stock dollars across underlyings observed on both sides of the archive. Each day includes pre-market, after-hours, overnight and closed sessions. The optional all-session denominator includes regular US trading. The period ratio divides the sums and includes weekend token volume. Daily percentages require recorded volume on both sides. Security names and business or fund descriptions are maintained in `config/security_profiles.csv`, using Nasdaq Trader’s symbol directory for listed identities.
+
 ## Preview in two minutes
 
 ```bash
