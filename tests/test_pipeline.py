@@ -222,6 +222,7 @@ def test_session_ratio_excludes_control_stocks_and_partial_overnight_feed(paths)
     token = kpis["token_total"] * kpis["share_token"]["RTH"]
     assert np.isclose(kpis["ratio_bp_by_session"]["RTH"], token / stock * 1e4)
     assert kpis["ratio_bp_by_session"]["OVERNIGHT"] is None
+    assert kpis["ratio_bp_by_session"]["CLOSED"] is None
 
 
 def test_retired_venue_files_do_not_reenter_a_build(paths):
@@ -259,3 +260,22 @@ def test_issuer_roster_counts_pools_and_preserves_unobserved_volume(paths):
     assert result.loc["c","status"] == "No eligible indexed pool found"
     assert result.loc["d","status"] == "Pool history pending"
     assert result.loc[["b","c","d"],"observed_usd"].isna().all()
+
+
+def test_kraken_unit_alias_counts_only_when_canonical_bar_missing():
+    bars = pd.DataFrame({"market_id":["kraken:AAPLSPVUSD","kraken:AAPLxUSD","kraken:AAPLSPVUSD"],
+                         "ts":[1,1,2]})
+    assert store.unique_kraken_bars(bars).index.tolist() == [1,2]
+
+
+def test_shared_venue_comparison_matches_each_ticker_and_date():
+    venues = ["binance","kraken","dex-base","dex-eth"]
+    rows = [(ticker, pd.Timestamp(day), venue, "product", session, dollars)
+            for ticker, day, sources in [("ONE","2026-11-10",venues),("ONE","2026-11-11",venues[:2]),
+                                         ("TWO","2026-11-11",venues[2:]),("TWO","2026-11-12",venues[:2])]
+            for venue in sources for session,dollars in [("RTH", 5.25),("POST",3.50)]]
+    df = pd.DataFrame(rows, columns=["underlying","market_date","source","family","session","vol_usd"])
+    out = comparisons.venue_comparison(df)
+    assert out["tickers"] == ["ONE","TWO"]
+    assert len(out["matched"]) == 4
+    assert all(r[0]=="2026-11-10" and r[3:]==[875,350,"ONE"] for r in out["matched"])

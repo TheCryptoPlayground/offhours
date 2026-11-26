@@ -131,6 +131,7 @@ def build(demo: bool = False, end_date: str | None = None) -> dict:
         dates=[d.strftime("%Y-%m-%d") for d in dates],
         us_trading_day=dates.isin(pd.to_datetime(calendar.tables().days)).tolist(),
         token=_series(head, dates, "session", S) if len(head) else {s: [] for s in S},
+        venue_comparison=comparisons.venue_comparison(head),
         offhours=comparisons.offhours_trend(head, sf, dates),
         token_other=_series(other.assign(k="x"), dates, "k", ["x"])["x"] if len(other) else [0.0] * len(dates),
         stock=_series(sf, dates, "session", S) if len(sf) else {s: [0.0] * len(dates) for s in S},
@@ -162,7 +163,7 @@ def build(demo: bool = False, end_date: str | None = None) -> dict:
         ratio_bp=(sum(tok_m.values()) / common_stock_total * 1e4) if common_stock_total else None,
         share_token=_share(tok_s), share_stock=_share(stk_s),
         ratio_bp_by_session={s: (tok_m[s] / common_stock_s[s] * 1e4
-                                 if s != "OVERNIGHT" and common_stock_s.get(s) else None) for s in S},
+                                 if s in ("RTH", "PRE", "POST") and common_stock_s.get(s) else None) for s in S},
     )
 
     # tickers

@@ -31,6 +31,18 @@ def day_path(source: str, day: str) -> Path:
     return bars_dir() / source / day[:7] / f"{day}.parquet"
 
 
+def unique_kraken_bars(part):
+    """Keep an SPV price-unit view only where the canonical xStock bar is missing."""
+    alias = part.market_id.str.contains(r"SPVUSD$", regex=True)
+    if not alias.any():
+        return part
+    canonical = part.loc[alias, ["market_id", "ts"]].copy()
+    canonical["market_id"] = canonical.market_id.str.replace(r"SPVUSD$", "xUSD", regex=True)
+    duplicates = pd.MultiIndex.from_frame(canonical).isin(
+        pd.MultiIndex.from_frame(part.loc[~alias, ["market_id", "ts"]]))
+    return part.drop(index=canonical.index[duplicates])
+
+
 def write_bars(source: str, df: pd.DataFrame) -> int:
     """Upsert bars by (market_id, ts). Returns the number of rows written."""
     if df is None or df.empty:
@@ -43,6 +55,8 @@ def write_bars(source: str, df: pd.DataFrame) -> int:
         if path.exists():
             part = pd.concat([pd.read_parquet(path), part], ignore_index=True)
         part = part.drop_duplicates(["market_id", "ts"], keep="last").sort_values(["market_id", "ts"])
+        if source == "kraken":
+            part = unique_kraken_bars(part)
         part.to_parquet(path, index=False)
     return len(df)
 

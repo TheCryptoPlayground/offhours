@@ -170,7 +170,7 @@
       [span, "Historical span"],
       [usd(k.token_total || 0), "Token volume across all history"],
       [pct(k.outside_rth_share), "Volume outside regular US hours"],
-      [String((m.markets || {}).total || 0), `Token markets in the historical registry`],
+      [String(D.tickers.rows.length), "Underlying securities with recorded token trades"],
     ];
     $("#kpi-grid").innerHTML = items.map(([value, label]) =>
       `<div class="kpi"><span class="value">${esc(value)}</span><span class="label">${esc(label)}</span></div>`).join("");
@@ -357,7 +357,7 @@
       const tok = (st[s] || 0) * (k.token_total || 0);
       const stk = (ss[s] || 0) * (k.stock_total || 0);
       const none = "no stock volume recorded";
-      const ratio = s === "OVERNIGHT" ? "Partial stock coverage" : fin(rb[s]) ? bp(rb[s]) : hasStock && stk === 0 ? none : "n/a";
+      const ratio = s === "OVERNIGHT" ? "Partial stock coverage" : s === "CLOSED" ? "US market closed" : fin(rb[s]) ? bp(rb[s]) : hasStock && stk === 0 ? none : "n/a";
       return `<tr><td><span class="sw-inline" style="background:var(${VAR[s]})"></span>${LABEL[s]}</td><td>${usd(tok)}</td>` +
         `<td>${hasStock ? (stk > 0 ? usd(stk) : "none recorded") : "n/a"}</td><td>${ratio}</td></tr>`;
     });
@@ -368,25 +368,46 @@
   function renderVenues() {
     const d = D.daily;
     const start = rangeStart(d.dates, ui.venueRange);
-    const dates = d.dates.slice(start);
+    const windowDates = d.dates.slice(start);
+    const shared = $("#venue-sample").value === "shared";
+    const sample = d.venue_comparison;
     const byVenue = ui.venue === "venues";
     const names = D.meta.venue_labels || {};
-    const entries = [];
-    function add(family, venue, series) {
-      const product = FAMILY[family] || family;
-      const data = series.slice(start);
-      entries.push({ product, venue, label: venue ? `${product} · ${venue}` : product,
-        data, total: sum(data), observed: dates.filter((_, i) => data[i] > 0) });
-    }
-    if (byVenue) {
-      for (const [source, products] of Object.entries(d.product_venues)) {
-        const name = names[source] || source;
-        const venue = source.startsWith("dex-") ? name : `${name} order book`;
-        for (const [family, series] of Object.entries(products)) add(family, venue, series);
+    const firstDate = windowDates[0];
+    let rows = (shared ? sample.matched : sample.all).filter(r => r[0] >= firstDate);
+    const tickerMenu = $("#shared-ticker");
+    $("#shared-ticker-label").hidden = !shared;
+    const matchedDays = new Map();
+    if (shared) {
+      for (const [date, , , , , ticker] of rows) {
+        if (!matchedDays.has(ticker)) matchedDays.set(ticker, new Set());
+        matchedDays.get(ticker).add(date);
       }
-    } else {
-      for (const [family, series] of Object.entries(d.families)) add(family, "", series);
+      const previous = tickerMenu.value;
+      tickerMenu.replaceChildren(new Option("All shared tickers", ""), ...sample.tickers.map(ticker => {
+        const n = matchedDays.get(ticker)?.size || 0;
+        return new Option(`${ticker} · ${n} matched ${n === 1 ? "date" : "dates"}`, ticker);
+      }));
+      if (sample.tickers.includes(previous)) tickerMenu.value = previous;
+      if (tickerMenu.value) rows = rows.filter(r => r[5] === tickerMenu.value);
     }
+    const dates = shared ? [...new Set(rows.map(r => r[0]))].sort() : windowDates;
+    const positions = new Map(dates.map((date, i) => [date, i]));
+    const grouped = new Map();
+    for (const [date, source, family, cents, outside] of rows) {
+      const product = FAMILY[family] || family;
+      const name = names[source] || source;
+      const venue = byVenue ? (source.startsWith("dex-") ? name : `${name} order book`) : "";
+      const label = venue ? `${product} · ${venue}` : product;
+      if (!grouped.has(label)) grouped.set(label, { product, venue, label, cents: Array(dates.length).fill(0), outside: 0 });
+      const group = grouped.get(label);
+      group.cents[positions.get(date)] += cents;
+      group.outside += outside;
+    }
+    const entries = [...grouped.values()].map(g => ({
+      ...g, data: g.cents.map(n => n / 100), total: sum(g.cents) / 100, off: g.outside / 100,
+      observed: dates.filter((date, i) => g.cents[i] > 0),
+    }));
     entries.sort((a, b) => b.total - a.total || a.label.localeCompare(b.label));
     const pal = PALETTE[darkMode() ? "dark" : "light"];
     const datasets = entries.map((entry, i) => ({
@@ -408,14 +429,17 @@
       },
     });
     const other = sum(d.token_other.slice(start));
-    const explanation = byVenue
-      ? "Coinbase and Ondo totals measure indexed swaps on Base and Ethereum respectively. Listings, pools and observation dates differ by product."
-      : "Each product combines the trades recorded on its tracked venues. Coverage differs by product and date. Coinbase and Ondo totals cover indexed pools on Base and Ethereum respectively.";
+    const pairs = shared ? new Set(rows.map(r => r[0] + "|" + r[5])).size : 0;
+    const count = shared ? new Set(rows.map(r => r[5])).size : 0;
+    const explanation = shared
+      ? `Each included ticker traded on all four venues on the same market date. This selection has ${count} securities, ${pairs} ticker-date matches and ${dates.length} market dates. A date qualifies on full-day volume, so venues can trade in different sessions. The off-hours share is weighted by dollars traded.`
+      : "Recorded token volume across all tracked tickers in the selected period. Coinbase and Ondo cover indexed pools on Base and Ethereum respectively. Listings and start dates differ across venues.";
     $("#venue-note").textContent = `${rangeLabel(d.dates, ui.venueRange)}. ${explanation}` +
-      (other > 0 ? ` Pools with other counterpart assets contributed a further ${usd(other)}, excluded here.` : "");
-    const rows = entries.map(({ product, venue, total, observed }) =>
-      `<tr><td>${esc(product)}</td>${byVenue ? `<td class="left">${esc(venue)}</td>` : ""}<td>${usd(total)}</td><td>${observed.length}</td><td>${observed.length ? longDate(observed[0]) : "—"}</td><td>${observed.length ? longDate(observed[observed.length - 1]) : "—"}</td></tr>`);
-    $("#product-totals").innerHTML = `<thead><tr><th>Token product</th>${byVenue ? '<th class="left">Where it traded</th>' : ""}<th>Recorded volume</th><th>Dates with volume</th><th>First in range</th><th>Latest in range</th></tr></thead><tbody>${rows.join("")}</tbody>`;
+      (!shared && other > 0 ? ` Pools with other counterpart assets contributed a further ${usd(other)}, excluded here.` : "");
+    const tableRows = entries.map(({ product, venue, total, off, observed }) =>
+      `<tr><td>${esc(product)}</td>${byVenue ? `<td class="left">${esc(venue)}</td>` : ""}<td>${usd(total)}</td><td>${usd(off)}</td><td>${total ? pct(off / total, 1) : "—"}</td><td>${observed.length}</td><td>${observed.length ? longDate(observed[0]) : "—"}</td><td>${observed.length ? longDate(observed[observed.length - 1]) : "—"}</td></tr>`);
+    $("#product-totals").innerHTML = `<thead><tr><th>Token product</th>${byVenue ? '<th class="left">Where it traded</th>' : ""}<th>Recorded volume</th><th>Off-hours volume</th><th>Off-hours share</th><th>Dates with volume</th><th>First in range</th><th>Latest in range</th></tr></thead><tbody>${tableRows.join("") || `<tr><td colspan="${byVenue ? 8 : 7}">No qualifying trades in this selection.</td></tr>`}</tbody>`;
+
   }
 
   /* ---------- Stocks table and detail ---------- */
@@ -611,7 +635,7 @@
     if (u.tokens) {
       const mapping = u.tickers_checked ? "The refresh checked symbols against Alpaca’s listing directory." :
         "The refresh inferred symbols from token names and tickers without checking Alpaca’s listing directory.";
-      bits.push(`For exchange order books, CoinGecko discovery returned ${u.tokens} candidate tokens and assigned ${u.mapped} underlying symbols. ${mapping} The stock table contains ${D.tickers.rows.length} distinct symbols with observed token trading.`);
+      bits.push(`The supplementary CoinGecko directory returned ${u.tokens} candidate tokens and assigned ${u.mapped} underlying symbols. ${mapping} The stock table contains ${D.tickers.rows.length} distinct symbols with observed token trading.`);
     }
     if (cov && cov.coingecko_24h > 0) {
       const stamp = iso => iso.slice(0, 16).replace("T", " ");
@@ -638,7 +662,7 @@
           : s.ok === false ? '<span class="status-bad">Failing</span>' : '<span class="sub">No recorded run</span>';
         const detail = s.error ? ` <span class="sub">${esc(String(s.error).slice(0, 160))}</span>` : "";
         const errs = (s.errors ? ` <span class="sub">(${s.errors} market errors)</span>` : "") +
-          (s.discovery_errors ? ` <span class="sub">(${s.discovery_errors} token pool lookups failed)</span>` : "");
+          (s.discovery_errors ? ` <span class="sub">(${s.discovery_errors} discovery issues)</span>` : "");
         const runAt = s.finished || s.started;
         const when = runAt ? `${esc(runAt.slice(0, 16).replace("T", " "))} UTC` : "n/a";
         const groups = s.pool_groups?.length ? s.pool_groups : [s];
@@ -845,6 +869,8 @@
       }));
     }
     bindRange("range", "range", renderDaily);
+    $("#venue-sample").addEventListener("change", renderVenues);
+    $("#shared-ticker").addEventListener("change", renderVenues);
     bindRange("venue-range", "venueRange", renderVenues);
     bindRange("ticker-range", "tickerRange", () => {
       const row = (D.tickers.rows || []).find(r => r.t === ui.ticker);

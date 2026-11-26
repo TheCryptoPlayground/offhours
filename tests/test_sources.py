@@ -64,9 +64,10 @@ def test_kraken_lists_tokenized_pairs():
         if url.endswith("/AssetPairs"):
             assert p["aclass_base"] == "tokenized_asset"
             return {"error": [], "result": {"AAPLxUSD": {"altname": "AAPLxUSD", "wsname": "AAPLx/USD", "status": "online"},
+                                            "AAPLSPVUSD": {"wsname": "AAPLx/USD", "status": "online"},
                                             "OLDxUSD": {"wsname": "OLDx/USD", "status": "delisted"}}}
         return {"error": [], "result": {"AAPLxUSD": {"c": ["271.5", "1"]}}}
-    assert cex.Kraken(FakeHTTP(h)).list_markets() == [dict(native="AAPLxUSD", base="AAPLx", quote="USD", price=271.5)]
+    assert cex.Kraken(FakeHTTP(h)).list_markets() == [dict(native="AAPLxUSD", base="AAPLx", quote="USD", family="xstocks")]
 
 
 TOKENS = pd.DataFrame([
@@ -222,3 +223,17 @@ def test_pool_snapshot_compares_dollars_within_the_same_index():
     from pipeline.sources.issuer_pools import index_coverage
     r = index_coverage("base", {"a": 10, "b": 30, "c": 0}, {"dex-base:a", "dex-eth:b", "dex-base:c"})
     assert r == dict(reported_pools=3, tracked_pools=2, reported_usd=40, tracked_usd=10)
+
+
+def test_binance_uses_venue_tags_for_new_and_lookalike_symbols(tmp_path, monkeypatch):
+    monkeypatch.setattr(cex.C, "DATA", tmp_path)
+    def response(url, params):
+        if url.endswith("exchangeInfo"):
+            return {"symbols":[{"symbol":s+"USDT","baseAsset":s,"quoteAsset":"USDT","status":"TRADING"}
+                               for s in ("ARTYB","SHIB","BRKBB")]}
+        return {"data":[{"b":"ARTYB","an":"Future AI ETF","tags":["bStocks"]},
+                        {"b":"BRKBB","an":"Berkshire","tags":["bStocks"]},
+                        {"b":"SHIB","an":"Shiba Inu","tags":["meme"]}]}
+    exchange = cex.Binance(FakeHTTP(response))
+    found = cex.match_markets("binance", exchange.list_markets(), TOKENS, "today")
+    assert {m.underlying for m in found} == {"ARTY","BRK.B"}

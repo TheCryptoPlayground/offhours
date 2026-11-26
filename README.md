@@ -114,8 +114,7 @@ Change the backfill with `OFFHOURS_BACKFILL_DAYS` and `OFFHOURS_DEX_BACKFILL_DAY
 - **Tokens:** every coin in CoinGecko's tokenized-stock categories, plus any new category whose
   name matches (a new issuer is picked up without code changes). CoinGecko lists canonical
   contracts, which matters on chains full of copies squatting on tickers.
-- **Exchange listings:** the base symbol matches a token, the quote is USD or a dollar
-  stablecoin, and the price is within 20% of CoinGecko's.
+- **Exchange listings:** Binance’s product directory supplies the bStocks tag, and the spot market list supplies trading status and quote currency. Kraken’s tokenized-asset endpoint supplies canonical xStock pairs. Kraken also publishes SPV price units for the same trades. For the November 2026 coverage repair, earlier Kraken trades filled missing half-hours. Sandisk’s pre-split trade prices were divided by eight to match Kraken’s historical candles, preserving the dollars executed. At each timestamp the archive prefers the canonical xStock bar and retains an older SPV bar only when it is the sole observation.
 - **DEX pools:** one side must be a registered token contract. Pools are classed by the other
   side: stablecoins, majors (ETH, SOL, BNB, BTC wrappers), another stock token, or other (mostly
   memecoins). Headline figures leave out "other", which is reported on its own, because a memecoin
@@ -126,6 +125,10 @@ Change the backfill with `OFFHOURS_BACKFILL_DAYS` and `OFFHOURS_DEX_BACKFILL_DAY
 **Volume** is quote volume as each venue reports it. For Kraken that is bar VWAP times base volume,
 for GeckoTerminal the pool's volume in USD, and for the stocks, shares times bar VWAP. Dollar
 stablecoins count one for one.
+
+## Comparing venues
+
+The product and venue panel opens on all recorded trading. Its shared sample counts an underlying once per New York market date when all four token venues report positive dollar volume for that security. All four venue totals use those exact ticker-date pairs, even when trades occur in different sessions. The selector shows each security’s matched-date count. Off-hours share is off-hours dollars divided by total dollars for the selected observations. The other dashboard sections keep their own stated samples.
 
 ## Volume crossovers and two-way price discovery
 

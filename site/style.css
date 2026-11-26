@@ -178,3 +178,5 @@ th.left, td.left { text-align: left; white-space: normal; }
 .security-name { display: block; color: var(--muted); font-size: .84rem; font-weight: 400; white-space: normal; min-width: 11rem; max-width: 18rem; }
 #ticker-profile { max-width: var(--measure); }
 #closure-details > summary { cursor: pointer; font-weight: 600; margin-block: 1rem; }
+
+.comparison-controls label[hidden] { display: none; }

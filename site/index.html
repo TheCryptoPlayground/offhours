@@ -6,9 +6,9 @@
 <title>Tokenized Stock Observatory: trading beyond US market hours</title>
 <meta name="description" content="Historical and daily market data for tokenized US stocks, split by US trading session, venue, issuer and underlying stock.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%2315212B'/%3E%3Crect x='3' y='3' width='4' height='10' fill='%235C8FC4'/%3E%3Crect x='9' y='3' width='4' height='10' fill='%23F0A23A'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="style.css?v=20261126-2">
+<link rel="stylesheet" href="style.css?v=20261126-3">
 <script src="vendor/chart.umd.js" defer></script>
-<script src="app.js?v=20261126-8" defer></script>
+<script src="app.js?v=20261126-9" defer></script>
 </head>
 <body>
 <div class="demo-banner" id="demo-banner" hidden><p>Synthetic demo data, generated to preview the layout. These are not market figures.</p></div>
@@ -100,7 +100,11 @@
       </div>
     </div>
   </div>
-  <p class="note" id="venue-note"></p>
+  <div class="comparison-controls">
+    <label>Comparison sample <select id="venue-sample"><option value="all">All tickers</option><option value="shared">Shared across all four venues</option></select></label>
+    <label id="shared-ticker-label" hidden>Underlying security <select id="shared-ticker"></select></label>
+  </div>
+  <p class="note" id="venue-note" aria-live="polite"></p>
   <div class="chart"><canvas id="venue-chart" aria-label="Daily token volume by product and trading venue"></canvas></div>
   <div class="table-wrap"><table id="product-totals"></table></div>
 </section>
@@ -167,7 +171,7 @@
   <h2 id="wk-h">Do token moves line up with the next stock open?</h2>
   <p id="closure-result" aria-live="polite"></p>
   <details id="closure-details"><summary>Explore the price chart and stock-by-stock results</summary>
-  <p class="note" id="wk-note">Each point is one stock over a closure of at least 20 hours. The token log return ends two hours before the overnight session resumes and weights each market by its recorded dollars. At least $10,000 in eligible token trades is required. The stock log return runs from its last eligible pre-closure bar close to the first regular-session bar open. Both use unadjusted prices, so corporate actions can affect the result.</p>
+  <p class="note" id="wk-note">Each point is one stock over a closure of at least 20 hours. The token log return ends two hours before the overnight session resumes and weights each market by its recorded dollars. At least $10,000 in eligible token trades is required. The stock log return runs from its last eligible pre-closure bar close to the first regular-session bar open. Stock prices are unadjusted. Token prices use each venue’s reported units. Corporate actions can affect these returns.</p>
   <div class="split">
     <div class="chart square"><canvas id="scatter" aria-label="Token move during the closure against the stock's move to the next open"></canvas></div>
     <div><dl class="stats" id="stats"></dl><p class="note" id="stats-note" style="margin-top:1rem"></p></div>
@@ -194,7 +198,7 @@
   <p>The dashboard publishes daily files that anyone can open without an account. The collector uses the following upstream APIs.</p>
   <ul>
     <li><strong>US stock volume.</strong> Alpaca supplies 30-minute price and share-volume bars from the consolidated US tape. We estimate dollars traded by multiplying shares by the bar’s volume-weighted average price, using its closing price when that average is unavailable. <a href="https://docs.alpaca.markets/us/reference/stockbars">Alpaca historical stock bars</a>.</li>
-    <li><strong>Token trades on exchange order books.</strong> Historical candles come from the spot market APIs of <a href="https://developers.binance.com/en/docs/catalog/core-trading-spot-trading/api/rest-api/market">Binance</a> and <a href="https://docs.kraken.com/api-reference/market-data/get-ohlc-data">Kraken</a>. The status table below shows the latest collection result.</li>
+    <li><strong>Token trades on exchange order books.</strong> Binance identifies bStocks in its product directory. Kraken identifies xStocks in its tokenized-asset market list. Its x and SPV feeds can describe the same trades in different units. Overlapping bars count once, using the x symbol. Historical candles come from the spot market APIs of <a href="https://developers.binance.com/en/docs/catalog/core-trading-spot-trading/api/rest-api/market">Binance</a> and <a href="https://docs.kraken.com/api-reference/market-data/get-ohlc-data">Kraken</a>. The status table below shows the latest collection result.</li>
     <li><strong>Token swaps on Base and Ethereum.</strong> GeckoTerminal supplies prices and dollar volume in 15-minute intervals for individual trading pools. The collector matches contracts from the <a href="https://api.coinbase.com/v1/tokenized-stocks">Coinbase directory</a> and the <a href="https://github.com/ondoprotocol/ondo-global-markets-token-list">Ondo directory</a> to pools from <a href="https://docs.dexscreener.com/api/reference">DEX Screener</a> and GeckoTerminal. GeckoTerminal confirms the pool address and both assets. <a href="https://api.geckoterminal.com/docs/index.html">GeckoTerminal API</a>.</li>
   </ul>
   <p><strong>Dashboard data files</strong> · <a href="data/meta.json">Coverage and refresh status (JSON)</a> · <a href="data/daily.json">Daily totals (JSON)</a> · <a href="data/volume_history.json">Full comparison history in cents (JSON)</a> · <a href="#downloads">CSV downloads</a></p>

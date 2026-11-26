@@ -77,7 +77,13 @@ def update_cex(http: HTTP, name: str, tokens: pd.DataFrame, state: dict, now: fl
         log.error("%s: listing failed: %s", name, e)
         store.save_state(state)
         return []
+    if getattr(ex, "discovery_warning", None):
+        status.update(discovery_errors=1, error=ex.discovery_warning)
     status["markets"] = len(markets)
+    if not markets:
+        status.update(ok=False, error="No eligible exchange markets returned", finished=_now_iso())
+        store.save_state(state)
+        return []
     log.info("%s: %d tokenized-stock markets", name, len(markets))
     _pull(markets, lambda m, a, b: ex.fetch(m.native, a, b), state, status, C.BACKFILL_DAYS, now)
     status.update(ok=status["errors"] < max(1, len(markets)), finished=_now_iso())
@@ -138,7 +144,11 @@ def update_stocks(http: HTTP, tickers: list[str], state: dict, now: float) -> No
     if known:
         batches.append((known, min(int(state["cursor"][f"stocks:{t}"]) for t in known) - C.REFETCH_BARS * C.BAR_S))
     if fresh:
-        batches.append((fresh, floor_to(end - C.BACKFILL_DAYS * 86400, C.BAR_S)))
+        start = floor_to(end - C.BACKFILL_DAYS * 86400, C.BAR_S)
+        first_token_day = min((day for _, day, _ in store.bar_files(exclude=("stocks",))), default=None)
+        if first_token_day:
+            start = min(start, int(pd.Timestamp(first_token_day, tz="UTC").timestamp()))
+        batches.append((fresh, start))
     for group, start in batches:
         try:
             rows = al.bars(group, start, end)

@@ -1,7 +1,7 @@
 """Centralised exchanges with free public market-data endpoints (no key needed).
 
 Each adapter implements:
-    list_markets() -> [{"native", "base", "quote", "price"}]   all live spot markets
+    list_markets() -> [{"native", "base", "quote", "family"}]   venue-classified stock markets
     fetch(native, start, end) -> [(ts, o, h, l, c, quote_volume)]  30-minute bars
 
 Quote volume is in the quote currency; only USD-like quotes are kept, and they are
@@ -9,6 +9,7 @@ counted 1:1 as US dollars.
 """
 from __future__ import annotations
 
+import json
 import logging
 import math
 
@@ -58,9 +59,22 @@ class Binance(Exchange):
 
     def list_markets(self):
         info = self.get("/api/v3/exchangeInfo")
-        prices = {p["symbol"]: _f(p["price"]) for p in self.get("/api/v3/ticker/price")}
-        return [dict(native=s["symbol"], base=s["baseAsset"], quote=s["quoteAsset"], price=prices.get(s["symbol"]))
-                for s in info.get("symbols", []) if s.get("status") == "TRADING"]
+        cache = C.DATA / "binance_bstocks.json"
+        try:
+            directory = self.http.get("https://www.binance.com/bapi/asset/v2/public/asset-service/product/get-products",
+                                      params={"includeEtf": "true"})
+            names = {p["b"]: p["an"] for p in directory["data"] if "bStocks" in (p.get("tags") or [])}
+            if not names:
+                raise SourceError("Binance returned no tagged bStocks")
+            cache.parent.mkdir(parents=True, exist_ok=True)
+            cache.write_text(json.dumps(names, sort_keys=True, indent=2))
+        except Exception as error:
+            if not cache.exists():
+                raise
+            names = json.loads(cache.read_text())
+            self.discovery_warning = f"Using the last verified bStocks directory: {error}"
+        return [dict(native=s["symbol"], base=s["baseAsset"], quote=s["quoteAsset"], family="bstocks")
+                for s in info["symbols"] if s["status"] == "TRADING" and s["baseAsset"] in names]
 
     def fetch(self, native, start, end):
         out = []
@@ -86,19 +100,14 @@ class Kraken(Exchange):
 
     def list_markets(self):
         pairs = self._result(self.get("/AssetPairs", aclass_base=self.AC))
-        try:
-            ticker = self._result(self.get("/Ticker", asset_class=self.AC))
-        except Exception as e:  # prices only feed a sanity check
-            log.warning("kraken ticker failed (%s); skipping price check", e)
-            ticker = {}
         out = []
         for key, p in pairs.items():
             ws = p.get("wsname") or ""
             if "/" not in ws or p.get("status") == "delisted":
                 continue
             base, quote = ws.split("/", 1)
-            t = ticker.get(key) or ticker.get(p.get("altname", ""))
-            out.append(dict(native=key, base=base, quote=quote, price=_f(t["c"][0]) if t else None))
+            if base.endswith("x") and key == base + quote:
+                out.append(dict(native=key, base=base, quote=quote, family="xstocks"))
         return out
 
     def fetch(self, native, start, end):
@@ -113,7 +122,7 @@ EXCHANGES = {cls.name: cls for cls in (Binance, Kraken)}
 
 
 def match_markets(source: str, listed: list[dict], tokens: pd.DataFrame, now: str) -> list[Market]:
-    """Pair an exchange's spot listings with the token universe.
+    """Use a venue-verified stock category when available, otherwise match the token universe.
 
     A listing matches when its base symbol equals a token's symbol, its quote is USD-like,
     and (where both prices are known) its price is within PRICE_TOLERANCE of CoinGecko's.
@@ -128,6 +137,18 @@ def match_markets(source: str, listed: list[dict], tokens: pd.DataFrame, now: st
         if quote not in C.USD_LIKE:
             continue
         cands = by_symbol.get(str(m["base"]).upper())
+        family = m.get("family")
+        if family in ("bstocks", "xstocks"):
+            base = m["base"]
+            suffix = "B" if family == "bstocks" else "x"
+            if not base.endswith(suffix) or len(base) <= 1:
+                raise SourceError(f"Unexpected stock-token code {base}")
+            ticker = "BRK.B" if base == "BRKBB" else base[:-1].upper().replace("-", ".")
+            token = next((t for t in (cands or []) if t.family == family), None)
+            out.append(Market(market_id=f"{source}:{m['native']}", source=source, native=m["native"],
+                              base=base, quote=quote, cg_id=token.cg_id if token else "", family=family,
+                              underlying=ticker, venue_type="cex", counterpart="usd", bar_s=C.BAR_S, discovered=now))
+            continue
         if not cands:
             continue
         price = m.get("price")
