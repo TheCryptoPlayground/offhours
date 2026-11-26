@@ -182,7 +182,7 @@
     const source = (m.sources || []).find((s) => s.id === "stocks");
     const notes = [`Token trades appear on ${tokenDates} calendar dates.`];
     if (stockDates && latestStockDate) {
-      notes.push(`US stock volume appears on ${stockDates} dates. Latest recorded trading date: ${longDate(latestStockDate)}.`);
+      notes.push(`The US stock feed recorded volume for ${source?.tickers?.length || 0} securities across ${stockDates} dates through ${longDate(latestStockDate)}. Of these, ${D.daily.offhours.tickers} also had token trades in the archive.`);
     } else {
       notes.push("The current dataset contains no recorded US stock volume.");
     }
@@ -234,7 +234,7 @@
     const svg = $("#week-grid");
     svg.setAttribute("viewBox", `0 0 ${left + 48 * pitch} ${top + 7 * pitch}`);
     svg.innerHTML = out.join("");
-    const market = ui.week === "token" ? "tokenized stocks" : "US stocks on the consolidated tape";
+    const market = ui.week === "token" ? "tokenized stocks" : `the ${D.meta.sources.find(s => s.id === "stocks")?.tickers?.length || 0} securities observed on the US consolidated tape`;
     $("#week-note").textContent = `Average recorded dollar volume for ${market} by New York half hour across all ${w.days} calendar days. Darker cells show more volume. Cells use local calendar dates. Colors and the regular-hours outline follow a typical non-holiday week.` +
       (ui.week === "stock" ? " Overnight coverage on the consolidated tape is incomplete in this dataset." : "");
   }
@@ -362,7 +362,7 @@
         `<td>${hasStock ? (stk > 0 ? usd(stk) : "none recorded") : "n/a"}</td><td>${ratio}</td></tr>`;
     });
     $("#mix-table").innerHTML = `<thead><tr><th>Session</th><th>Tokens</th><th>The stocks</th><th title="Token volume as basis points of the stocks' own dollar volume">Tokens as a share</th></tr></thead><tbody>${rows.join("")}</tbody>`;
-    $("#mix-note").textContent = `All history · ${longDate(k.start)} to ${longDate(k.end)}. A basis point (bp) is a hundredth of a percent of the stocks' own dollar volume in that session, using securities observed in both feeds. Dollar columns include all recorded volume on each side.`;
+    $("#mix-note").textContent = `All history · ${longDate(k.start)} to ${longDate(k.end)}. A basis point (bp) is a hundredth of a percent of the stocks' own dollar volume in that session, using the ${D.daily.offhours.tickers} securities observed in both feeds. The dollar columns show each feed’s full recorded volume, including US securities with no observed token trades.`;
   }
 
   function renderVenues() {
