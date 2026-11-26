@@ -620,7 +620,7 @@
     $("#coverage").textContent = bits.join(" ") || "Coverage figures appear after the first full run.";
     const src = m.sources || [];
     $("#source-table").innerHTML = src.length
-      ? `<thead><tr><th>Source</th><th>Markets</th><th class="left">Observed market dates</th><th class="left">Latest collection</th><th>Last run</th></tr></thead><tbody>${src.map((s) => {
+      ? `<thead><tr><th>Product and data source</th><th>Latest collection scope</th><th>Distinct underlyings in archive</th><th class="left">Observed market dates</th><th class="left">Collector status</th><th>Last run</th></tr></thead><tbody>${src.map((s) => {
         const status = s.ok && (s.errors || s.discovery_errors) ? '<span class="sub">Partial</span>' : s.ok === true ? '<span class="status-ok">Working</span>'
           : s.ok === false ? '<span class="status-bad">Failing</span>' : '<span class="sub">No recorded run</span>';
         const detail = s.error ? ` <span class="sub">${esc(String(s.error).slice(0, 160))}</span>` : "";
@@ -628,7 +628,17 @@
           (s.discovery_errors ? ` <span class="sub">(${s.discovery_errors} token pool lookups failed)</span>` : "");
         const runAt = s.finished || s.started;
         const when = runAt ? `${esc(runAt.slice(0, 16).replace("T", " "))} UTC` : "n/a";
-        return `<tr><td>${esc(s.label)}</td><td>${s.markets ?? "—"}</td><td class="left">${s.first_date ? longDate(s.first_date) + " to " + longDate(s.last_date) : "—"}</td><td class="left">${status}${errs}${detail}</td><td>${when}</td></tr>`;
+        const groups = s.pool_groups?.length ? s.pool_groups : [s];
+        return groups.map((g, i) => {
+          const pool = Boolean(g.network);
+          const label = pool ? `${FAMILY[g.family] || g.family} · ${m.venue_labels[g.network] || g.network} (GeckoTerminal)` : s.label;
+          const unit = pool || s.id === "dex" ? "pools" : s.id === "stocks" ? "symbols requested" : "trading pairs";
+          const dates = g.first_date ? `${longDate(g.first_date)} to ${longDate(g.last_date)}` : "—";
+          const tickers = g.tickers || [];
+          const stockList = pool && tickers.length ? ` · ${esc(tickers.join(", "))}` : "";
+          const run = i ? "" : `<td rowspan="${groups.length}" class="left">${status}${errs}${detail}</td><td rowspan="${groups.length}">${when}</td>`;
+          return `<tr><td>${esc(label)}</td><td>${g.markets ?? "—"} ${unit}</td><td>${g.tickers ? tickers.length : "—"}${stockList}</td><td class="left">${dates}</td>${run}</tr>`;
+        }).join("");
       }).join("")}</tbody>`
       : "<tbody><tr><td>No runs recorded yet.</td></tr></tbody>";
     const links = ['<a href="data/token_daily.csv">Token volume by day, session, venue, issuer and stock</a>'];

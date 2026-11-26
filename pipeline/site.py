@@ -50,6 +50,13 @@ def last_full_date(finished=None) -> pd.Timestamp:
     return cutoff.tz_localize(None).normalize() - pd.Timedelta(days=1)
 
 
+def _observed(facts):
+    dates = facts.market_date
+    return dict(first_date=dates.min().strftime("%Y-%m-%d") if len(dates) else None,
+                last_date=dates.max().strftime("%Y-%m-%d") if len(dates) else None,
+                tickers=sorted(set(facts.underlying.dropna()) - {""}))
+
+
 def build(demo: bool = False, end_date: str | None = None) -> dict:
     """end_date pins the last market date (tests, backfills); by default it is yesterday in New York."""
     state = store.load_state()
@@ -178,14 +185,20 @@ def build(demo: bool = False, end_date: str | None = None) -> dict:
     expected_sources = C.CEX_SOURCES + ["dex", "stocks"]
     for sid in expected_sources:
         st = source_state.get(sid, {})
-        if sid == "stocks":
-            observed = sf.market_date
-        elif sid == "dex":
-            observed = tf.loc[tf.source.str.startswith("dex-"), "market_date"]
-        else:
-            observed = tf.loc[tf.source == sid, "market_date"]
-        sources.append(dict(first_date=observed.min().strftime("%Y-%m-%d") if len(observed) else None,
-                            last_date=observed.max().strftime("%Y-%m-%d") if len(observed) else None, id=sid, label=C.VENUE_LABELS.get(sid, sid.title()),
+        observed = sf if sid == "stocks" else tf[tf.source == sid]
+        pool_groups = []
+        if sid == "dex":
+            observed = tf[tf.source.str.startswith("dex-")]
+            active = markets[markets.market_id.isin(state.get("dex_active", []))]
+            active_counts = active.groupby(["source", "family"]).market_id.nunique()
+            grouped = observed.groupby(["source", "family"])
+            for network, family in sorted(set(grouped.groups) | set(active_counts.index)):
+                key = (network, family)
+                group = grouped.get_group(key) if key in grouped.groups else observed.iloc[:0]
+                count = int(active_counts.get(key, 0)) if "dex_active" in state and st.get("markets") is not None else None
+                pool_groups.append(dict(network=network, family=family, markets=count, **_observed(group)))
+        sources.append(dict(**_observed(observed), pool_groups=pool_groups, id=sid,
+                            label=C.VENUE_LABELS.get(sid, sid.title()),
                             type=st.get("type"), ok=st.get("ok"), markets=st.get("markets"),
                             errors=st.get("errors"), discovery_errors=st.get("discovery_errors"),
                             error=st.get("error") or st.get("last_error"),
