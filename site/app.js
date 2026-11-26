@@ -727,20 +727,23 @@
     }));
   }
 
-  function renderOvernightObservations(history, start, end, limit) {
+  function renderSessionObservations(history, start, end, limit, mode) {
     const matched = [];
     for (const day of Object.keys(history).sort().reverse()) {
       if (day < start || day > end) continue;
       for (const [ticker, session, token, stock] of history[day]) {
-        if (session === "OVERNIGHT" && token > 0 && stock > 0) matched.push({day, ticker, token, stock});
+        if (session === mode && token > 0 && stock > 0) matched.push({day, ticker, token, stock});
       }
     }
-    $("#volume-summary").textContent = `${longDate(start)} to ${longDate(end)}. Overnight runs from 8 p.m. to 4 a.m. New York time and counts toward the following trading date. The stock feed provides only partial overnight coverage. A market-wide volume comparison is unavailable. Both feeds recorded volume on ${matched.length} stock–date pairs.`;
+    const coverage = mode === "OVERNIGHT"
+      ? "The stock feed covers only part of overnight trading (8 p.m. to 4 a.m. New York time)."
+      : "The US market was closed. Occasional stock-tape prints in these periods do not provide a comparable trading session.";
+    $("#volume-summary").textContent = `${longDate(start)} to ${longDate(end)}. ${coverage} Both feeds recorded volume on ${matched.length} stock–date pairs.`;
     const dollars = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"});
     const visible = limit === "all" ? matched : matched.slice(0, Number(limit));
-    $("#volume-comparison").innerHTML = "<thead><tr><th>US trading date</th><th>Stock</th><th>Recorded token dollars</th><th>Recorded stock dollars</th></tr></thead><tbody>" +
+    $("#volume-comparison").innerHTML = "<thead><tr><th>Market date</th><th>Stock</th><th>Recorded token dollars</th><th>Recorded stock dollars</th></tr></thead><tbody>" +
       visible.map(r => `<tr><td>${longDate(r.day)}</td>${stockCell(r.ticker)}<td>${dollars.format(r.token / 100)}</td><td>${dollars.format(r.stock / 100)}</td></tr>`).join("") +
-      (matched.length ? "" : '<tr><td colspan="4">No overnight observations with volume in both feeds.</td></tr>') + "</tbody>";
+      (matched.length ? "" : '<tr><td colspan="4">No observations in this session with volume in both feeds.</td></tr>') + "</tbody>";
   }
 
   function setComparisonRange() {
@@ -767,10 +770,11 @@
       return message(`Choose a start date on or before the end date. Both dates must fall between ${longDate(dates[0])} and ${longDate(dates[dates.length - 1])}.`);
     }
     let rows;
-    if (mode !== "OVERNIGHT" && start === D.tickers.start && end === D.tickers.end) {
+    const observationsOnly = mode === "OVERNIGHT" || mode === "CLOSED";
+    if (!observationsOnly && start === D.tickers.start && end === D.tickers.end) {
       rows = (D.tickers.comparisons?.[mode] || []).slice();
     } else if (D.volumeHistory) {
-      if (mode === "OVERNIGHT") return renderOvernightObservations(D.volumeHistory.days, start, end, limit);
+      if (observationsOnly) return renderSessionObservations(D.volumeHistory.days, start, end, limit, mode);
       rows = historicalComparison(D.volumeHistory.days, start, end, mode);
     } else {
       message("Loading historical volume…");
@@ -779,7 +783,7 @@
           D.volumeHistory = history;
           renderComparisons();
         }).catch(() => {
-          if ($("#volume-mode").value === "OVERNIGHT" || $("#volume-start").value !== D.tickers.start || $("#volume-end").value !== D.tickers.end)
+          if (["OVERNIGHT", "CLOSED"].includes($("#volume-mode").value) || $("#volume-start").value !== D.tickers.start || $("#volume-end").value !== D.tickers.end)
             message("Historical data could not load. Change the range to retry.");
         }).finally(() => { D.loadingVolume = null; });
       }
