@@ -4,7 +4,7 @@ import pytest
 
 from pipeline import universe
 from pipeline.sources import cex, dex, stocks
-from pipeline.sources.base import backward, forward_windows, frame
+from pipeline.sources.base import SourceError, backward, forward_windows, frame
 
 T0 = 1_763_000_000 // 1800 * 1800
 
@@ -237,3 +237,49 @@ def test_binance_uses_venue_tags_for_new_and_lookalike_symbols(tmp_path, monkeyp
     exchange = cex.Binance(FakeHTTP(response))
     found = cex.match_markets("binance", exchange.list_markets(), TOKENS, "today")
     assert {m.underlying for m in found} == {"ARTY","BRK.B"}
+
+
+def test_gate_uses_tagged_spot_underlying_and_executed_quote_dollars():
+    def response(url, params):
+        if url.endswith("/currencies"):
+            return [dict(currency=code, category=tags, tokenized_security_info={"underlying": "BRK-B"})
+                    for code, tags in [("BRKBON", ["stocks", "ondo-stocks"]), ("FAKEON", [])]]
+        if url.endswith("/currency_pairs"):
+            return [dict(id=code+"_USDT", base=code, quote="USDT", trade_status="tradable")
+                    for code in ["BRKBON", "FAKEON"]]
+        return [[T0, "243.57", "10.00", "11", "9", "9.50", "24", "true"],
+                [T0+1800, "11", "10", "10", "10", "10", "1.1", "false"]]
+    gate = cex.Gate(FakeHTTP(response))
+    markets = cex.match_markets("gate", gate.list_markets(), TOKENS, "today")
+    assert [(m.native, m.family, m.underlying) for m in markets] == [("BRKBON_USDT", "ondo", "BRK.B")]
+    assert gate.fetch(markets[0].native, T0, T0+3600) == [(T0, 9.5, 11., 9., 10., 243.57)]
+
+
+def test_pool_candles_require_exact_solana_case_and_use_token_side():
+    def response(url, params):
+        return {"meta": {"base": {"address":"sOL"}, "quote":{"address":"MintXYZ"}},
+                "data":{"attributes":{"ohlcv_list":[[T0,1,1,1,1,12]]}}}
+    http = FakeHTTP(response)
+    gt = dex.GeckoTerminal(http)
+    assert gt.fetch("solana","pool","base",T0,T0+900,"MintXYZ")[0][-1] == 12
+    assert [q["token"] for _,q,_ in http.calls] == ["base","quote"]
+    with pytest.raises(ValueError, match="contract mismatch"):
+        gt.fetch("solana","pool","quote",T0,T0+900,"mintxyz")
+
+
+def test_protocol_total_is_reconciled_and_current_day_is_excluded():
+    from pipeline.sources.ondo_protocol import protocol_days
+    payload = {"slug":"ondo-global-markets", "totalDataChart":[[0,10],[86400,25]],
+               "totalDataChartBreakdown":[[0,{"Ethereum":{"Ondo Global Markets":10}}]]}
+    result = protocol_days(payload, 86400+3600)
+    assert result.utc_date.tolist() == ["1970-01-01"]
+    assert result.total_usd.tolist() == [10] and result.solana_usd.isna().all()
+    payload["totalDataChart"][0][1] = 100
+    with pytest.raises(ValueError, match="Unreconciled"):
+        protocol_days(payload, 86400+3600)
+
+
+def test_invalid_turnover_or_inverted_prices_cannot_advance_market_cursor():
+    for row in [(T0,1,2,1,1,float("inf")), (T0,4,2,1,2,22)]:
+        with pytest.raises(SourceError, match="Invalid price or turnover"):
+            frame("bad", 1800, [row], T0, T0+1800)

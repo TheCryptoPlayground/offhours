@@ -6,20 +6,20 @@
 <title>Tokenized Stock Observatory: trading beyond US market hours</title>
 <meta name="description" content="Historical and daily market data for tokenized US stocks, split by US trading session, venue, issuer and underlying stock.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%2315212B'/%3E%3Crect x='3' y='3' width='4' height='10' fill='%235C8FC4'/%3E%3Crect x='9' y='3' width='4' height='10' fill='%23F0A23A'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="style.css?v=20261126-4">
+<link rel="stylesheet" href="style.css?v=20261127-1">
 <script src="vendor/chart.umd.js" defer></script>
-<script src="app.js?v=20261126-12" defer></script>
+<script src="app.js?v=20261127-1" defer></script>
 </head>
 <body>
 <div class="demo-banner" id="demo-banner" hidden><p>Synthetic demo data, generated to preview the layout. These are not market figures.</p></div>
 <div class="page">
 <header class="masthead">
   <h1>Tokenized Stock Observatory</h1>
-  <p class="lede">Trading in tokenized US stocks on Binance, Kraken and selected Base and Ethereum pools, alongside US stock volume by trading session.</p>
+  <p class="lede">Recorded trading in tokenized US stocks and ETFs on Binance, Kraken, Gate and selected pools on four blockchains, compared with US stock trading by session.</p>
   <p class="stamp" id="stamp">Loading data</p>
   <p class="project-link"><a href="https://github.com/TianhaoYin1120/offhours">Source code, methodology and data pipeline on GitHub</a></p>
   <nav class="jump" aria-label="Dashboard sections">
-    <a href="#overview-h">Overview</a><a href="#daily-h">History</a><a href="#offhours-h">Off-hours volume</a><a href="?sample=shared#venue-h">Four-venue comparison</a><a href="#stocks-h">Stocks</a><a href="#compare-h">Token vs. stock</a><a href="#sources-h">Data &amp; APIs</a><a href="#coverage-h">Coverage</a>
+    <a href="#overview-h">Overview</a><a href="#daily-h">History</a><a href="#offhours-h">Off-hours volume</a><a href="?sample=shared#venue-h">Matched securities</a><a href="#ondo-h">Ondo protocol</a><a href="#stocks-h">Stocks</a><a href="#compare-h">Token vs. stock</a><a href="#sources-h">Data &amp; APIs</a><a href="#coverage-h">Coverage</a>
   </nav>
 </header>
 
@@ -28,7 +28,7 @@
   <h2 id="overview-h">Dataset overview</h2>
   <p class="note" id="overview-note">Current contents of the dataset.</p>
   <div class="kpi-grid" id="kpi-grid"></div>
-  <p class="note">Totals cover recorded trades. The securities, pools and dates available differ by product. <a id="overview-shared" href="?sample=shared#venue-h">Compare securities traded on all four venues</a>.</p>
+  <p class="note">Session totals count executed order-book trades and swaps in tracked pools. Source histories begin on different dates. A rise in total volume can reflect a newly observed market. Ondo issuer activity has its own daily chart. Wallet transfers and assets outstanding fall outside these trading totals. <a id="overview-shared" href="?sample=shared#venue-h">Compare securities traded across the original four sources</a>.</p>
 </section>
 
 <section aria-labelledby="week-h">
@@ -87,7 +87,7 @@
 
 <section aria-labelledby="venue-h">
   <div class="row">
-    <h2 id="venue-h">Trading volume across four venues</h2>
+    <h2 id="venue-h">Trading volume by product and source</h2>
     <div class="control-stack">
       <div class="seg" role="group" aria-label="Product and venue date range">
         <button type="button" data-venue-range="all" aria-pressed="true">All history</button>
@@ -103,13 +103,26 @@
   <div class="comparison-controls">
     <div class="seg" role="group" aria-label="Comparison sample">
       <button type="button" data-sample="all" aria-pressed="true">All tickers</button>
-      <button type="button" data-sample="shared" aria-pressed="false">Shared tickers</button>
+      <button type="button" data-sample="shared" aria-pressed="false">Original four sources</button>
+      <button type="button" data-sample="expanded" aria-pressed="false">All seven sources</button>
     </div>
     <label id="shared-ticker-label" hidden>Underlying security <select id="shared-ticker"></select></label>
   </div>
   <p class="note" id="venue-note" aria-live="polite"></p>
   <div class="chart"><canvas id="venue-chart" aria-label="Daily token volume by product and trading venue"></canvas></div>
   <div class="table-wrap"><table id="product-totals"></table></div>
+</section>
+
+<section aria-labelledby="ondo-h">
+  <h2 id="ondo-h">Trading through Ondo Global Markets</h2>
+  <p class="note">Ondo’s own protocol executes purchases and redemptions. DefiLlama measures trade events on Ethereum and BNB Chain and Jupiter-routed mint and redemption trades on Solana. Each observation covers one UTC day across the protocol’s stocks and ETFs. The session charts above use separately recorded secondary-market trades.</p>
+  <div class="comparison-controls">
+    <label>Protocol volume <select id="protocol-chain"><option value="total_usd">All chains</option><option value="ethereum_usd">Ethereum</option><option value="bsc_usd">BNB Chain</option><option value="solana_usd">Solana</option></select></label>
+    <label>Date range <select id="protocol-range"><option value="all">All protocol history</option><option value="90">90 days</option><option value="30">30 days</option></select></label>
+  </div>
+  <p id="protocol-note" class="note" aria-live="polite"></p>
+  <div class="chart"><canvas id="protocol-chart" aria-label="Recorded daily Ondo issuer-protocol volume in US dollars"></canvas></div>
+  <p class="note"><a href="https://defillama.com/protocol/ondo-global-markets">DefiLlama protocol data</a> · <a href="https://github.com/DefiLlama/dimension-adapters/tree/master/dexs/ondo-global-markets">Event methodology</a><span id="protocol-download"></span></p>
 </section>
 
 <section aria-labelledby="stocks-h">
@@ -173,20 +186,23 @@
 <section aria-labelledby="coverage-h" class="method">
   <h2 id="coverage-h">Coverage and downloads</h2>
   <p>Each week the collector searches every stock and ETF contract in the Coinbase directory on Base and the Ondo directory on Ethereum. Each eligible pool counts once. Trading totals use its reported swap volume. Securities without a matching pool remain in the coverage file with an empty volume field.</p>
+  <p>For the additional pools, the collector searches issuer contracts whose underlying already has a listing in the original four sources. Each week it selects up to 50 verified pools per product and network using the latest reported 24-hour volume. This favors recently active pools. Earlier dates can have narrower coverage. The source table shows where each series starts.</p>
+  <p>Other exchanges, including LBank and Bybit, and untracked pools are outside the session totals. RWA.xyz’s distributed value measures assets outstanding, and its monthly transfer volume includes on-chain movements that can occur without a sale. Its asset-level secondary-market tables provide a closer comparison when venue and time window match. <a href="https://app.rwa.xyz/stocks">RWA.xyz stock metrics</a>.</p>
   <h3>Sessions</h3>
   <div class="table-wrap"><table id="session-table"></table></div>
   <h3 id="sources-h">Data sources and APIs</h3>
   <p>The dashboard publishes daily files that anyone can open without an account. The collector uses the following upstream APIs.</p>
   <ul>
     <li><strong>US stock volume.</strong> Alpaca supplies 30-minute price and share-volume bars from the consolidated US tape. We estimate dollars traded by multiplying shares by the bar’s volume-weighted average price, using its closing price when that average is unavailable. <a href="https://docs.alpaca.markets/us/reference/stockbars">Alpaca historical stock bars</a>.</li>
-    <li><strong>Token trades on exchange order books.</strong> Binance identifies bStocks in its product directory. Kraken identifies xStocks in its tokenized-asset market list. Its x and SPV feeds can describe the same trades in different units. Overlapping bars count once, using the x symbol. Historical candles come from the spot market APIs of <a href="https://developers.binance.com/en/docs/catalog/core-trading-spot-trading/api/rest-api/market">Binance</a> and <a href="https://docs.kraken.com/api-reference/market-data/get-ohlc-data">Kraken</a>. The status table below shows the latest collection result.</li>
-    <li><strong>Token swaps on Base and Ethereum.</strong> GeckoTerminal supplies prices and dollar volume in 15-minute intervals for individual trading pools. The collector matches contracts from the <a href="https://api.coinbase.com/v1/tokenized-stocks">Coinbase directory</a> and the <a href="https://github.com/ondoprotocol/ondo-global-markets-token-list">Ondo directory</a> to pools from <a href="https://docs.dexscreener.com/api/reference">DEX Screener</a> and GeckoTerminal. GeckoTerminal confirms the pool address and both assets. <a href="https://api.geckoterminal.com/docs/index.html">GeckoTerminal API</a>.</li>
+    <li><strong>Token trades on exchange order books.</strong> Binance identifies bStocks in its product directory. Gate identifies Ondo and xStocks spot markets by its stock categories and underlying ticker. Kraken identifies xStocks in its tokenized-asset market list. Its x and SPV feeds can describe the same trades in different units. Overlapping bars count once, using the x symbol. Historical candles come from the spot market APIs of <a href="https://developers.binance.com/en/docs/catalog/core-trading-spot-trading/api/rest-api/market">Binance</a>, <a href="https://docs.kraken.com/api-reference/market-data/get-ohlc-data">Kraken</a> and <a href="https://www.gate.com/docs/developers/apiv4/en/#market-candlesticks">Gate</a>. The status table below shows the latest collection result.</li>
+    <li><strong>Token swaps on Base, Ethereum, Solana and BNB Chain.</strong> GeckoTerminal supplies prices and dollar volume in 15-minute intervals for individual trading pools. The collector matches contracts from the <a href="https://api.coinbase.com/v1/tokenized-stocks">Coinbase directory</a> and the <a href="https://github.com/ondoprotocol/ondo-global-markets-token-list">Ondo directory</a> to pools from <a href="https://docs.dexscreener.com/api/reference">DEX Screener</a> and GeckoTerminal. Solana xStocks use the <a href="https://docs.xstocks.fi/developers/quickstart">xStocks issuer directory</a>. BNB Chain bStocks use Binance’s BSC contract addresses and Ondo uses its issuer directory. GeckoTerminal confirms the pool and the stock-token side. <a href="https://api.geckoterminal.com/docs/index.html">GeckoTerminal API</a>.</li>
   </ul>
   <p><strong>Dashboard data files</strong> · <a href="data/meta.json">Coverage and refresh status (JSON)</a> · <a href="data/daily.json">Daily totals (JSON)</a> · <a href="data/volume_history.json">Full comparison history in cents (JSON)</a> · <a href="#downloads">CSV downloads</a></p>
   <p id="coverage"></p>
-  <p>“Listed” counts issuer contracts on the tracked chain. “With a pool” counts contracts matched to an indexed pool against a supported dollar or major crypto asset. The archive column counts securities with positive recorded volume through the dashboard end date. One security can trade in several pools. Coverage varies by product and date. <a href="https://github.com/TianhaoYin1120/offhours/blob/main/data/markets.csv">Trading pairs and pool addresses</a>.</p>
+  <p>“Screened” counts issuer contracts searched for that product on that chain. “With a tracked pool” counts contracts in the current collection. The archive column counts securities with positive recorded volume through the dashboard end date. One security can trade in several pools. Coverage varies by product and date. <a href="https://github.com/TianhaoYin1120/offhours/blob/main/data/markets.csv">Trading pairs and pool addresses</a>.</p>
   <div class="table-wrap"><table id="source-table"></table></div>
   <p id="pool-volume-check" hidden></p>
+  <p id="extra-volume-check" hidden></p>
   <p>Company and fund names come from issuer directories and the <a href="https://www.nasdaqtrader.com/dynamic/symdir/nasdaqtraded.txt">Nasdaq Trader symbol directory</a>. Short descriptions identify each company’s business or the fund’s investment objective.</p>
   <h3>Dataset scope</h3>
   <ul>

@@ -43,12 +43,18 @@ def frame(market_id: str, bar_s: int, rows: list[Row], start: int, end: int) -> 
     if not rows:
         return pd.DataFrame(columns=BAR_COLUMNS)
     a = np.array(rows, dtype=float)
+    positive = a[:, 5] > 0
+    if (not np.isfinite(a[:, 5]).all() or (a[:, 5] < 0).any() or
+            not np.isfinite(a[positive, 1:5]).all() or (a[positive, 3] <= 0).any() or
+            (a[positive, 2] < a[positive][:, [1, 3, 4]].max(axis=1)).any() or
+            (a[positive, 3] > a[positive][:, [1, 2, 4]].min(axis=1)).any()):
+        raise SourceError(f"Invalid price or turnover returned for {market_id}")
     df = pd.DataFrame({
         "market_id": market_id,
         "ts": a[:, 0].astype(np.int64),
         "bar_s": np.int32(bar_s),
         "open": a[:, 1], "high": a[:, 2], "low": a[:, 3], "close": a[:, 4],
-        "vol_usd": np.nan_to_num(a[:, 5], nan=0.0),
+        "vol_usd": a[:, 5],
     })
     df = df[(df.ts >= start) & (df.ts < end) & (df.ts % bar_s == 0)]
     return df.drop_duplicates("ts", keep="last").sort_values("ts").reset_index(drop=True)

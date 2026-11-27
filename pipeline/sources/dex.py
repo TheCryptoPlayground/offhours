@@ -77,13 +77,25 @@ class GeckoTerminal:
             ))
         return out
 
-    def fetch(self, network: str, pool: str, token_side: str, start: int, end: int) -> list[tuple]:
+    def fetch(self, network: str, pool: str, token_side: str, start: int, end: int,
+              token_address: str = "") -> list[tuple]:
         out = []
         before = end
         while before > start:
             limit = min(1000, (before - start + 899) // 900)
             response = self.get(f"/networks/{network}/pools/{pool}/ohlcv/minute", aggregate=15,
                                 before_timestamp=before - 1, limit=limit, currency="usd", token=token_side)
+            if token_address:
+                sides = [side for side in ("base", "quote")
+                         if norm_addr(response["meta"][side]["address"]) == norm_addr(token_address)]
+                if len(sides) != 1:
+                    raise ValueError(f"Candle issuer contract mismatch for {network}:{pool}")
+                if sides[0] != token_side:
+                    token_side = sides[0]
+                    response = self.get(f"/networks/{network}/pools/{pool}/ohlcv/minute", aggregate=15,
+                                        before_timestamp=before - 1, limit=limit, currency="usd", token=token_side)
+                    if norm_addr(response["meta"][token_side]["address"]) != norm_addr(token_address):
+                        raise ValueError(f"Candle side changed for {network}:{pool}")
             rows = response["data"]["attributes"]["ohlcv_list"]
             out.extend(tuple([int(r[0])] + [float(x) for x in r[1:6]]) for r in rows if start <= r[0] < before)
             # The provider skips empty intervals and looks back up to six months per request.

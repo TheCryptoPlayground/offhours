@@ -12,8 +12,8 @@ def _published_cents(frame):
 
 
 def venue_comparison(head):
-    """Published dollars by product/venue, plus identical ticker-date observations across all four."""
-    venues = [*C.CEX_SOURCES, *("dex-" + n for n in C.DEX_NETWORKS)]
+    """Published dollars by product/venue, plus same-date matches in the original and expanded source sets."""
+    venues = [v for v in C.BAR_SOURCES if v != "stocks"]
     facts = head[head.source.isin(venues)].copy()
     facts["cents"] = _published_cents(facts)
     facts["outside"] = facts.cents.where(facts.session != "RTH", 0)
@@ -22,12 +22,19 @@ def venue_comparison(head):
     totals = facts.groupby(keys)[columns].sum().reset_index()
     by_stock = facts[facts.underlying != ""].groupby(["underlying", *keys])[columns].sum().reset_index()
     positive = by_stock[by_stock.cents > 0]
-    shared = positive.groupby("underlying").source.nunique()
-    matched = positive[positive.groupby(["underlying", "market_date"]).source.transform("nunique") == len(venues)]
+    def matches(sources):
+        subset = positive[positive.source.isin(sources)]
+        shared = subset.groupby("underlying").source.nunique()
+        matched = subset[subset.groupby(["underlying", "market_date"]).source.transform("nunique") == len(sources)]
+        return sorted(shared.index[shared == len(sources)]), pack(matched, True)
+
     def pack(rows, ticker=False):
         return [[r.market_date.strftime("%Y-%m-%d"), r.source, r.family, int(r.cents), int(r.outside)]
                 + ([r.underlying] if ticker else []) for r in rows.itertuples()]
-    return dict(tickers=sorted(shared.index[shared == len(venues)]), all=pack(totals), matched=pack(matched, True))
+    tickers, matched = matches(C.CORE_SOURCES)
+    _, expanded = matches(venues)
+    return dict(tickers=tickers, all=pack(totals), matched=matched, expanded=expanded,
+                core_sources=list(C.CORE_SOURCES), all_sources=venues)
 
 
 def volume_history(tokens, stocks):

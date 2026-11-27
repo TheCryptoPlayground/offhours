@@ -54,7 +54,8 @@
   }
 
   const D = {};
-  const ui = { week: "token", daily: "usd", range: "all", venueRange: "all", tickerRange: "all", venue: "venues", query: "", sort: { key: "token", dir: -1 }, ticker: null, tickerLimit: "10", sample: new URLSearchParams(location.search).get("sample") === "shared" ? "shared" : "all" };
+  const sampleFromUrl = new URLSearchParams(location.search).get("sample");
+  const ui = { week: "token", daily: "usd", range: "all", venueRange: "all", tickerRange: "all", venue: "venues", query: "", sort: { key: "token", dir: -1 }, ticker: null, tickerLimit: "10", sample: ["shared", "expanded"].includes(sampleFromUrl) ? sampleFromUrl : "all" };
   const charts = {};
 
   async function load(name) {
@@ -168,7 +169,7 @@
       : "No history";
     const items = [
       [span, "Historical span"],
-      [usd(k.token_total || 0), "Token volume across all history"],
+      [usd(k.token_total || 0), "Recorded secondary-market volume"],
       [pct(k.outside_rth_share), "Volume outside regular US hours"],
       [String(D.tickers.rows.length), "Underlying securities with recorded token trades"],
     ];
@@ -336,6 +337,39 @@
       : "No trading dates with comparable volume in this range.";
   }
 
+  function renderProtocol() {
+    const rows = D.daily.ondo_protocol || [];
+    const status = D.meta.protocol_status;
+    if (!rows.length) {
+      $("#protocol-note").textContent = "No verified protocol history has been collected.";
+      $("#protocol-chart").parentElement.hidden = true;
+      return;
+    }
+    const byDate = new Map(rows.map(r => [r.utc_date, r]));
+    const last = rows[rows.length - 1].utc_date;
+    const range = $("#protocol-range").value;
+    const column = $("#protocol-chain").value;
+    const dayMs = 86400000;
+    const start = range === "all" ? Date.parse(rows[0].utc_date) :
+        Math.max(Date.parse(rows[0].utc_date), Date.parse(last) - (Number(range) - 1) * dayMs);
+    const dates = [], values = [];
+    for (let t = start; t <= Date.parse(last); t += dayMs) {
+      const day = new Date(t).toISOString().slice(0, 10);
+      dates.push(day);
+      values.push(byDate.get(day)?.[column] ?? null);
+    }
+    const observed = values.filter(n => n != null);
+    const label = $("#protocol-chain").selectedOptions[0].textContent;
+    const description = observed.length ? `${label} recorded ${usd(sum(observed))} across ${observed.length} reported days.` : `No daily observations for ${label} in this period.`;
+    $("#protocol-note").textContent = `${longDate(dates[0])} to ${longDate(last)} UTC. ${description} Gaps indicate unavailable observations.` +
+      (status?.ok === false ? " The latest refresh failed; this is the last verified series." : "");
+    $("#protocol-download").innerHTML = ' · <a href="data/ondo_protocol.csv">Daily protocol volume (CSV)</a>';
+    make("protocol-chart", {type:"line", data:{labels:dates, datasets:[{label, data:values, spanGaps:false,
+      borderColor:css("--ovn"), borderWidth:2, pointRadius:0}]}, options:{scales:{
+      x:{...dateAxis(), stacked:false}, y:{beginAtZero:true, ticks:{callback:v=>usd(v)}}},
+      plugins:{legend:{display:false}, tooltip:{callbacks:{title:dateTitle, label:c=>usd(c.parsed.y)}}}}});
+  }
+
   function renderMix() {
     const k = D.meta.kpis || {};
     const st = k.share_token || {}, ss = k.share_stock || {}, rb = k.ratio_bp_by_session || {};
@@ -369,18 +403,21 @@
     const d = D.daily;
     const start = rangeStart(d.dates, ui.venueRange);
     const windowDates = d.dates.slice(start);
-    const shared = ui.sample === "shared";
+    const shared = ui.sample === "shared" || ui.sample === "expanded";
     const sample = d.venue_comparison;
     const byVenue = ui.venue === "venues";
     const names = D.meta.venue_labels || {};
     const firstDate = windowDates[0];
-    const matched = sample.matched.filter(row => row[0] >= firstDate);
+    const core = sample.matched.filter(row => row[0] >= firstDate);
+    const expanded = sample.expanded.filter(row => row[0] >= firstDate);
+    const matched = ui.sample === "expanded" ? expanded : core;
     const matchedDays = new Map();
     for (const [date, , , , , ticker] of matched) {
       if (!matchedDays.has(ticker)) matchedDays.set(ticker, new Set());
       matchedDays.get(ticker).add(date);
     }
-    $('[data-sample="shared"]').textContent = `Shared tickers (${matchedDays.size})`;
+    $('[data-sample="shared"]').textContent = `Original four sources (${new Set(core.map(r => r[5])).size} tickers)`;
+    $('[data-sample="expanded"]').textContent = `All seven sources (${new Set(expanded.map(r => r[5])).size} tickers)`;
     pressed("sample", ui.sample);
     let rows = shared ? matched : sample.all.filter(row => row[0] >= firstDate);
     const tickerMenu = $("#shared-ticker");
@@ -435,8 +472,8 @@
     const pairs = shared ? new Set(rows.map(r => r[0] + "|" + r[5])).size : 0;
     const count = shared ? new Set(rows.map(r => r[5])).size : 0;
     const explanation = shared
-      ? `Each included ticker had recorded trades on Binance, Kraken, Coinbase token pools on Base and Ondo token pools on Ethereum on the same market date. This selection has ${count} securities, ${pairs} ticker-date matches and ${dates.length} market dates. A date qualifies on full-day volume, so venues can trade in different sessions. The off-hours share is weighted by dollars traded.`
-      : "Recorded token volume across all tracked tickers in the selected period. Coinbase and Ondo cover indexed pools on Base and Ethereum respectively. Listings and start dates differ across venues.";
+      ? `Each ticker had recorded trades on the same date across ${ui.sample === "expanded" ? "Binance, Kraken, Gate and tracked pools on Base, Ethereum, Solana and BNB Chain" : "the original four sources (Binance, Kraken, Coinbase pools on Base and Ondo pools on Ethereum)"}. This selection has ${count} securities, ${pairs} ticker-date matches and ${dates.length} market dates. A date qualifies on full-day volume, so venues can trade in different sessions. The off-hours share is weighted by dollars traded.`
+      : "Recorded token volume across all tracked tickers in the selected period. Order books and blockchain pool groups are distinct sources. Product totals combine the recorded sources for each issuer. Coverage and collection start dates vary.";
     $("#venue-note").textContent = `${rangeLabel(d.dates, ui.venueRange)}. ${explanation}` +
       (!shared && other > 0 ? ` Pools with other counterpart assets contributed a further ${usd(other)}, excluded here.` : "");
     const tableRows = entries.map(({ product, venue, total, off, observed }) =>
@@ -460,7 +497,7 @@
     { key: "closed", label: "While closed", get: closedShare, cell: (r) => `<td><span class="bar" style="width:${(closedShare(r) * 3).toFixed(2)}rem"></span>${pct(closedShare(r))}</td>` },
     { key: "stock", label: "Stock volume", get: (r) => (fin(r.stock) ? r.stock : -1), cell: (r) => `<td>${fin(r.stock) ? usd(r.stock) : '<span class="sub">n/a</span>'}</td>` },
     { key: "ratio", label: "Tokens as a share", get: (r) => (fin(r.ratio_bp) ? r.ratio_bp : -1), cell: (r) => `<td>${fin(r.ratio_bp) ? bp(r.ratio_bp) : '<span class="sub">n/a</span>'}</td>` },
-    { key: "venues", label: "Venues", get: (r) => r.venues.length, cell: (r) => `<td title="${esc(r.venues.map((v) => (D.meta.venue_labels || {})[v] || v).join(", "))}">${r.venues.length}</td>` },
+    { key: "venues", label: "Sources", get: (r) => r.venues.length, cell: (r) => `<td title="${esc(r.venues.map((v) => (D.meta.venue_labels || {})[v] || v).join(", "))}">${r.venues.length}</td>` },
   ];
 
   function renderTickers(focusKey) {
@@ -550,7 +587,7 @@
       },
     });
     const n = row.venues.length;
-    const out = [`Across all ${D.tickers.window_days} days, ${usd(row.token)} of ${row.t} tokens on ${n} venue${n === 1 ? "" : "s"}, ${pct(offShare(row))} outside regular hours and ${pct(closedShare(row))} while closed. Chart: ${rangeLabel(s.dates, ui.tickerRange)}.`];
+    const out = [`Across all ${D.tickers.window_days} days, ${usd(row.token)} of ${row.t} tokens across ${n} source${n === 1 ? "" : "s"}, ${pct(offShare(row))} outside regular hours and ${pct(closedShare(row))} while closed. Chart: ${rangeLabel(s.dates, ui.tickerRange)}.`];
     if (fin(row.ratio_bp)) out.push(`That is ${bp(row.ratio_bp)} of ${row.t}'s own dollar volume.`);
     $("#ticker-note").textContent = out.join(" ");
   }
@@ -586,6 +623,13 @@
         note.textContent = `On ${longDate(check.checked_at.slice(0, 10))}, DEX Screener reported the following 24-hour coverage for tracked pools. ${values.join(". ")}. Each pool counts once. This snapshot covers the two named chains and can differ from historical coverage.`;
       }
     }
+    const extra = m.extra_pool_check;
+    if (extra?.groups?.length) {
+      const fractions = extra.groups.filter(g => g.reported_usd > 0).map(g =>
+        `${FAMILY[g.family]} on ${g.network === "bsc" ? "BNB Chain" : "Solana"} ${pct(g.tracked_usd / g.reported_usd, 1)}`);
+      $("#extra-volume-check").hidden = false;
+      $("#extra-volume-check").textContent = `On ${longDate(extra.checked_at.slice(0, 10))}, the selected pools covered these shares of DEX Screener’s 24-hour dollars for the screened contracts: ${fractions.join(", ")}. These percentages apply to that scan only.`;
+    }
     const src = m.sources || [];
     $("#source-table").innerHTML = src.length
       ? `<thead><tr><th>Product and data source</th><th>Latest collection scope</th><th>Distinct underlyings in archive</th><th class="left">Observed market dates</th><th class="left">Collector status</th><th>Last run</th></tr></thead><tbody>${src.map((s) => {
@@ -604,14 +648,14 @@
           const dates = g.first_date ? `${longDate(g.first_date)} to ${longDate(g.last_date)}` : "—";
           const tickers = g.tickers || [];
           const stockList = pool && tickers.length ? `<details><summary>Show tickers</summary>${esc(tickers.join(", "))}</details>` : "";
-          const listing = g.listed != null ? `<br><small>${g.listed} listed · ${g.with_pool} with a pool</small>` : "";
+          const listing = g.listed != null ? `<br><small>${g.listed} screened · ${g.with_pool} with a tracked pool</small>` : "";
           const run = i ? "" : `<td rowspan="${groups.length}" class="left">${status}${errs}${detail}</td><td rowspan="${groups.length}">${when}</td>`;
           return `<tr><td>${esc(label)}</td><td>${g.markets ?? "—"} ${unit}${listing}</td><td>${g.tickers ? tickers.length : "—"}${stockList}</td><td class="left">${dates}</td>${run}</tr>`;
         }).join("");
       }).join("")}</tbody>`
       : "<tbody><tr><td>No runs recorded yet.</td></tr></tbody>";
     const links = ['<a href="data/token_daily.csv">Token volume by day, session, venue, issuer and stock</a>'];
-    if (m.issuer_catalog_at) links.push(`<a href="data/issuer_coverage.csv">Every Coinbase and Ondo listing, pool coverage and recorded volume (catalogue checked ${esc(m.issuer_catalog_at.slice(0, 10))})</a>`);
+    if (m.issuer_catalog_at) links.push(`<a href="data/issuer_coverage.csv">Screened issuer contracts, selection dates, pool coverage and recorded volume</a>`);
     if (m.history?.stock_dates > 0) links.push('<a href="data/stock_daily.csv">Stock volume by day and session</a>');
     $("#downloads").innerHTML = links.join(", ") + ".";
   }
@@ -757,6 +801,7 @@
     renderDaily();
     renderTrend();
     renderMix();
+    renderProtocol();
     renderVenues();
     renderTickers();
     renderComparisons();
@@ -771,6 +816,7 @@
     for (const id of ["trend-range", "trend-stock"]) {
       $(`#${id}`).addEventListener("change", renderTrend);
     }
+    for (const id of ["protocol-range", "protocol-chain"]) $("#"+id).addEventListener("change", renderProtocol);
     const dates = D.daily.dates;
     const dex = D.meta.sources?.find(source => source.id === "dex");
     if (dates.length) {
@@ -802,10 +848,10 @@
     }
     bindRange("range", "range", renderDaily);
     const sharedCount = new Set(D.daily.venue_comparison.matched.map(row => row[5])).size;
-    $("#overview-shared").textContent = `Compare the ${sharedCount} tickers traded on all four venues on matching dates`;
+    $("#overview-shared").textContent = `Compare the ${sharedCount} tickers traded on the original four sources on matching dates`;
     bindRange("sample", "sample", () => {
       const url = new URL(location.href);
-      if (ui.sample === "shared") url.searchParams.set("sample", "shared");
+      if (ui.sample !== "all") url.searchParams.set("sample", ui.sample);
       else url.searchParams.delete("sample");
       if (location.protocol !== "file:") history.replaceState(null, "", url);
       renderVenues();

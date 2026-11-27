@@ -118,7 +118,35 @@ class Kraken(Exchange):
         return [(int(r[0]), _f(r[1]), _f(r[2]), _f(r[3]), _f(r[4]), _f(r[5]) * _f(r[6])) for r in rows]
 
 
-EXCHANGES = {cls.name: cls for cls in (Binance, Kraken)}
+class Gate(Exchange):
+    name, base_url, pace = "gate", "https://api.gateio.ws/api/v4/spot", 0.15
+
+    def list_markets(self):
+        assets = {}
+        for row in self.get("/currencies"):
+            tags = row.get("category") or []
+            ticker = (row.get("tokenized_security_info") or {}).get("underlying")
+            if not ticker or "stocks" not in tags:
+                continue
+            for tag, family in (("ondo-stocks", "ondo"), ("xstocks", "xstocks")):
+                if tag in tags:
+                    assets[row["currency"]] = (family, ticker.upper().replace("-", "."))
+        return [dict(native=p["id"], base=p["base"], quote=p["quote"],
+                     family=assets[p["base"]][0], underlying=assets[p["base"]][1])
+                for p in self.get("/currency_pairs") if p["base"] in assets and p["trade_status"] == "tradable"]
+
+    def fetch(self, native, start, end):
+        bars = []
+        for a, b in forward_windows(start, end, C.BAR_S, 999):
+            rows = self.get("/candlesticks", currency_pair=native, interval="30m",
+                            **{"from": a, "to": b - 1})
+            for ts, turnover, close, high, low, opening, units, closed in rows:
+                if str(closed).lower() == "true":
+                    bars.append((int(ts), float(opening), float(high), float(low), float(close), float(turnover)))
+        return bars
+
+
+EXCHANGES = {cls.name: cls for cls in (Binance, Kraken, Gate)}
 
 
 def match_markets(source: str, listed: list[dict], tokens: pd.DataFrame, now: str) -> list[Market]:
@@ -138,6 +166,11 @@ def match_markets(source: str, listed: list[dict], tokens: pd.DataFrame, now: st
             continue
         cands = by_symbol.get(str(m["base"]).upper())
         family = m.get("family")
+        if source == "gate" and family in ("ondo", "xstocks") and m.get("underlying"):
+            out.append(Market(market_id=f"gate:{m['native']}", source=source, native=m["native"],
+                              base=m["base"], quote=quote, family=family, underlying=m["underlying"],
+                              venue_type="cex", counterpart="usd", bar_s=C.BAR_S, discovered=now))
+            continue
         if family in ("bstocks", "xstocks"):
             base = m["base"]
             suffix = "B" if family == "bstocks" else "x"

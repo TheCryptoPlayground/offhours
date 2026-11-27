@@ -1,0 +1,536 @@
+network,address,ticker,symbol,name,family
+solana,Xs8LesEYZb7SZJrW85hMrrVzyeoyxKrCNVnpEURLzZp,RDW,RDWx,Redwire xStock,xstocks
+solana,XsXJBom7kFSxA6hc2ArzUwe6o6zyRU1AdHTfvev1HkG,USO,USOx,United States Oil Fund xStock,xstocks
+solana,XsxtnDUJzTMjqmzajufokv9xrG868kvkp5KNuNNsU4d,SKDD,SKDDx,GraniteShares 2x Short SK Hynix Daily ETF xStock,xstocks
+solana,XstZ31nh6HKMkkNgEcXqAJuF2CFmexYkM4tGaNtUVWK,SKUU,SKUUx,GraniteShares 2x Long SK Hynix Daily ETF xStock,xstocks
+solana,Xsq3YJ62Kyyqj92w8jwoQLiUzPwFGBfibffe12dJ3Vg,ARQQ,ARQQx,Arqit Quantum xStock,xstocks
+solana,XsSdwPGhuiTBir2bpJTiJkEhfMEn5bG75XevuePua1q,PDD,PDDx,PDD xStock,xstocks
+solana,XsNKpPnrpzt3MRF7dA9EtAxWyrdivwN5xyvHUi2iweV,PENG,PENGx,Penguin Solutions xStock,xstocks
+solana,XsQTDfyyWUBRbLnikwDoSqrcn3YKLG2EDRLHCoQ9e3a,FWDI,FWDIx,Forward Industries xStock,xstocks
+solana,XsSPkcE4GbHiBacr8awTTHpwFBuznazcwEKgdvBCkoz,SQQQ,SQQQx,ProShares UltraPro Short QQQ xStock,xstocks
+solana,XsEkwEYVKnvqVF3sxsimXVEEB17jdT9pVA6SP3NBEYe,AMC,AMCx,AMC Entertainment xStock,xstocks
+solana,Xs3N3dcHdWXaJ5dv2ysjMA8DS33vixYYzAgVzkG6L3T,GPRO,GPROx,GoPro xStock,xstocks
+solana,XsPZqWN9qCGwwasxuo3zSEnM6vQbBJ9imktKjUeBMyF,CRDO,CRDOx,Credo Technology xStock,xstocks
+solana,Xstn27LaCPFZashxd1eEn6NV4fVfuye1AM3MMsbuB97,NU,NUx,Nu xStock,xstocks
+solana,Xsgu2ZZPVjVdjf2HN9F2weJNSyyireZBfu8MYJBBH1S,BILI,BILIx,Bilibili xStock,xstocks
+solana,XsM8hCeX916xAiVLCeFwxmVpTNYq14rjM8h8Ha2UiTe,EWT,EWTx,iShares MSCI Taiwan ETF xStock,xstocks
+solana,XsWMMVGbNpxehYdonLXW2DuEtK4gXdC8Y1CNgKe5uuc,NNE,NNEx,Nano Nuclear Energy xStock,xstocks
+solana,XswM1GWRLNrUQWCXrcJDpwzpTFnzgB5U1NNpLGzTm1s,SOUN,SOUNx,SoundHound AI xStock,xstocks
+solana,XsV4wp56vcokXjRWaeBxhf5PrYLtGtNxWDa9KddWGcx,HTZ,HTZx,Hertz Global xStock,xstocks
+solana,Xsc5BxL1ucvrQNXZqW3CT8M9gWTko1LPSLLkSVzGe9h,FLNC,FLNCx,Fluence Energy xStock,xstocks
+solana,XsRJiWgqGJrDaidERfWfdZkaxdA4VPjVEqN6XFctpp3,QUBT,QUBTx,Quantum Computing xStock,xstocks
+solana,XsCKGVtLBwZ4Z264jSPgPxzm3w6Sm3UkKv5WgHd3ike,FRHC,FRHCx,Freedom xStock,xstocks
+solana,XsESMQjWyDczCfiJ3QDjZEiaKwp1uXYp3TMZ6viuLcm,DRAM,DRAMx,Storage ETF (Roundhill) xStock,xstocks
+solana,XsVEdRV17tPdXHamAi6TVFjyeSRHnCjdY5GXqAaevuk,MVLL,MVLLx,Marvell 2x Long ETF xStock,xstocks
+solana,XsjZG9MgLMECjzSSxq3G7rabDceoaDqhN4C4zwce4i8,MUU,MUUx,Micron 2x Long ETF xStock,xstocks
+solana,XswiwGt897dzZU8eHoojgUu2ka34brmPGvWeVHcHho9,AXTI,AXTIx,AXT xStock,xstocks
+solana,XscR1RVZydyrL6Wn7WqbW2k6EmkLuS8SqDzuyptwxoj,DJT,DJTx,Trump Media & Technology Group xStock,xstocks
+solana,Xs2LakxmT2YycpcxRDCJ7crPbFf91JKdAAWnfzANFmt,KORU,KORUx,Korea 3x Long ETF xStock,xstocks
+solana,Xs7zs57saNfGWUn3h5d2rFxxs43uVqzAY7iQVPHFbwE,INTW,INTWx,INTC 2x Long ETF xStock,xstocks
+solana,XsCucuUESBi3ZjRxmjwUzGYuf6ZrtZDUvK6XhRA4RR3,SOXS,SOXSx,3x Short Semiconductor ETF xStock,xstocks
+solana,Xs3EFHHyP27EsAw3ftS8UFsN8kwkhFvbppji6bbkkPn,SNXX,SNXXx,SNDK 2x Long ETF xStock,xstocks
+solana,Xs3trfdPXSZuxBJsgau6HRfu8SdrCirkwHpPNgSpJz9,CRWV,CRWVx,CoreWeave xStock,xstocks
+solana,XsMAsw5BADYr3m19HhYeXrG1qAieeP75DT8tKn42DFA,TWST,TWSTx,Twist Bioscience xStock,xstocks
+solana,Xstq9oUsBPd8LSyivHhnt8P8t9xK5RYoM9P6izLczvm,CBRS,CBRSx,Cerebras Systems xStock,xstocks
+solana,XshjhoEnkjn6T6f2oyzVrAnMFgixpvFoBp7KepdByJ7,SHAZ,SHAZx,SharonAI xStock,xstocks
+solana,XsEn37JjZxj3m9YayAyCCJFaQKBPZc6aUEiLEus5igu,TE,TEx,T1 Energy xStock,xstocks
+solana,Xsii5eERa2sKFyTHQqdYxpxL5xoUSLVurzHeqBEMBho,NBIS,NBISx,Nebius xStock,xstocks
+solana,XsuE5LvQcc9P67iWVqsysQ84DBDRWssbiKnwY8JtwpL,QURE,QUREx,uniQure xStock,xstocks
+solana,XsGHwSbPaUJu6r5dtJLHXkXenPgCQf4Sx2hb4e2sbCZ,AAOI,AAOIx,Applied Optoelectronics xStock,xstocks
+solana,XswUFSYE5CWsZM3X3yo6e2pZvxcAzx912DonGvgUFka,ARM,ARMx,ARM xStock,xstocks
+solana,XsmGSEqT6VXpVis3aVBDxaNwPgHNXbkjkVUCncsLkNB,BE,BEx,Bloom Energy xStock,xstocks
+solana,XsBeB5z2oA2fvaVim3rRbqHV4Cxxz9nNCjqoUtFooXY,JMKE,JMKEx,Jersey Mike's Subs xStock,xstocks
+solana,XsnhgGRQwhExfS2bmWzR6EYddKGPRGDEjeJsatkmKqU,SKHY,SKHYx,SK hynix xStock,xstocks
+solana,XsBE7iAzaJEBpSwG5JZ7zQTWNgTaerweBy7nJCachaJ,BKR,BKRx,Baker Hughes xStock,xstocks
+solana,XsVT5d6jAm7dTcwz9o5jCUVrpdd1t86WLf4U7wb9mxs,FDXF,FDXFx,FedEx Freight xStock,xstocks
+solana,XsXEEJX7WoXfre8ZqYx1M1yXnEwd1Ww3YhvfESA2DzE,RDDT,RDDTx,Reddit xStock,xstocks
+solana,XsuW1yxtbifjEYojFLmoavTWBT7hsuUXXeReAWK9X91,DASH,DASHx,DoorDash xStock,xstocks
+solana,Xs12gqhuCeC9gpUdN6uDJQfpyKNf9Y4uK2TKY6c7NrZ,MDB,MDBx,MongoDB xStock,xstocks
+solana,XscSc1zjbVizEnhCzzehJ9fzztm3WRKdn9pjmriKDuN,ABNB,ABNBx,Airbnb xStock,xstocks
+solana,XsGYpMvKbVt6ViHqRd7cF3s746dAMFBQWcC49hB9VVP,NKE,NKEx,Nike xStock,xstocks
+solana,XsViHjyRbiSBskjizb1gszGTmZqtAH8TuqwJ7sB5AcP,MRNA,MRNAx,Moderna xStock,xstocks
+solana,XsgDPEr2Zk1YkWnw1Mm77APoZpeTj8BQZeGSMVtBZGd,ZM,ZMx,Zoom Communications xStock,xstocks
+solana,Xsipo31rLh5EqPMR2cArn6kVPAD83C6rxbmCrT9Wu5u,SOFI,SOFIx,SoFi Technologies xStock,xstocks
+solana,XsYMHtwJcWon5GkPHzdDbCCztKtKzEurJnbydxgjsqS,BSP,BSPx,Bending Spoons xStock,xstocks
+solana,XssvmC28hqLgtT5kf8R8eAv3mejy4XftJ6MXB8QywTa,TTWO,TTWOx,Take-Two Interactive Software xStock,xstocks
+solana,XsuJLDjTibUFnh1gNgnXeDSjQTVffnaWFKzUht5rVvc,ALAB,ALABx,Astera Labs xStock,xstocks
+solana,XsipFyePxrgwZJrX4s26RJ25cqwpkfn6ec8JLy26w5b,COHR,COHRx,Coherent xStock,xstocks
+solana,Xszp97B7zgeyNUFkymHdxXp3Y5KTZ1rzd2bAL9TW34t,HPE,HPEx,Hewlett Packard Enterprise xStock,xstocks
+solana,Xs3QCTNpPWTFYRQ9yPv9gsvWKNJGk45UQ1bb1w7xznc,SNOW,SNOWx,Snowflake xStock,xstocks
+solana,XsBnEFd2EtpwBRNVfN8qLZcVUnuqXRaGCSEEFChLfxL,NOW,NOWx,ServiceNow xStock,xstocks
+solana,Xsg3UgvjxpUgV3WZx9Wt9deLx7qvKYp6ZLY6xMY2Dfq,GLW,GLWx,Corning xStock,xstocks
+solana,XsBcnKnZMsPaerLiUQ4eMFy4Fjysot4RugYXYDjiqCP,BA,BAx,Boeing xStock,xstocks
+solana,XsUUG8bjFN2KvzLTpzavvEKdAjMAeLTZiTeAQJ9uhvB,QCOM,QCOMx,Qualcomm xStock,xstocks
+solana,XsmopJuh6C6uNFJa3KaVoYqEtrf3Y7M5LYwRLKLER3h,WDC,WDCx,Western Digital xStock,xstocks
+solana,XsfsBjSZoXXKJsxoSt8TyLYsjhBAKFaDPZTCQbFRirP,GE,GEx,GE Aerospace xStock,xstocks
+solana,Xsi8P9r7ZWDBBnBj9JTfnKWqyKNV19X2CQPWQsGdjnS,BOT,BOTx,RoboStrategy xStock,xstocks
+solana,Xs3oZwbHvqis4NYcf4YKWmEia2eC84wSiVrcYcTqpH8,SPCX,SPCXx,SpaceX xStock,xstocks
+solana,XsGAnis8BY5TLxEGdPY1LeeqY1DHPcUkkBQWRyQaJya,ENHA,ENHAx,Enhanced Group xStock,xstocks
+solana,XswenHXJtDWYMh89uRYx2tZcABxwXSn7j3jidDPS1Yo,EWY,EWYx,iShares MSCI South Korea xStock,xstocks
+solana,XsKbKZ6e1BtERDn2cF11WkpVwvzSWCrf83AMafgnMQT,DAX,DAXx,Global X DAX Germany xStock,xstocks
+solana,XsAxB3xLnt7xto5ChiSbVNHBoXcXzKuzS7FieiNYwtY,SATA,SATAx,"Strive, Inc. Series A Preferred xStock",xstocks
+solana,XsEsHeiNZf88sABxu74TPuXbQThdaQGdzPVZUBicjtQ,SOXX,SOXXx,iShares Semiconductor xStock,xstocks
+solana,XsbWCMXPzLdZMLpPtiiWE7M99fySmsnK5eFCWGWfDQ8,EWU,EWUx,iShares MSCI United Kingdom xStock,xstocks
+solana,XsM51PKxDNQBZR65VRxRjNqcMWUBoYwHeVn2FR6WXi9,EWG,EWGx,iShares MSCI Germany xStock,xstocks
+solana,Xs1neEMHNaDDSHqE9nvDGkmuX73ZASKcLtQqwmVAQde,EWQ,EWQx,iShares MSCI France xStock,xstocks
+solana,XsraCsjDB8cYn672MZSxCzZBhrodEPXD7pWd5EiRUhm,BITX,BITXx,Volatility Shares 2x Bitcoin Strategy xStock,xstocks
+solana,Xsd7TduTbjuYCFL7Uoujb8SbkZLmUsuYNLn7KdvX21x,VOO,VOOx,Vanguard S&P 500 xStock,xstocks
+solana,XsTSfxoQry8okZoGMN5t6mExibDq3gA2NDLJeLztX7E,NLR,NLRx,VanEck Uranium and Nuclear xStock,xstocks
+solana,XsVRhRg9eRE9PrsoPsAt5Mifa8mfjm9R3vdw6orp54j,GDX,GDXx,VanEck Gold Miners xStock,xstocks
+solana,XsbZDdYJKxEBQASz4KBj23NRgymXw2NK6mbNQ6PYhC7,FEZ,FEZx,SPDR EURO STOXX 50 xStock,xstocks
+solana,XsEYQJtVa51Ww3y28jV1FwheMgmDj8BpxYiCPThcLWW,JAAA,JAAAx,Janus Henderson AAA CLO xStock,xstocks
+solana,XsCAXu7xTaZMG9b9KJhNWYapuvNjxPuE4SysZq8uvMq,JPST,JPSTx,JPMorgan Ultra-Short Income xStock,xstocks
+solana,XsZdwvwEAn7KH8bCCo8AkxJmSm4MbaRxcDeh9Gt2VTF,FLQM,FLQMx,Franklin U.S. Mid Cap Multi-Factor xStock,xstocks
+solana,XsBNz5UKYqcALjS5Xnm7HesMapyKLxkmfWPGHBek36x,USPX,USPXx,Franklin U.S. Equity Index xStock,xstocks
+solana,Xs9nAeuqjogYHy2UfL6jYqGmM5MPrRjuz6UYk8H79mZ,FSML,FSMLx,Franklin Small Cap Enhanced xStock,xstocks
+solana,XsCZJYnCmjs5cYZDMLVxVzvMy5AK2oqsWpobS6SYno8,FLBL,FLBLx,Franklin Senior Loan xStock,xstocks
+solana,XsGqU2JhofxjZBBhuXAroJGdiyZdvbx64tPx1Mu6DVK,IQM,IQMx,Franklin Intelligent Machines xStock,xstocks
+solana,Xs4uZnG2mzZQKgnmuYboj1PRBtascAvWh5NdVMfz2aW,YLDE,YLDEx,Franklin ClearBridge Enhanced Income xStock,xstocks
+solana,Xs8rb8QG9mEuQ41g2cUzuJLZt3xEPQFhvgb9s4obXSn,FAAA,FAAAx,Fidelity AAA CLO xStock,xstocks
+solana,XsdZDkoMdUb6iKDAKKappuM7C1Q2HmTqC8jNujbfmCu,SOXL,SOXLx,Direxion Semiconductor Bull 3X xStock,xstocks
+solana,XsfCC9VL4DamVGNgdJpfLXB3sBVa158Gbx8sh7NzmTk,VIDA,VIDAx,Vida Global xStock,xstocks
+solana,Xs6yCfUGbkjcvivWr4crLR7pJGxEXspsuuUMhxNEEUw,RCAT,RCATx,Red Cat xStock,xstocks
+solana,Xsgc9YTqdAH1GzDLBGQcScCMgkKsVBn4hBmqtNRospY,ONDS,ONDSx,Ondas xStock,xstocks
+solana,Xshh1dRsnxatP45yBfrzU9MrvrFCvxHQGTrWjgdA81E,IREN,IRENx,IREN xStock,xstocks
+solana,XsprHSJzwz3qmHcEf7j7WcUk6hMUL4sPLuAdWaSY1oh,HIMS,HIMSx,Hims & Hers xStock,xstocks
+solana,XsR3LAMkzuPP8DnfYaiB2grTWqkBVy286gjJVErK1bi,NET,NETx,Cloudflare xStock,xstocks
+solana,XsYLZdcMYST418xZhTV6KaHqr8BWqaKS3J45ywqigF9,LNG,LNGx,Cheniere Energy xStock,xstocks
+solana,Xs72K1Ta1D5ccNy3RzSyQWGgZywWvphX78pL8WBk1Bo,MOO,MOOx,VanEck Agribusiness ETF xStock,xstocks
+solana,XsAk6BoV4kBXUM6WXodKyM21CN92G9jArwAzFvbh3LX,XOP,XOPx,SPDR S&P Oil & Gas Exploration & Production ETF xStock,xstocks
+solana,XsosCAu1L8Ebpr4SdBDV1EboYDRTWCH8j79UnHYzvbN,VGK,VGKx,Vanguard FTSE Europe ETF xStock,xstocks
+solana,XsXoAR52Q2NYFkYiNqhCq4FauvyA1tdRsrmEYNf9fuh,ITA,ITAx,iShares U.S. Aerospace & Defense ETF xStock,xstocks
+solana,XsLT5v4DAd1kwViPQh3SZiT5kzJfNLxzJxJN1dySZTe,VXUS,VXUSx,Vanguard Total International Stock ETF xStock,xstocks
+solana,XsYD72ntjj7ZwoFDZCDmN2gamTcLpnywqvG7PQN5vCN,SGOV,SGOVx,iShares 0-3 Month Treasury Bond ETF xStock,xstocks
+solana,XsNVBwVGqtDqmA2Waoiux5mfykH8nepLK74z3ZoQWK2,VUG,VUGx,Vanguard Growth ETF xStock,xstocks
+solana,XstuBvLo7soZzj3beCCPonHpR3eUfPNSeQzw35Swons,SMH,SMHx,VanEck Semiconductor ETF xStock,xstocks
+solana,Xsq9sEQjYiUTSZ55RrbHAzVfz8HotwFGrqgxkgiv4LB,URA,URAx,Global X Uranium ETF xStock,xstocks
+solana,Xs54CrhmpVp6uxZXwgSTegrRH2kShh88XFPzgf4BExu,XLE,XLEx,Energy Select Sector SPDR Fund xStock,xstocks
+solana,Xs7UsqobM3EJgMeHwdAbmDBCZH1G5WTCjatpeYcCr8x,VCX,VCXx,"Fundrise Innovation Fund, LLC xStock",xstocks
+solana,Xswbpc8UqU6e1j9QZEWCjBMjyvz4twqD7PCy6j2e7jj,SNDK,SNDKx,Sandisk Corporation xStock,xstocks
+solana,XsexQ9qqNbDkLE6XwCN9ceVhLo8Lxc7UheVR6eBkKyo,LITE,LITEx,Lumentum Holdings Inc. xStock,xstocks
+solana,XsrwdnwLHjVnyy7fgE2Pdwjp3czEm73jPjkSC5xzUBw,SMR,SMRx,NuScale Power Corporation xStock,xstocks
+solana,Xs2ZEuDVSQkNnXHqfqEYKVShLHpecyKfdfpEYwiHtQE,APLD,APLDx,Applied Digital Corporation xStock,xstocks
+solana,XsLR2VCGNzYVLfJGEwwNZsRYDZBGyBnoQH5rPGvwodA,PWR,PWRx,"Quanta Services, Inc. xStock",xstocks
+solana,Xsbe4fwmjVQEWEPkzfyxqNdPUUK7X9dKfTJrZdDbNgx,TER,TERx,"Teradyne, Inc. xStock",xstocks
+solana,Xs8S5L4HkJpeBWF1J4oyUX6rVwGHmG7GZ7PiChPt7nY,ETN,ETNx,Eaton Corporation plc xStock,xstocks
+solana,Xsw2uU1i8tHjbgstUbtt3m6kg7BS7AgG5aj8z7ddmmN,KLAC,KLACx,KLA Corporation xStock,xstocks
+solana,XswXzAsMV9kebQjCVtr1btvrQgQ7C4C9kKgH4QYAVzw,GEV,GEVx,GE Vernova Inc. xStock,xstocks
+solana,Xssu2cDLdZXZYrq17frTVrb3meumRCAzEf7pXyxoWVN,CEG,CEGx,Constellation Energy Corporation xStock,xstocks
+solana,XsMxAoJP47FQGLsVUvSS2QfBaHdNsd7DRU6nWRL8RSa,SMCI,SMCIx,"Super Micro Computer, Inc. xStock",xstocks
+solana,Xsu7Tc5J2fVUE4H5vYAiSr34cvLJeCsYPMjAYnayQn6,DELL,DELLx,Dell Technologies Inc. xStock,xstocks
+solana,XsLUiVEwYeoneKpgR1C2Q4DBUZhX4xDktSCfQqq8zmn,VRT,VRTx,Vertiv Holdings Co xStock,xstocks
+solana,XsQZdaWUAGC4R3fgD2N1fupKvJfJq6YM51ccnsLUWFA,AMAT,AMATx,"Applied Materials, Inc. xStock",xstocks
+solana,XsSN912SN4Whn2xn59vWZHt1uLbw9WnoNGp5MigmHFf,LRCX,LRCXx,Lam Research Corporation xStock,xstocks
+solana,XsrsM2RgtYxXqxmy4iWgxQJUkkHG1U5wzi74sVNUW8m,ANET,ANETx,"Arista Networks, Inc. xStock",xstocks
+solana,XsJJneENiaBPqqcdK1gMsfwi9cbw111azigzRYHoctX,USAR,USARx,USA Rare Earth Inc. xStock,xstocks
+solana,XsYHvpLWfTfqdLkPbCc4eUT21eH521BRTXBypgzpEDH,UUUU,UUUUx,Energy Fuels Inc. xStock,xstocks
+solana,Xst6eFD4YT6sz9RLMysN9SyvaZWtraSdVJQGu5ZkAme,PPLT,PPLTx,abrdn Physical Platinum Shares xStock,xstocks
+solana,XsTTtPA5V19YwHKDv4xeVXNM6kdsQNJvg3MyWkRUckt,PALL,PALLx,abrdn Physical Palladium Shares xStock,xstocks
+solana,XsybfiKkD4UmjkAGT2uR8X2sq9AWFtvGJM2KTffoALZ,COPX,COPXx,Global X Copper Miners xStock,xstocks
+solana,XsAiRejKuvLAdq9KtedrMSrabz7SWdzKoVK6Qgac1Ki,KRAQ,KRAQx,KRAQ xStock,xstocks
+solana,XsvHMmbDcd14DHHW16PkxPGW7ks77ehxUv1E9Zmxgj4,BTGO,BTGOx,Bitgo xStock,xstocks
+solana,XsxAd6okt8y1RRK6gNg7iJaqiWNiq5Md5EDf3ZrF2dm,SLV,SLVx,iShares Silver Trust xStock,xstocks
+solana,Xs78JED6PFZxWc2wCEPspZW9kL3Se5J7L5TChKgsidH,STRC,STRCx,Strategy PP Variable xStock,xstocks
+solana,XsEdDDTcVGJU6nvdRdVnj53eKTrsCkvtrVfXGmUK68V,VT,VTx,Vanguard Total World xStock,xstocks
+solana,XsWAnFM77x6YvpdaZoos79R12o4Yj4r7EVkaTWddzhU,SCHF,SCHFx,Schwab International Equity xStock,xstocks
+solana,XsFnZawJdLdXfBSEt5Vw29K5vdBiHotdPLjUPafpfHs,IEMG,IEMGx,Core MSCI Emerging Markets xStock,xstocks
+solana,XsyZcb97BzETAqi9BoP2C9D196MiMNBisGMVNje2Thz,IJR,IJRx,S&P Small Cap xStock,xstocks
+solana,XsbELVbLGBkn7xfMfyYuUipKGt1iRUc2B7pYRvFTFu3,IWM,IWMx,Russell 2000 xStock,xstocks
+solana,XsTuW2zaiPbzgrnQ7b4Z99zeULMM7gPxppE61CtpyDj,SPGI,SPGIx,S&P Global xStock,xstocks
+solana,XswCi2U1G6Ppbw1QhG45yKb8UKuR1FKLJrquv2FZSD4,TMUS,TMUSx,T-Mobile xStock,xstocks
+solana,XsPLBFy59Q3hY59KLAJur8QyvziMF4xUxGTxXqXE7cT,BTBT,BTBTx,Bit Digital xStock,xstocks
+solana,XsG5QyZTQnVSpsXRpD92K5ZGoxXjsmfTyx7fW7r18DV,HUT,HUTx,Hut 8 xStock,xstocks
+solana,XsBGEXxbBcuu8Nrokj14G8v4ezT3JYWWLneTzXK8t6Z,CORZ,CORZx,Core Scientific xStock,xstocks
+solana,XsKSh3QDynp6oms9yHjZXbZo3pKzUBoqUFKPHS2g9Bh,RKLB,RKLBx,Rocket Lab xStock,xstocks
+solana,XsMJtFbb8BwzQtck3oRXyAfs7SAPRuTXnSEDNd7BAVz,PL,PLx,Planet Labs xStock,xstocks
+solana,Xsgrm4D6VBTfDx5bs7GNdjtmWDgZ8V79r3YpsYwf5py,SPCE,SPCEx,Virgin Galactic xStock,xstocks
+solana,XsZUSqxAXKJkEimvD4CoVvEb4WUC92TFgj5zRtBxFeL,WBD,WBDx,Warner Bros. Discovery xStock,xstocks
+solana,XsQLZycSZ7QnBBdBXQaTbQdiUcbRqjNJgyBGAMzhHav,MU,MUx,Micron Technology xStock,xstocks
+solana,Xss5RAku5EH6UViFdvW7ss9xQjwQLsrs2opPMhb3k43,RBLX,RBLXx,Roblox xStock,xstocks
+solana,XsQ6NfzzLH8nspjrB9X8R2K64Zz7Tnxqu12juDiMPMW,PANW,PANWx,Palo Alto Networks xStock,xstocks
+solana,Xs936JPaWKEXmpu54DZ149GETV7PmsnTqnMWxgcPNAj,VST,VSTx,Vistra xStock,xstocks
+solana,XshuHQ6o6SVpUNawvnnTMxsZ4tacZsNgVCLorv7TkFq,ASML,ASMLx,ASML xStock,xstocks
+solana,XsXcJ6GZ9kVnjqGsjBnktRcuwMBmvKWh8S93RefZ1rF,AMD,AMDx,AMD xStock,xstocks
+solana,XsafvsGtzFqqHgTnA3aPC83EAMkacU5mcGtcSayhpVV,TSM,TSMx,TSMC xStock,xstocks
+solana,Xs4uNhvBDAcp2mz3g9XR5q3vzLgmF1ANWxJgWk2d5u3,WEN,WENx,Wendy's xStock,xstocks
+solana,Xs1CqRVt2mGVfMSHf7M6cDhkjpw8HDF14XbQNzDnGg4,DUOL,DUOLx,Duolingo xStock,xstocks
+solana,XsR4LAtaBgTKTRUhiijY1ba13nx4bepeEcag2Pr4dZ1,ASTS,ASTSx,AST SpaceMobile xStock,xstocks
+solana,XshWQWYVp5ff8CrAEsGmLVKD47nBWi3Ygn5v8wXK27G,PYPL,PYPLx,PayPal xStock,xstocks
+solana,Xsn3H7ACEpSF2ULxeiD6kW4jRZXpurh8ZPttyfoS56W,CLSK,CLSKx,CleanSpark xStock,xstocks
+solana,XsEoih2x6nZuUjFwzGoba6MFmtzCkzW2c4YAm6baQbq,SBET,SBETx,SharpLink Gaming xStock,xstocks
+solana,XsAsZLF4MmsvS1sDxRMrUz7REjHfwbC9UAMXSRBqgEB,UBER,UBERx,Uber xStock,xstocks
+solana,XsDZMGEU8zadWFCkTtPBoPWYcUX3JHVmghnwf2Mve2q,ADBE,ADBEx,Adobe xStock,xstocks
+solana,XsuwUbQSzCJN2wZabD1Gxf1MER2Ypa7hMzVMYB2WawJ,WULF,WULFx,TeraWulf xStock,xstocks
+solana,Xs31mE5EiqjSHEaiX9QDKCN6NvSGCqpJ6f1FNq2wri5,RIOT,RIOTx,Riot Platforms xStock,xstocks
+solana,XsguBZPkM9BDmxspmWe29EmrYZBv21ENcC27Pqh7grB,MARA,MARAx,MARA xStock,xstocks
+solana,XsJb1p4Ks6VFggq68JyMz7S3kdRfkqh4wA6EMyxi4DD,OKLO,OKLOx,Oklo xStock,xstocks
+solana,Xs3c2aZenyRQwXjki5MDxJEJ2km27ef2rWQMFWx7QKJ,GLXY,GLXYx,Galaxy Digital xStock,xstocks
+solana,XscE4GUcsYhcyZu5ATiGUMmhxYa1D5fwbpJw4K6K4dp,TONX,TONXx,TON xStock,xstocks
+solana,XsrBCwaH8c46xiqXBChzobgufRKxQxAWUWbndgBNzFn,BMNR,BMNRx,Bitmine xStock,xstocks
+solana,XsP7xzNPvEHS1m6qfanPUGjNmdnmsLKEoNAnHjdxxyZ,MSTR,MSTRx,MicroStrategy xStock,xstocks
+solana,XsqBC5tcVQLYt8wqGCHRnAUUecbRYXoJCReD6w7QEKp,TBLL,TBLLx,TBLL xStock,xstocks
+solana,XsGtpmjhmC8kyjVSWL4VicGu36ceq9u55PTgF8bhGv6,OPEN,OPENx,OPEN xStock,xstocks
+solana,Xs2yquAgsHByNzx68WJC55WHjHBvG9JsMB7CWjTLyPy,DFDV,DFDVx,DFDV xStock,xstocks
+solana,XsueG8BtpquVJX9LVLLEGuViXUungE6WmK5YZ3p3bd1,CRCL,CRCLx,Circle xStock,xstocks
+solana,XsaQTCgebC2KPbf27KUhdv5JFvHhQ4GDAPURwrEhAzb,AMBR,AMBRx,Amber xStock,xstocks
+solana,XsjQP3iMAaQ3kQScQKthQpx9ALRbjKAjQtHg6TFomoc,TQQQ,TQQQx,TQQQ xStock,xstocks
+solana,Xsv9hRk1z5ystj9MhnA7Lq4vjSsLwzL2nxrwmwtD3re,GLD,GLDx,Gold xStock,xstocks
+solana,XsssYEQjzxBCFgvYFFNuhJFBeHNdLWYeUSP8F45cDr9,VTI,VTIx,Vanguard xStock,xstocks
+solana,Xs8S1uUs1zvS2p7iwtsG3b6fkhpvmwz4GYU3gWAmWHZ,QQQ,QQQx,Nasdaq xStock,xstocks
+solana,XsoCS1TfEyfFhfvj8EtZ528L3CaKBDBRqRapnBbDF2W,SPY,SPYx,SP500 xStock,xstocks
+solana,Xs7ZdzSHLU9ftNJsii5fCeJhoRWSC32SQGzGQtePxNu,COIN,COINx,Coinbase xStock,xstocks
+solana,Xsf9mBktVB9BSU5kf4nHxPq5hCBJ2j2ui3ecFGxPRGc,GME,GMEx,Gamestop xStock,xstocks
+solana,XsgaUyp4jd1fNBCxgtTKkW64xnnhQcvgaxzsbAq5ZD1,GS,GSx,Goldman Sachs xStock,xstocks
+solana,Xs7xXqkcK7K8urEqGg52SECi79dRp2cEKKuYjUePYDw,CRWD,CRWDx,CrowdStrike xStock,xstocks
+solana,XsvNBAYkrDRNhA7wPHQfX3ZUXZyZLdnCQDfHZ56bzpg,HOOD,HOODx,Robinhood xStock,xstocks
+solana,XsuxRGDzbLjnJ72v74b7p9VY6N66uYgTCyfwwRjVCJA,MRVL,MRVLx,Marvell xStock,xstocks
+solana,XsPdAVBi8Zc1xvv53k4JcMrQaEDTgkGqKYeh7AYgPHV,APP,APPx,AppLovin xStock,xstocks
+solana,XsoBhf2ufR8fTyNSjqfU71DYGaE6Z3SUGAidpzriAA4,PLTR,PLTRx,Palantir xStock,xstocks
+solana,Xs5UJzmCRQ8DWZjskExdSQDnbE6iLkRu2jjrRAB1JSU,ACN,ACNx,Accenture xStock,xstocks
+solana,XshPgPdXFRWB8tP1j82rebb2Q9rPgGX37RuqzohmArM,INTC,INTCx,Intel xStock,xstocks
+solana,Xsba6tUnSjDae2VcopDB6FGGDaxRrewFCDa5hKn5vT3,PM,PMx,Philip Morris xStock,xstocks
+solana,XsRbLZthfABAPAfumWNEJhPyiKDW6TvDVeAeW7oKqA2,HON,HONx,Honeywell xStock,xstocks
+solana,XsDgw22qRLTv5Uwuzn6T63cW69exG41T6gwQhEK22u2,MDT,MDTx,Medtronic xStock,xstocks
+solana,XsvKCaNsxg2GN8jjUmq71qukMJr7Q1c5R2Mk9P8kcS8,CMCSA,CMCSAx,Comcast xStock,xstocks
+solana,XspwhyYPdWVM8XBHZnpS9hgyag9MKjLRyE3tVfmCbSr,IBM,IBMx,International Business Machines xStock,xstocks
+solana,Xseo8tgCZfkHxWS9xbFYeKFyMSbWEvZGFV1Gh53GtCV,DHR,DHRx,Danaher xStock,xstocks
+solana,XsqE9cRRpzxcGKDXj1BJ7Xmg4GRhZoyY1KpmGSxAWT2,MCD,MCDx,McDonald's xStock,xstocks
+solana,XsEH7wWfJJu2ZT3UCFeVfALnVA6CP5ur7Ee11KmzVpL,NFLX,NFLXx,Netflix xStock,xstocks
+solana,XsHtf5RpxsQ7jeJ9ivNewouZKJHbPxhPoEy6yYvULr7,ABT,ABTx,Abbott xStock,xstocks
+solana,XswsQk4duEQmCbGzfqUUWYmi7pV7xpJ9eEmLHXCaEQP,BAC,BACx,Bank of America xStock,xstocks
+solana,Xs8drBWy3Sd5QY3aifG9kt9KFs2K3PGZmx7jWrsrk57,TMO,TMOx,Thermo Fisher xStock,xstocks
+solana,Xs3ZFkPYT2BN7qBMqf1j1bfTeTm1rFzEFSsQ1z3wAKU,AZN,AZNx,AstraZeneca xStock,xstocks
+solana,XsczbcQ3zfcgAEt9qHQES8pxKAVG5rujPSHQEXi4kaN,CRM,CRMx,Salesforce xStock,xstocks
+solana,XsSr8anD1hkvNMu8XQiVcmiaTP7XGvYu7Q58LdmtE8Z,LIN,LINx,Linde xStock,xstocks
+solana,XsjFwUPiLofddX5cWFHW35GCbXcSu1BCUGfxoQAQjeL,ORCL,ORCLx,Oracle xStock,xstocks
+solana,XsfAzPzYrYjd4Dpa9BU3cusBsvWfVB9gBcyGC87S57n,NVO,NVOx,Novo Nordisk xStock,xstocks
+solana,Xsr3pdLQyXvDJBFgpR5nexCEZwXvigb8wbPYp4YoNFf,CSCO,CSCOx,Cisco xStock,xstocks
+solana,XsaBXg8dU5cPM6ehmVctMkVqoiRG2ZjMo1cyBJ3AykQ,KO,KOx,Coca-Cola xStock,xstocks
+solana,Xsv99frTRUeornyvCfvhnDesQDWuvns1M852Pez91vF,PEP,PEPx,PepsiCo xStock,xstocks
+solana,XswbinNKyPmzTa5CskMbCPvMW6G5CMnZXZEeQSSQoie,ABBV,ABBVx,AbbVie xStock,xstocks
+solana,XsnQnU7AdbRZYe2akqqpibDdXjkieGFfSkbkjX1Sd1X,MRK,MRKx,Merck xStock,xstocks
+solana,XsAtbqkAP1HJxy7hFDeq7ok6yM43DQ9mQ1Rh861X8rw,PFE,PFEx,Pfizer xStock,xstocks
+solana,XsNNMt7WTNA2sV3jrb1NNfNgapxRF5i4i6GcnTRRHts,CVX,CVXx,Chevron xStock,xstocks
+solana,XsYdjDjNUygZ7yGKfQaB6TxLh2gC6RRjzLtLAGJrhzV,PG,PGx,Procter & Gamble xStock,xstocks
+solana,Xsnuv4omNoHozR6EEW5mXkw8Nrny5rB3jVfLqi6gKMH,LLY,LLYx,Eli Lilly xStock,xstocks
+solana,XsqgsbXwWogGJsNcVZ3TyVouy2MbTkfCFhCGGGcQZ2p,V,Vx,Visa xStock,xstocks
+solana,XsMAqkcKsUewDrzVkait4e5u4y8REgtyS7jWgCpLV2C,JPM,JPMx,JPMorgan Chase xStock,xstocks
+solana,XsGVi5eo1Dh2zUpic4qACcjuWGjNv8GCt3dm5XcX6Dn,JNJ,JNJx,Johnson & Johnson xStock,xstocks
+solana,XsaHND8sHyfMfsWPj6kSdd5VwvCayZvjYgKmmcNL5qh,XOM,XOMx,Exxon Mobil xStock,xstocks
+solana,XszvaiXGPwvk2nwb3o9C1CX4K6zH8sez11E6uyup6fe,UNH,UNHx,UnitedHealth xStock,xstocks
+solana,Xs6B6zawENwAbWVi7w92rjazLuAr5Az59qgWKcNb45x,BRK.B,BRK.Bx,Berkshire Hathaway xStock,xstocks
+solana,XsDoVfqeBukxuZHWhdvWHBhgEHjGNst4MLodqsJHzoB,TSLA,TSLAx,Tesla xStock,xstocks
+solana,XsgSaSvNSqLTtFuyWPBhK9196Xb9Bbdyjj4fH3cPJGo,AVGO,AVGOx,Broadcom xStock,xstocks
+solana,XsCPL9dNWBMvFtTmwcCA5v3xWPSMEBCszbQdiLLq6aN,GOOGL,GOOGLx,Alphabet xStock,xstocks
+solana,Xsa62P5mvPszXL1krVUnU5ar38bBSVcWAB6fmPCo5Zu,META,METAx,Meta xStock,xstocks
+solana,Xs3eBt7uRfJX8QUs4suhyU8p2M6DoUDrJyWBa8LLZsg,AMZN,AMZNx,Amazon.com xStock,xstocks
+solana,XspzcW1PRtgf6Wj92HCiZdjzKCyFekVD8P5Ueh3dRMX,MSFT,MSFTx,Microsoft xStock,xstocks
+solana,Xsc9qvGR1efVDFGLrVsmkzv3qi45LTBjeUKSPmx9qEh,NVDA,NVDAx,NVIDIA xStock,xstocks
+solana,XsbEhLAtcf6HdfpFZ5xEMdqW8nfAvcsP5bdudRLJzJp,AAPL,AAPLx,Apple xStock,xstocks
+bsc,0x390a684ef9cade28a7ad0dfa61ab1eb3842618c4,AAPL,AAPLon,Apple (Ondo Tokenized),ondo
+bsc,0xef80743f78d98fc2b47a2253b293152ce8b879ba,ABNB,ABNBon,Airbnb (Ondo Tokenized),ondo
+bsc,0x5a20886b575058dd7299785f0ea9b1172942a3e0,ABT,ABTon,Abbott (Ondo Tokenized),ondo
+bsc,0x7af44d51d1fb88c5b74fc71d3cba649bb8099d14,ACN,ACNon,Accenture (Ondo Tokenized),ondo
+bsc,0xcb22db0ecb6fe58b7b47db443dcfdfdfbf729cef,ADBE,ADBEon,Adobe (Ondo Tokenized),ondo
+bsc,0x9f16e46c73b43bdb70861247d537bee4ea18f639,AMD,AMDon,AMD (Ondo Tokenized),ondo
+bsc,0x4553cfe1c09f37f38b12dc509f676964e392f8fc,AMZN,AMZNon,Amazon (Ondo Tokenized),ondo
+bsc,0xedb3124e96c64c177eb709cbc64f9977db40ea74,APP,APPon,AppLovin (Ondo Tokenized),ondo
+bsc,0x527c6436e1eaa4f2065cde4090f798cb5d031dd6,ARM,ARMon,Arm Holdings plc (Ondo Tokenized),ondo
+bsc,0xb034f6cb52b7f2fd5a7eeeffca6b9adcd6b9a6f6,ASML,ASMLon,ASML Holding NV (Ondo Tokenized),ondo
+bsc,0x0ed2e3180edf393e6bf8db124bd15ddd54de150a,AVGO,AVGOon,Broadcom (Ondo Tokenized),ondo
+bsc,0xd5964f3fcee8d649995ab88f04b8982539c282d2,BABA,BABAon,Alibaba (Ondo Tokenized),ondo
+bsc,0xf21132a811ad1a878e21af60f64d4e690c9daa42,BA,BAon,Boeing (Ondo Tokenized),ondo
+bsc,0x467e59ce5d5fe01686d4a80dd1e1dae13549aa6c,BIDU,BIDUon,Baidu (Ondo Tokenized),ondo
+bsc,0xf8589b526fdd65f7f301c605a6e04f0f1b4b3620,COIN,COINon,Coinbase (Ondo Tokenized),ondo
+bsc,0x992879cd8ce0c312d98648875b5a8d6d042cbf34,CRCL,CRCLon,Circle Internet Group (Ondo Tokenized),ondo
+bsc,0xd04a2bb053277721a8321d7441eed5b42fdf7250,CRM,CRMon,Salesforce (Ondo Tokenized),ondo
+bsc,0x34304f2f7cc487eb4186e6d69f5905a613474aa2,CSCO,CSCOon,Cisco Systems (Ondo Tokenized),ondo
+bsc,0xd3113a0ad20a46f6a662c63fe8e637f7713e59c7,CVX,CVXon,Chevron (Ondo Tokenized),ondo
+bsc,0x7567c2a46bce46373b454682f3d95e6535bde144,DASH,DASHon,DoorDash (Ondo Tokenized),ondo
+bsc,0x00c81d35eddf44c75d4db9e07bdcdc236eb0ebcf,EEM,EEMon,iShares MSCI Emerging Markets ETF (Ondo Tokenized),ondo
+bsc,0x5151a22421ed4277f1e4ca4785a07b035d548a36,GE,GEon,General Electric (Ondo Tokenized),ondo
+bsc,0xdabb9aff4cf02f26d2014e4ca9f94ac6fe6572a3,GME,GMEon,GameStop (Ondo Tokenized),ondo
+bsc,0x091fc7778e6932d4009b087b191d1ee3bac5729a,GOOGL,GOOGLon,Alphabet Class A (Ondo Tokenized),ondo
+bsc,0x0d4f9b25f81163fb4840ba4f434672543823000c,GS,GSon,Goldman Sachs (Ondo Tokenized),ondo
+bsc,0x4693f6f5ef257381a28afd0673e64d8b32d5c6ad,HIMS,HIMSon,Hims & Hers Health (Ondo Tokenized),ondo
+bsc,0x19601179a60f55ff6636f5d1a8b6671053bd60a8,HOOD,HOODon,Robinhood Markets (Ondo Tokenized),ondo
+bsc,0xcb2a0f46f67dc4c58a316f1c008edef5c2311795,IAU,IAUon,iShares Gold Trust (Ondo Tokenized),ondo
+bsc,0xe8ff70859ce4cbd72e4352b4fb45f5bf39d07464,IBM,IBMon,IBM (Ondo Tokenized),ondo
+bsc,0x918008c3d29496c37b478b611967beaca365af36,IEFA,IEFAon,iShares Core MSCI EAFE ETF (Ondo Tokenized),ondo
+bsc,0x22092c94a91d019ad15536725598b0a6be0a73c0,IEMG,IEMGon,iShares Core MSCI Emerging Markets ETF (Ondo Tokenized),ondo
+bsc,0xa528caaa2f96090e379d43f90834c75df54d6e74,INTC,INTCon,Intel (Ondo Tokenized),ondo
+bsc,0x500eafc69b68acd6f27064f9b75f1c7d91cc4d9f,IWM,IWMon,iShares Russell 2000 ETF (Ondo Tokenized),ondo
+bsc,0xe92be960ae64f6a914ca77014cac9e56de7f36c1,JD,JDon,JD.com (Ondo Tokenized),ondo
+bsc,0x317bf42b43a394860718266dec445dcc9fd9da49,JPM,JPMon,JPMorgan Chase (Ondo Tokenized),ondo
+bsc,0x405f38b90bebf1259062cf29da299f3398662bcb,KO,KOon,Coca-Cola (Ondo Tokenized),ondo
+bsc,0xe1743616f705954620aa351465c8885fbde5a8a9,LIN,LINon,Linde plc (Ondo Tokenized),ondo
+bsc,0x341d31b2be1fee9c00e395a62ba41837f4322eed,LLY,LLYon,Eli Lilly (Ondo Tokenized),ondo
+bsc,0xd226d8170ee38793430c7dec6903df4b818bb74c,MARA,MARAon,MARA Holdings (Ondo Tokenized),ondo
+bsc,0x995add4ba29a628a57930a8a185c62ca044ec090,MCD,MCDon,McDonald's (Ondo Tokenized),ondo
+bsc,0x60a8f8e05200ff73afde9e2cae819bf1605f0bdd,MELI,MELIon,MercadoLibre (Ondo Tokenized),ondo
+bsc,0xd7df5863a3e742f0c767768cdfcb63f09e0422f6,META,METAon,Meta Platforms (Ondo Tokenized),ondo
+bsc,0x1501ec83ffef405b4331cc4f73277a40fb0c627d,MRVL,MRVLon,Marvell Technology (Ondo Tokenized),ondo
+bsc,0x6bfe75d1ad432050ea973c3a3dcd88f02e2444c3,MSFT,MSFTon,Microsoft (Ondo Tokenized),ondo
+bsc,0x7313ea16493b2f55054df0131a3a14b043ec8992,MSTR,MSTRon,MicroStrategy (Ondo Tokenized),ondo
+bsc,0x8b6acf6041a81567f012ff6a4c6d96d5818d74bf,MU,MUon,Micron Technology (Ondo Tokenized),ondo
+bsc,0x7048f5227b032326cc8dbc53cf3fddd947a2c757,NFLX,NFLXon,Netflix (Ondo Tokenized),ondo
+bsc,0x04b5e199f2ec84f78b111035f57b16bee448db6f,NKE,NKEon,Nike (Ondo Tokenized),ondo
+bsc,0xeb19c13c54b1cd48afc62f6503375e92d5f1e856,NOW,NOWon,ServiceNow (Ondo Tokenized),ondo
+bsc,0xa9ee28c80f960b889dfbd1902055218cba016f75,NVDA,NVDAon,NVIDIA (Ondo Tokenized),ondo
+bsc,0x08a513779f46ffb7a34f16094a94016d010128a8,NVO,NVOon,Novo Nordisk (Ondo Tokenized),ondo
+bsc,0x03e4bd1ea53f1da84513da0319d1f03dd1bbcf93,ORCL,ORCLon,Oracle (Ondo Tokenized),ondo
+bsc,0x0eaa1a75bd682a5669ab2371a559fbd039c6b9eb,PANW,PANWon,Palo Alto Networks (Ondo Tokenized),ondo
+bsc,0xf99f8f3a95257d82006183bd524efa7aacc9ef7a,PEP,PEPon,PepsiCo (Ondo Tokenized),ondo
+bsc,0x8a83c31d6751833b4940b6e871c48d9a15a07b46,PFE,PFEon,Pfizer (Ondo Tokenized),ondo
+bsc,0x400f1e257f86d25578a0928c94dc95115f09d5c9,PG,PGon,Procter & Gamble (Ondo Tokenized),ondo
+bsc,0x9351abd19f42101dd36025e495b98e910b255d78,PLTR,PLTRon,Palantir Technologies (Ondo Tokenized),ondo
+bsc,0x374d03a6c0d5bd4be0a5117ebe1b49d52ac8a53f,PYPL,PYPLon,PayPal (Ondo Tokenized),ondo
+bsc,0x8c7bf0ed6bc778bde1489de1592c1aad3e66371d,QBTS,QBTSon,D-Wave Quantum (Ondo Tokenized),ondo
+bsc,0xfbd4d681c92ead6af0e49950c8b2e47eeacbb2db,QCOM,QCOMon,Qualcomm (Ondo Tokenized),ondo
+bsc,0x0cde6936d305d5b34667fc46425e852efd73559a,QQQ,QQQon,Invesco QQQ (Ondo Tokenized),ondo
+bsc,0x4da12f47578ef89c76179b760c778e70b668f80b,RDDT,RDDTon,Reddit (Ondo Tokenized),ondo
+bsc,0xc4a88a72b848255fd24da3c1ad6755d980535fb1,RIOT,RIOTon,Riot Platforms (Ondo Tokenized),ondo
+bsc,0x99e01f02d66455bb106d91d469c9eaf6ab4904f6,SBET,SBETon,SharpLink Gaming (Ondo Tokenized),ondo
+bsc,0x8b872732b07be325a8803cdb480d9d20b6f8d11b,SLV,SLVon,iShares Silver Trust (Ondo Tokenized),ondo
+bsc,0xc142ba8ccd36d80c3a001342fb83e4c3d218a873,SMCI,SMCIon,Super Micro Computer (Ondo Tokenized),ondo
+bsc,0x138ed6833ff4e8811e1fea0d005e13726c8886f9,SNOW,SNOWon,Snowflake (Ondo Tokenized),ondo
+bsc,0x55b370b704240a914f42b5bbb3195431c031f9f8,SPGI,SPGIon,S&P Global (Ondo Tokenized),ondo
+bsc,0x6a708ead771238919d85930b5a0f10454e1c331a,SPY,SPYon,SPDR S&P 500 ETF (Ondo Tokenized),ondo
+bsc,0xf69e40069ac227c11459e3f4e8a446b3401616b6,TLT,TLTon,iShares 20+ Year Treasury Bond ETF (Ondo Tokenized),ondo
+bsc,0x2494b603319d4d9f9715c9f4496d9e0364b59d93,TSLA,TSLAon,Tesla (Ondo Tokenized),ondo
+bsc,0xc37042a7a4fa510d8884a433762ab87257b91965,TSM,TSMon,Taiwan Semiconductor Manufacturing (Ondo Tokenized),ondo
+bsc,0xde9d6036fca870f7efc5a82722ae694c371ac909,UBER,UBERon,Uber (Ondo Tokenized),ondo
+bsc,0x3385cb29cca0ac66f5d2354d13ef977b49a2510f,UNH,UNHon,UnitedHealth (Ondo Tokenized),ondo
+bsc,0x1cde419fae0ef7f7931ae3e29e5f411c8c5e5fa1,V,Von,Visa (Ondo Tokenized),ondo
+bsc,0x8677abad7b458bf16a0fb2676dfc7d3f55ac202a,ABBV,ABBVon,AbbVie (Ondo Tokenized),ondo
+bsc,0x5ecc352c4640f1d26bd231dbbd171f40f7d0eec6,AMAT,AMATon,Applied Materials (Ondo Tokenized),ondo
+bsc,0x1d7b5e06fdbe4fd33f5c64c081e32b5d539751d0,AMC,AMCon,AMC Entertainment (Ondo Tokenized),ondo
+bsc,0x538e2838f9ebc9b891399df4a8dcc42890d9dc20,ANET,ANETon,Arista Networks (Ondo Tokenized),ondo
+bsc,0xd615468088b19fb9d4f03cb3ce9e33876ff3db99,BAC,BACon,Bank of America (Ondo Tokenized),ondo
+bsc,0x91fc7371d6de682a1e8cfcb4eb7da693312a03a4,BILI,BILIon,Bilibili (Ondo Tokenized),ondo
+bsc,0x52ad57a7ea642e99a892afc79e937b383f1b59e9,BMNR,BMNRon,BitMine Immersion Technologies (Ondo Tokenized),ondo
+bsc,0x65d84f0990b7394209d591380c2952c83d778aa3,CEG,CEGon,Constellation Energy (Ondo Tokenized),ondo
+bsc,0xdad07d0ca26ed4109bc00893dbee3ed4ce8ce2a4,CIFR,CIFRon,Cipher Mining (Ondo Tokenized),ondo
+bsc,0xec93fe7ff4b09ca3ccafbc4cc9615e62be412780,COPX,COPXon,Global X Copper Miners ETF (Ondo Tokenized),ondo
+bsc,0xe6837794fbc6dd024733a1a31f86061296fa2752,CRWD,CRWDon,CrowdStrike (Ondo Tokenized),ondo
+bsc,0xfa9a1e901085e269f6d428f79cd5252d8b919344,GLD,GLDon,SPDR Gold Shares (Ondo Tokenized),ondo
+bsc,0x8fd70ee385f470c8d6fda2d93a4e49c849bac6a6,IREN,IRENon,IREN (Ondo Tokenized),ondo
+bsc,0x84719a1082ed487c7eeac7d69885e3cc2009ea78,JAAA,JAAAon,Janus Henderson AAA CLO ETF (Ondo Tokenized),ondo
+bsc,0xd1f799cb9f5d0a02951b0755beced6c43882712f,JNJ,JNJon,Johnson & Johnson (Ondo Tokenized),ondo
+bsc,0xfc263946439b0d802bf4c5a6fcd34e2885259f91,KLAC,KLACon,KLA (Ondo Tokenized),ondo
+bsc,0x9810beac9af3c30d14cfb61cdd557e160f60fd50,LI,LIon,Li Auto (Ondo Tokenized),ondo
+bsc,0x35895a1fa1aff7fb3204fb01257409fd75acb24c,LRCX,LRCXon,Lam Research (Ondo Tokenized),ondo
+bsc,0x869027261075c3c239d6a26842579b93802606f4,MRK,MRKon,Merck (Ondo Tokenized),ondo
+bsc,0x01486675da0764ee780ea7cb65c33062e9b2d28c,MRNA,MRNAon,Moderna (Ondo Tokenized),ondo
+bsc,0xc6f9edbee6042a237d72493bbda3ee2c3c62f708,NIO,NIOon,NIO (Ondo Tokenized),ondo
+bsc,0xaf6c03acf72355ce98d0741302b78870b376428c,OKLO,OKLOon,Oklo (Ondo Tokenized),ondo
+bsc,0xd85d4ce29b4ca361ff72ef0e53d6236e334c5db6,ONDS,ONDSon,Ondas Holdings (Ondo Tokenized),ondo
+bsc,0xa09699fc0cbb1f85128450a0ff6a3c4d3a7e7b9b,OPEN,OPENon,Opendoor Technologies (Ondo Tokenized),ondo
+bsc,0x3fcd741646a9790635b938cdb69af5df356cbaab,PALL,PALLon,abrdn Physical Palladium Shares ETF (Ondo Tokenized),ondo
+bsc,0xf3e82ea164cb344b2b11bad4c24b0ea4f7ba4714,PDD,PDDon,PDD Holdings (Ondo Tokenized),ondo
+bsc,0x4752ae8f910b25e64e4406eaad50c1b4e8de7e6d,PLUG,PLUGon,Plug Power (Ondo Tokenized),ondo
+bsc,0xc16f47c4a7ed39372b9a0e3e2016cede9b4cb83a,REMX,REMXon,VanEck Rare Earth and Strategic Metals ETF (Ondo Tokenized),ondo
+bsc,0xc008c5f579ec1450f20099c39f587547e27c7523,SGOV,SGOVon,iShares 0-3 Month Treasury Bond ETF (Ondo Tokenized),ondo
+bsc,0x71507068e98049cba81e9bbc8d901e4a2f4222eb,SOFI,SOFIon,SoFi Technologies (Ondo Tokenized),ondo
+bsc,0xedcf71b2e2217064038adcb54a3c3a5fc3488ef1,SOUN,SOUNon,SoundHound AI (Ondo Tokenized),ondo
+bsc,0x17515b68378d86c38f394c666e79907da05dcba9,SQQQ,SQQQon,ProShares UltraPro Short QQQ (Ondo Tokenized),ondo
+bsc,0x6459303f58244ff1e7a42b90aa3782dfb6ca6969,TCOM,TCOMon,Trip.com Group (Ondo Tokenized),ondo
+bsc,0xbcf7d958791152128710565a5fc6f68342ed71c8,TMO,TMOon,Thermo Fisher Scientific (Ondo Tokenized),ondo
+bsc,0x2588f20bad92da8dcce7fac8311b5f8ab4690e43,TMUS,TMUSon,T-Mobile US (Ondo Tokenized),ondo
+bsc,0xe42cfb20e00912409b77a602b5bdcff3c7acc5f4,TQQQ,TQQQon,ProShares UltraPro QQQ (Ondo Tokenized),ondo
+bsc,0x94174e3d1335db402dd03a092f7aa7ac2cb32be4,USO,USOon,United States Oil Fund (Ondo Tokenized),ondo
+bsc,0x9cea8a7be1ab0320b709d368ad60d8500f55995f,VRT,VRTon,Vertiv (Ondo Tokenized),ondo
+bsc,0xf2c24c47805f4f72d3919c8674bfdd401505794b,VST,VSTon,Vistra (Ondo Tokenized),ondo
+bsc,0x158734153f354cb326ee690c3d55f810dcb0fc90,VTI,VTIon,Vanguard Total Stock Market ETF (Ondo Tokenized),ondo
+bsc,0xad56701d9e57957e28e546db7db508a16d4f86cc,WULF,WULFon,Terawulf (Ondo Tokenized),ondo
+bsc,0x4d209d275e3492ac08497a7a42915899c4dd5e86,XOM,XOMon,Exxon Mobil (Ondo Tokenized),ondo
+bsc,0x5fa699c0c1319b8d86489af77dfde4fa97b47df8,BTGO,BTGOon,BitGo Holdings (Ondo Tokenized),ondo
+bsc,0x18de24acb876c0b8392d9c55583bb21c0355980b,APLD,APLDon,Applied Digital (Ondo Tokenized),ondo
+bsc,0x45abf29515bc23f8c0ed2a06584444ce473a75fb,ASTS,ASTSon,AST SpaceMobile (Ondo Tokenized),ondo
+bsc,0x0585756aafb241b0f8a9df62db26c566091bde0b,COHR,COHRon,Coherent (Ondo Tokenized),ondo
+bsc,0x76e39171cb665a35981e744e2ceb7012f76caeac,CRWV,CRWVon,CoreWeave (Ondo Tokenized),ondo
+bsc,0x4697b2a050f7b5a8e1ebc27c325f9d78d094f041,ETN,ETNon,Eaton (Ondo Tokenized),ondo
+bsc,0x82715299f3f132fb85f3de1f7e8fafd3d79f3eb5,EWJ,EWJon,iShares MSCI Japan ETF (Ondo Tokenized),ondo
+bsc,0x12b7adc48416a103f63e7e6210f62c81dfb91fd0,EWY,EWYon,iShares MSCI South Korea ETF (Ondo Tokenized),ondo
+bsc,0x9876f4b879cde9aa49ffd260034a0698b7b33a49,EWZ,EWZon,iShares MSCI Brazil ETF (Ondo Tokenized),ondo
+bsc,0xee0d57462f20434030b8262204c00c0ea0399c41,FGDL,FGDLon,Franklin Responsibly Sourced Gold ETF (Ondo Tokenized),ondo
+bsc,0x2aea1d415d45ccf3eabe565d45dcaf4ea2035b9c,GEV,GEVon,GE Vernova (Ondo Tokenized),ondo
+bsc,0xf98b89825233808cd37706a53d2b4ae3e359d442,GLXY,GLXYon,Galaxy Digital (Ondo Tokenized),ondo
+bsc,0x88b90f45bd6a4f97f7d85d280ed64a40880e4935,ITA,ITAon,iShares US Aerospace and Defense ETF (Ondo Tokenized),ondo
+bsc,0xee268780473e7a0e47bac41547c6e01512555a16,NBIS,NBISon,Nebius Group (Ondo Tokenized),ondo
+bsc,0x3ec23f52f6573fc0587a0631dd8c3b107f6bcb35,PPLT,PPLTon,abrdn Physical Platinum Shares ETF (Ondo Tokenized),ondo
+bsc,0x82e07c1017032cfd889b1ca81ebe722c4d4de825,QUBT,QUBTon,Quantum Computing (Ondo Tokenized),ondo
+bsc,0x23e39d94807a8bb7e3f8294b4911d04ee26dce39,RDW,RDWon,Redwire (Ondo Tokenized),ondo
+bsc,0xb4d695569236273745b4cd54b539b1b9cc1513af,RKLB,RKLBon,Rocket Lab (Ondo Tokenized),ondo
+bsc,0x4fd67cb8cfedc718bac984b5936abe3330d0a2a4,SNDK,SNDKon,SanDisk (Ondo Tokenized),ondo
+bsc,0x2a3cbf64c8181db4a25d41d4d7a7db9984c59dac,SOXX,SOXXon,iShares Semiconductor ETF (Ondo Tokenized),ondo
+bsc,0x966ebcba3c51e81f5cf159a1eabefd2327ab5e8d,STX,STXon,Seagate (Ondo Tokenized),ondo
+bsc,0xc7806943663158d68740a14ab0b270bd60bde87d,URA,URAon,Global X Uranium ETF (Ondo Tokenized),ondo
+bsc,0xceb29848d04ad3cb46e1fe8e45b82ffac39d797d,WDC,WDCon,Western Digital (Ondo Tokenized),ondo
+bsc,0x68b07cef227cea1b2b6683921c8c825cd5c69ec7,IBIT,IBITon,iShares Bitcoin Trust (Ondo Tokenized),ondo
+bsc,0x71e9dc9debc18650bd2342b93623b88c2ad00c89,STRC,STRCon,Strategy Stretch Preferred (Ondo Tokenized),ondo
+bsc,0x25a4dbae9a0cd8c75656d6b50ffdf4900cc20d8f,GLW,GLWon,Corning (Ondo Tokenized),ondo
+bsc,0x0facafb97ffdba3cae88512070af49bd30674cd9,LITE,LITEon,Lumentum Holdings (Ondo Tokenized),ondo
+bsc,0x149bda9e7251dc36f536d1fe7f92a5ea203f4f3d,AAOI,AAOIon,Applied Optoelectronics (Ondo Tokenized),ondo
+bsc,0x0c50323af81d5c33822c6add256fb9093d42bc74,AXTI,AXTIon,AXT (Ondo Tokenized),ondo
+bsc,0x55b56cc2cdcbc2c58668f72663be7599a46ed79f,WOLF,WOLFon,Wolfspeed (Ondo Tokenized),ondo
+bsc,0xfeb0793eea97585eb3a541f3fd53450d225b2b87,NET,NETon,Cloudflare (Ondo Tokenized),ondo
+bsc,0x2206e07410a8fe9ef595e7184b2e9d160fdb7211,USAR,USARon,USA Rare Earth (Ondo Tokenized),ondo
+bsc,0x6f040fc3061374304bddbfdae9d688d7c868c785,TER,TERon,Teradyne (Ondo Tokenized),ondo
+bsc,0xe9518cb0010c717db69001f1418eff9e97330137,NOK,NOKon,Nokia (Ondo Tokenized),ondo
+bsc,0xf9015e0b3ab4ddd216f522d6150db826c9be83f8,PL,PLon,Planet Labs (Ondo Tokenized),ondo
+bsc,0x492e678c1ea048c70edc635047cdbb87ff5362a2,HPE,HPEon,Hewlett Packard Enterprise (Ondo Tokenized),ondo
+bsc,0xc43ae29afe58bf90da6fe3edd570c2e735fb2850,BOT,BOTon,RoboStrategy (Ondo Tokenized),ondo
+bsc,0x17d03ae104a9d12e9e5794efb109b817dd7f3404,BE,BEon,Bloom Energy (Ondo Tokenized),ondo
+bsc,0xf4b674d4e33c36f8db4b928a5eec4e1f87b386e3,SMR,SMRon,NuScale Power (Ondo Tokenized),ondo
+bsc,0x111f6f2b9f1c5f3ec841690e1deec606086727da,SAP,SAPon,SAP (Ondo Tokenized),ondo
+bsc,0x3c276dd9f9eab5510f9eafd3a6ea54879b27ca3d,NNE,NNEon,NANO Nuclear Energy (Ondo Tokenized),ondo
+bsc,0xf1a96d4b591e446445600789d60c73dd636b357c,FLNC,FLNCon,Fluence Energy (Ondo Tokenized),ondo
+bsc,0x441a4d4fc23f17f4cf23e3d60f12d2bd6f176728,CBRS,CBRSon,Cerebras Systems (Ondo Tokenized),ondo
+bsc,0xf26518958935654878de15be7bc79a26971583ba,DELL,DELLon,Dell Technologies (Ondo Tokenized),ondo
+bsc,0x1161989389a991532dce453d04d6346c2581c907,ARQQ,ARQQon,Arqit Quantum (Ondo Tokenized),ondo
+bsc,0x573e11cc667a8e5be0c7af2410403371088d3d0d,ALAB,ALABon,Astera Labs (Ondo Tokenized),ondo
+bsc,0xf157481bebd0c0686780fd0f61806c900a6137e8,CRDO,CRDOon,Credo Technology Group Holding (Ondo Tokenized),ondo
+bsc,0x8ac67002282eea816afa0160d22a8d27f05ba07b,LWLG,LWLGon,Lightwave Logic (Ondo Tokenized),ondo
+bsc,0x2144d620e3471441b12bf256e01a09eaa5ea7f12,PENG,PENGon,Penguin Solutions (Ondo Tokenized),ondo
+bsc,0x47bfe4921bd74c66c6b0c35c517abdfb5e3bafb3,FCEL,FCELon,FuelCell Energy (Ondo Tokenized),ondo
+bsc,0xc8206bb42ec019f7e7ea060ed887e9f5bb53cbb0,VCX,VCXon,Fundrise Innovation Fund (Ondo Tokenized),ondo
+bsc,0xd2c06fef2ca2375a9c7ceb4abca9dbc2ab6af981,UUUU,UUUUon,Energy Fuels (Ondo Tokenized),ondo
+bsc,0x2418c2e1ae3b8d767594b3974d32610743f88155,PWR,PWRon,Quanta Services (Ondo Tokenized),ondo
+bsc,0x25ed86472cf3012607dc6576c58e6432968255c2,CORZ,CORZon,Core Scientific (Ondo Tokenized),ondo
+bsc,0x3a82f1c847cc55e52e597fd81c63a812c6722541,HUT,HUTon,Hut 8 (Ondo Tokenized),ondo
+bsc,0xb56b7c2f9988448790b0f78697f405ab5e8597e6,NVTS,NVTSon,Navitas Semiconductor (Ondo Tokenized),ondo
+bsc,0x15688f10470dfddcb4e2d60cd2acfd3ec418317a,SOXQ,SOXQon,Invesco PHLX Semiconductor ETF (Ondo Tokenized),ondo
+bsc,0xb943c8a0d77b656daf5244da060d647fd9152289,SOXL,SOXLon,Direxion Daily Semi Bull 3X ETF (Ondo Tokenized),ondo
+bsc,0x335dd4112704f108b5ddd8f8a44bd9ed68522a80,SOXS,SOXSon,Direxion Daily Semi Bear 3X ETF (Ondo Tokenized),ondo
+bsc,0xa046c2f0a1ac0a0e8829efc12163ae892ceafac2,IGV,IGVon,iShares Expanded Tech-Software ETF (Ondo Tokenized),ondo
+bsc,0x1eada1306df72a5607827416c1a1307d7056dfff,EXTR,EXTRon,Extreme Networks (Ondo Tokenized),ondo
+bsc,0x847ef23a3f99af79a185ce033e1664165b846eea,HSAI,HSAIon,Hesai Group (Ondo Tokenized),ondo
+bsc,0x087b5761b161429013d41ea54cd2fb6022a21564,DRAM,DRAMon,Roundhill Memory ETF (Ondo Tokenized),ondo
+bsc,0x732823512ba98d1bcde471ca023ee2a0c9f117b7,SATA,SATAon,Strive Preferred (Ondo Tokenized),ondo
+bsc,0xd0a58bc9d88d3ff48c0294cb7e45937d0e41a928,SPCX,SPCXon,SpaceX (Ondo Tokenized),ondo
+bsc,0x4268f2bfb23a7496504aa5ed1ee325248586299f,SKHY,SKHYon,SK Hynix (Ondo Tokenized),ondo
+bsc,0xb18c6a83490dddbc9a83b011173b5b2fb5dc1272,HTZ,HTZon,Hertz Global Holdings (Ondo Tokenized),ondo
+bsc,0x79ed7f4d9668e8e7aaadd12a711d19064840b9a5,WEN,WENon,Wendy's (Ondo Tokenized),ondo
+bsc,0x820f09c2ebe7852e14a1310008bf7af4d29d4f09,TWST,TWSTon,Twist Bioscience (Ondo Tokenized),ondo
+bsc,0x343ccbc9f8409f862008b7abebfff20ecf935c75,ANT,ANTon,Anthropic (Ondo Tokenized),ondo
+bsc,0xf095607f8ab6f8f813a1f93f70047ec2f0a8bd85,TTWO,TTWOon,Take-Two Interactive Software (Ondo Tokenized),ondo
+bsc,0x894866bde9335bef347784e66ecb9bf0e942ffc0,USPX,USPXon,Franklin US Equity Index ETF (Ondo Tokenized),ondo
+bsc,0xcbb733b3dccbb983e49baac52abe7bc3a8e85a4f,BB,BBB,Blackberry（bStocks）,bstocks
+bsc,0x585bde7c54abb5ccd7791f923d6c2187635f3952,COIN,COINB,Coinbase (bStocks),bstocks
+bsc,0xc8da12cbcce7c45180692a6420b0076e03a5179a,RKLB,RKLBB,Rocket Lab (bStocks),bstocks
+bsc,0x46ceefda28dd7207059ed19b0acdc026955bb15c,GME,GMEB,GameStop (bStocks),bstocks
+bsc,0x2e4127e92ebc1b7909267a820c9cb508373e5a5c,MDB,MDBB,Mongodb (bStocks),bstocks
+bsc,0xe614e2fc6c787035ff51f452e8e826bfd32d5283,INTC,INTCB,Intel (bStocks),bstocks
+bsc,0x4684d9887fc1c71cba7bab8e88835cec217eb598,ORCL,ORCLB,Oracle (bStocks),bstocks
+bsc,0xfa273b076feb8c0fb34e554ae341082323d016a3,IBM,IBMB,IBM (bStocks),bstocks
+bsc,0x1a4b499833a79a09ad7cf1d42d7dacf71e92eb00,AMZN,AMZNB,Amazon (bStocks),bstocks
+bsc,0x5519de00f5388c17d886b97cb5d2d43a812a82bc,BE,BEB,Bloom Energy (bStocks),bstocks
+bsc,0xab78b89b5bb00236be0b4b20704cbfa04efc711c,TSM,TSMB,TSMC (bStocks),bstocks
+bsc,0xe28cd11c99af2df76bb8ada4cd0ef3904378280f,SOXS,SOXSB,Direxion Semiconductor Bear 3X ETF (bStocks),bstocks
+bsc,0x4ef9d3062c7f6eba4aae4990c5036598c6eff4ec,BABA,BABAB,Alibaba (bStocks),bstocks
+bsc,0x387dea1d2772d716d081a29116f3effa0ffe1f36,SMCI,SMCIB,Super Micro Computer (bStocks),bstocks
+bsc,0x19568bf80e61e6272ff04403c4d5b09833cc7c54,TMF,TMFB,Direxion Daily 20 Year Treasury Bull 3X ETF (bStocks),bstocks
+bsc,0x3ee4df61bd4f867e349beae8bfe07bc31b4850fb,SNDK,SNDKB,SanDisk (bStocks),bstocks
+bsc,0x16cd4fe7e8880ecc3ba222795229e20489fc2c76,MRVL,MRVLB,Marvell Technology (bStocks),bstocks
+bsc,0x64748bea17b6d19e242adf20425de2440c656142,LITE,LITEB,Lumentum (bStocks),bstocks
+bsc,0xded1c5fb38c262beb9cff1e1116eff3c5bf278cd,WEN,WENB,Wendy's (bStocks),bstocks
+bsc,0x2e065f65f1699964f4092de1d39a8efe6c8d6f32,STX,STXB,Seagate (bStocks),bstocks
+bsc,0x5fd86da9b05abe396fe9d02a4a213a7c00556503,MRNA,MRNAB,Moderna (bStocks),bstocks
+bsc,0xf2ec508422174ee564de98187db9359d318afb6b,DJT,DJTB,Trump Media & Technology Group (bStocks),bstocks
+bsc,0xd721c192d612db77621df57a9fab38418033c02e,QNT,QNTB,Quantinuum (bStocks),bstocks
+bsc,0xbd49d695ba2cc46c8c603eb62afcd7fff4698281,JPM,JPMB,JPMorgan Chase (bStocks),bstocks
+bsc,0x0e7a51966c66648999d506e1372efdea1b78cb0b,DELL,DELLB,Dell (bStocks),bstocks
+bsc,0xe1fc8b12eeda0b7f8ed1330477ba330d3b5afbc9,MELI,MELIB,MercadoLibre (bStocks),bstocks
+bsc,0xd42a79ebb7f527f40faecd196ffb47ad5e8d6f8c,ARM,ARMB,ARM (bStocks),bstocks
+bsc,0x93862d63fd9fd488b1328e9b47717d75e994a84b,DRAM,DRAMB,Roundhill Memory ETF (bStocks),bstocks
+bsc,0x80106cb3ead06659a5ad19df39d9b4733863b9b0,MSFT,MSFTB,Microsoft (bStocks),bstocks
+bsc,0xc7fb9c23f359b7e072706eb43db8cf489aa8f87f,VST,VSTB,Vistra Corp (bStocks),bstocks
+bsc,0xcd1e9a6d7416674347c44e7a95b1f5954540fffd,SOXX,SOXXB,iShares Semiconductor ETF（bStocks）,bstocks
+bsc,0x80f3d493ebce97e343c53d29a137942416b4ffc0,CRCL,CRCLB,Circle Internet Group (bStocks),bstocks
+bsc,0x7138b48df7d98d7e3cc221bfe7192d0a178182d8,SPY,SPYB,SPY (bStocks),bstocks
+bsc,0xcd345d4450e04cdef422a60b97d9265d24e0bcee,USAR,USARB,USA Rare Earth (bStocks),bstocks
+bsc,0x0bb3fa77e0809f42948e435f04883c25415e8263,MUU,MUUB,Direxion MU Bull 2X ETF (bStocks),bstocks
+bsc,0x431a3bee82e2ca41e49895cbece5bb0f76a89b7a,AAPL,AAPLB,Apple (bStocks),bstocks
+bsc,0xc895d166fe59841dc71003f80d7ef2f00f40a4be,BSP,BSPB,Bending Spoons (bStocks）,bstocks
+bsc,0x5f7a56e877b9130608bf8be962621011182fefe1,QCOM,QCOMB,Qualcomm (bStocks),bstocks
+bsc,0x5b1910eaad6450e50f816082aa078c41f10c292f,TSLA,TSLAB,Tesla (bStocks),bstocks
+bsc,0xe256bc2a4f5297f8ba6f043f180a46300ecbcbb1,NBIS,NBISB,Nebius (bStocks),bstocks
+bsc,0x8c433eca1be0e2a357015602f63751c768f6f643,CRM,CRMB,Salesforce (bStocks),bstocks
+bsc,0x15ec59551096d5ae2df8cde08618035145828548,APP,APPB,Applovin Corp (bStocks),bstocks
+bsc,0xee6f4bcc88c2c8583d5a65c7d0c877b464100711,HIMS,HIMSB,Hims & Hers (bStocks),bstocks
+bsc,0xa394dcea3fd3847fd793afbfd163e2e3858b7c65,HOOD,HOODB,Robinhood (bStocks),bstocks
+bsc,0x0393c28065c54e48b45bdb05eff5c401cf891da1,CYPH,CYPHB,Cypherpunk Technologies (bStocks),bstocks
+bsc,0xfdc2f2cab77b28f7ef6c819a404706cfa9bca33b,IREN,IRENB,IREN Limited (bStocks),bstocks
+bsc,0x515f386fc664980db2ab30c574ec210983232493,SKDD,SKDDB,GraniteShares 2x Short SK Hynix Daily ETF (bStocks),bstocks
+bsc,0x65c0249d49e3231540fd0db0a1ae9259e6eaaf57,ADBE,ADBEB,Adobe (bStocks),bstocks
+bsc,0x0735d9904b7e34e6fe39b0f66e00c111b3f2b681,INTW,INTWB,GraniteShares 2X Long INTC ETF (bStocks),bstocks
+bsc,0x38dd26788cf2d901e3abf04efe3007d459d0fc53,ANT,ANTB,Anthropic (bStocks),bstocks
+bsc,0xca750ef65f295bbecd685abf54e82caf297bdb61,SKHY,SKHYB,SK Hynix (bStocks),bstocks
+bsc,0x5131859a059b2446abeefe0f5d313b3c54ff3d36,COHR,COHRB,Coherent (bStocks),bstocks
+bsc,0xd16c99b3f877b22a5dd42eef2fa77bd403306685,BOT,BOTB,RoboStrategy Inc (bStocks),bstocks
+bsc,0xf4ddb292fe88e476eddd9869d386705e6bfab7a2,ZM,ZMB,Zoom (bStocks),bstocks
+bsc,0x1282493ede6a22753d45cb2c0fdbd8d35e97555a,ALAB,ALABB,Astera Labs (bStocks),bstocks
+bsc,0x58b6f5feeb8436489f5bf4a56619092b1fa8e777,ASTS,ASTSB,AST SpaceMobile (bStocks),bstocks
+bsc,0xcdf2f3e0fa43c47a6662a91c9e4a7c5f69762699,MU,MUB,Micron Technology (bStocks),bstocks
+bsc,0xebe29695f8047c13d36e7a790ca8c1b239ffad1c,WDC,WDCB,Western Digital (bStocks),bstocks
+bsc,0x0f31e21b7881f5583ea94ddbcb0bcaf22b1abeab,SHAZ,SHAZB,SharonAI (bStocks),bstocks
+bsc,0x1ecfda023c46ca216b5c620ef357a6d0c03951e6,GPRO,GPROB,GoPro (bStocks),bstocks
+bsc,0x205812cdbed920aff76c6580abd681a46d11efc7,QQQ,QQQB,Invesco QQQ Trust (bStocks),bstocks
+bsc,0x7c26a12f20507e2cee22ceebed9e88fda47f866c,MVLL,MVLLB,GraniteShares 2X Long MRVL ETF (bStocks),bstocks
+bsc,0x5eadd95a428bc66698620c093eddd8a4b3165269,GEV,GEVB,GE Vernova Inc (bStocks）,bstocks
+bsc,0xdfd3ba51d4591f243481a6f26059d1a5ee95252f,USDE,USDEB,StablecoinX (bStocks),bstocks
+bsc,0x3f9550a5355e11c4c4e24a82e47b53a4a5d1e17d,IGV,IGVB,iShares Expanded Tech-Software Sector ETF（bStocks）,bstocks
+bsc,0x2480a1b8e5f68752fe880fba96e5517369a5f6a1,IBIT,IBITB,iShares Bitcoin Trust （bStocks）,bstocks
+bsc,0x5407912f1aa4b9e05cbe6abeb9721547a643ec6b,LLY,LLYB,Eli Lilly (bStocks),bstocks
+bsc,0xd42890342929f9ee362a8de900b638bc10095346,BRK.B,BRKBB,Berkshire Hathaway (bStocks),bstocks
+bsc,0x20cce6656e5f7f79f280e2d0f5db55b401bdbfce,GS,GSB,Goldman Sachs (bStocks),bstocks
+bsc,0x02fca66c1d1afb4e2a7884261eb00f63598a7436,NVDA,NVDAB,NVIDIA (bStocks),bstocks
+bsc,0xbe1fced7047fdce935f45700727845df2c76877a,SMH,SMHB,VanEck Semiconductor ETF (bStocks),bstocks
+bsc,0x97e8cfe35467d7ad6ed672d519e466200fb394d0,SKUU,SKUUB,GraniteShares 2x Long SK Hynix Daily ETF (bStocks),bstocks
+bsc,0x3548da95a9effe481e8604664d75e95821e557f5,BMNR,BMNRB,BitMine Immersion Technologies (bStocks),bstocks
+bsc,0x26e32dab9f844d7256db4195b3a43750272a51e9,EWJ,EWJB,iShares MSCI Japan ETF (bStocks),bstocks
+bsc,0x95b0409679b55c31772daa2fb4bee7b125b77521,PDD,PDDB,PDD Holdings (bStocks),bstocks
+bsc,0x4af1d41cd9dd950dca43984b43aaa2a8702714ac,FLNC,FLNCB,Fluence Energy (bStocks),bstocks
+bsc,0xa304bd78e739c0f777202b3eb73ac3736d1df801,AMAT,AMATB,Applied Materials (bStocks),bstocks
+bsc,0x96e7d606e229448ef817a7f35fd7394c3e15d00c,AMC,AMCB,AMC Entertainment Holdings (bStocks),bstocks
+bsc,0x6e7d451f9d30327d32020f116fa79c23b24e9c8d,CRDO,CRDOB,Credo Technology (bStocks),bstocks
+bsc,0x33e7317e17838fee56b10fe8d0b9ca6ca3090c95,CRWV,CRWVB,CoreWeave (bStocks),bstocks
+bsc,0x9e82e3da8f1115b73d24bb24113ab836ffdab6b6,SNXX,SNXXB,Tradr 2X Long SNDK ETF (bStocks),bstocks
+bsc,0x75fd4cf6f8392e41e70391d60c90c0d5211603a1,AMD,AMDB,Advanced Micro Devices (bStocks),bstocks
+bsc,0x4902c5ebc598265ed2212b559b042de8a5eeec3f,BNC,BNCB,BNB Standard Corporation (bStocks),bstocks
+bsc,0xc5a784b9bc0d9c526a1ef582c107ab2ff1c8fe14,EWZS,EWZSB,iShares MSCI Brazil Small-Cap ETF (bStocks),bstocks
+bsc,0x83f1a739fae6517c4672c5e10c8ea918925eb584,FWDI,FWDIB,Forward Industries (bStocks),bstocks
+bsc,0x10343ef7da3301493d7ecb647d68a288c6c1db2f,AAOI,AAOIB,Applied Optoelectronics (bStocks),bstocks
+bsc,0x1ffad32d69c5fead99f88c25ca0191edc3757636,KORU,KORUB,South Korea Bull 3X ETF (bStocks),bstocks
+bsc,0x462b5f13b7c7748279358962925c5de83bb9e598,TQQQ,TQQQB,ProShares UltraPro QQQ (bStocks),bstocks
+bsc,0xbe9d156892e55e7154bcd3cb0fea677f9d3103e1,SPCX,SPCXB,SpaceX (bStocks),bstocks
+bsc,0x740e075cbbea22a082b9d6679e65e82767875b6a,GLW,GLWB,Corning (bStocks),bstocks
+bsc,0x091d185e0702131a3047beb6460454f43d667e80,FRHC,FRHCB,Freedom Holding Corp（bStocks）,bstocks
+bsc,0xe87afb3076aeb0f9b14e368de8145ae6a2826a14,MSTR,MSTRB,Strategy (bStocks),bstocks
+bsc,0x24824404bb9577697d11a07a5d88341191de6578,EWT,EWTB,iShares MSCI Taiwan ETF (bStocks),bstocks
+bsc,0x7425889fe94f9d693e8daefe88bcced6acfef4c0,META,METAB,Meta (bStocks),bstocks
+bsc,0x0ca5d51d0277bd006fd9607d3e560785ebad8222,PLTR,PLTRB,Palantir (bStocks),bstocks
+bsc,0xfbfb4f79cfb4c34dcd7c82bdee5a0fa199b2e7f9,ASML,ASMLB,ASML (bStocks),bstocks
+bsc,0xe81c6bb0266cd68b4f17278531dd03ea1f12da4e,CBRS,CBRSB,Cerebras (bStocks),bstocks
+bsc,0x41622a9125a22767df8c1dc79fc17299bac4bd0b,RDDT,RDDTB,Reddit (bStocks),bstocks
+bsc,0x7c4d7a180d737dd5a70d8065a90e6746a69c37ea,NOK,NOKB,Nokia (bStocks),bstocks
+bsc,0xd6829ea836b6fa224d099d40e54b31262f874631,NFLX,NFLXB,Netflix (bStocks),bstocks
+bsc,0x7f732f9d2f2ea3e7e223c2e737e5257007f90e01,PENG,PENGB,Penguin Solutions (bStocks）,bstocks
+bsc,0xbe82f76637dba2c114c41df856c2c51e522e2cb8,EWY,EWYB,iShares MSCI South Korea ETF (bStocks),bstocks
+bsc,0x4c7ae9c293641cd1530ba3ab1b14ef004193e928,ARTY,ARTYB,iShares Future AI & Tech ETF（bStocks）,bstocks
+bsc,0xa455ae0f04a2b86eee47adca98985e61d14cbefb,AGPU,AGPUB,Axe Compute (bStocks),bstocks
+bsc,0xd97d097a89113fa59b76c572e5b2eb647e8eefaf,SOXL,SOXLB,Semicon Bull 3X ETF (bStocks),bstocks
+bsc,0x3cf7b2b634bac8c5e977e1576d79ea667e62f31c,NU,NUB,Nu Holdings (bStocks),bstocks
+bsc,0x5f1668b592cdf695b0c8e643a5a0078bb94cd80c,KSTR,KSTRB,KraneShares STAR Market 50 ETF (bStocks）,bstocks
+bsc,0x5e0ec7c48f2da6d8db1a2c95d71c535bf8a77c41,IWM,IWMB,iShares Russell 2000 Index Fund (bStocks),bstocks
+bsc,0x9bdc8b470dbf89dbcb123587c6f5e49cca3463be,AXTI,AXTIB,AXT (bStocks),bstocks
+bsc,0xb17d6ec90fd85315cd1bbcd330c3ebb07dcc822d,EWZ,EWZB,iShares MSCI Brazil ETF (bStocks),bstocks
+bsc,0xd56eb30d2ea7b5866dc0066d33bbaab36f7e8860,HPE,HPEB,Hewlett Packard (bStocks),bstocks
+bsc,0x2806a561fc1f9259b2d54a281796bde0d92762ae,PYPL,PYPLB,Paypal (bStocks),bstocks
+bsc,0x814981cf5df4a14d4d7328f9abf0d02e9ed54cd1,CRWD,CRWDB,CrowdStrike (bStocks),bstocks
+bsc,0x3f53de71c126bdabae20f9cd64848d317f6c3238,GOOGL,GOOGLB,Alphabet (bStocks),bstocks
+bsc,0x32c980f38907ace4fac643c3765d9b32842af60f,SECZ,SECZB,Securitize (bStocks),bstocks
+bsc,0x25e572b466d152604d9e6c3e53b432b978825342,SQQQ,SQQQB,ProShares UltraPro Short QQQ (bStocks),bstocks
+bsc,0x76682c454467b3a1150ad8b6a92fc5ee2c21d7ed,AVGO,AVGOB,Broadcom (bStocks),bstocks
+bsc,0x63ba610118fff2d6b6052cb681dcfab78cea1aa9,UVXY,UVXYB,ProShares Ultra VIX Short-Term Futures ETF (bStocks),bstocks

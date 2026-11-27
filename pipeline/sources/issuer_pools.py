@@ -11,6 +11,17 @@ ONDO_LIST = "https://raw.githubusercontent.com/ondoprotocol/ondo-global-markets-
 
 # Canonical quote contracts prevent an unrelated token with a familiar symbol from qualifying.
 QUOTES = {
+    "solana": {
+        "So11111111111111111111111111111111111111112": "SOL",
+        "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v": "USDC",
+        "2u1tszSeqZ3qBWF3uNGPFc8TzMk2tdiwknnRMWGWjGWH": "USDG",
+        "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB": "USDT",
+    },
+    "bsc": {
+        "0x55d398326f99059ff775485246999027b3197955": "USDT",
+        "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d": "USDC",
+        "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c": "WBNB",
+    },
     "base": {
         "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913": "USDC",
         "0x4200000000000000000000000000000000000006": "WETH",
@@ -98,9 +109,9 @@ def verified_markets(http, net, candidates, contracts, known, now):
                 market_id=mid, source="dex-" + net, native=pool,
                 base=t["symbol"] if side == "base" else other, quote=other if side == "base" else t["symbol"],
                 cg_id=known[mid].cg_id if mid in known else "", token_address=addr,
-                family="coinbase" if net == "base" else "ondo", underlying=t["ticker"],
+                family=t.get("family", "coinbase" if net == "base" else "ondo"), underlying=t["ticker"],
                 venue_type="dex", network=net, token_side=side,
-                counterpart="usd" if other in ("USDC", "USDT", "DAI") else "major",
+                counterpart="usd" if other in ("USDC", "USDT", "DAI", "USDG") else "major",
                 bar_s=C.DEX_BAR_S, vol24=float(a["volume_usd"]["h24"] or 0), discovered=now)
     return markets
 

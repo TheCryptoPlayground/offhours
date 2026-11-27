@@ -279,3 +279,15 @@ def test_shared_venue_comparison_matches_each_ticker_and_date():
     assert out["tickers"] == ["ONE","TWO"]
     assert len(out["matched"]) == 4
     assert all(r[0]=="2026-11-10" and r[3:]==[875,350,"ONE"] for r in out["matched"])
+
+
+def test_core_matches_survive_expansion_and_new_venues_require_the_same_ticker_date():
+    keys = [("A", "2026-11-22", C.CORE_SOURCES),
+            ("A", "2026-11-23", [s for s in C.BAR_SOURCES if s != "stocks"]),
+            ("B", "2026-11-22", ["gate","dex-bsc","dex-solana"])]
+    rows = [(u,pd.Timestamp(d),src,"product","RTH",1.) for u,d,sources in keys for src in sources]
+    facts = pd.DataFrame(rows, columns=["underlying","market_date","source","family","session","vol_usd"])
+    result = comparisons.venue_comparison(facts)
+    assert len(result["matched"]) == 8 and {r[1] for r in result["matched"]} == set(C.CORE_SOURCES)
+    assert len(result["expanded"]) == 7 and {r[0] for r in result["expanded"]} == {"2026-11-23"}
+    assert sum(r[3] for r in result["all"]) == len(rows)*100

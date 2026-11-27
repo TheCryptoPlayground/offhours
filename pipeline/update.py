@@ -20,6 +20,7 @@ from .sources.cex import EXCHANGES, match_markets
 from .sources.dex import GeckoTerminal
 from .sources.issuer_pools import issuer_contracts, discover_issuer_pools
 from .sources.stocks import Alpaca
+from .sources import additional, ondo_protocol
 
 log = logging.getLogger("offhours")
 FLUSH_EVERY = 25
@@ -48,12 +49,12 @@ def _pull(markets: list[Market], fetch, state: dict, status: dict, backfill_days
             continue
         try:
             rows = fetch(m, start, end)
+            df = frame(m.market_id, m.bar_s, rows, start, end)
         except Exception as e:
             status["errors"] = status.get("errors", 0) + 1
             status["last_error"] = f"{m.native}: {e}"[:300]
             log.warning("%s %s: %s", m.source, m.native, e)
             continue
-        df = frame(m.market_id, m.bar_s, rows, start, end)
         pending.setdefault(m.source, []).append(df[df.vol_usd > 0])  # bars without trades carry nothing we use
         state["cursor"][m.market_id] = end
         if i % FLUSH_EVERY == 0 or i == len(markets):
@@ -123,10 +124,57 @@ def update_dex(http: HTTP, uni: dict, state: dict, now: float, rediscover: bool)
                 status.update(ok=False, finished=_now_iso())
                 return []
     status["markets"] = len(markets)
-    _pull(markets, lambda m, a, b: gt.fetch(m.network, m.native, m.token_side, a, b), state, status,
+    _pull(markets, lambda m, a, b: gt.fetch(m.network, m.native, m.token_side, a, b, m.token_address), state, status,
           C.DEX_BACKFILL_DAYS, now)
     status.update(ok=bool(markets) and status["errors"] < len(markets), finished=_now_iso())
     return markets
+
+
+def update_additional(http, state, now, rediscover):
+    status = {"type": "dex", "started": _now_iso(), "rows": 0, "errors": 0}
+    state["sources"]["extra"] = status
+    known = store.load_markets()
+    old = known[known.market_id.isin(state.get("extra_active", []))]
+    markets = [Market(**r) for r in old.to_dict("records")]
+    last = state.get("extra_discovered_at")
+    if rediscover or not markets or not last or now - pd.Timestamp(last).timestamp() >= C.UNIVERSE_MAX_AGE_DAYS * 86400:
+        try:
+            contracts = additional.stock_contracts(http, known[known.source.isin(C.CORE_SOURCES)])
+            fresh, checks = additional.ranked_pools(http, contracts, _now_iso())
+            if not fresh:
+                raise ValueError("Supplementary pool search returned no verified pools")
+            markets = fresh
+            store.save_markets(markets)
+            pd.DataFrame([dict(network=n, address=a, **token) for (n, a), token in contracts.items()]).to_csv(
+                C.DATA / "extra_contracts.csv", index=False)
+            state["extra_active"] = [m.market_id for m in markets]
+            state["extra_discovered_at"] = _now_iso()
+            (C.DATA / "extra_pool_check.json").write_text(json.dumps(
+                {"checked_at": state["extra_discovered_at"], "groups": checks}, indent=2))
+        except Exception as e:
+            status.update(discovery_errors=1, error=str(e)[:300])
+            log.warning("Additional pool discovery failed: %s", e)
+    gt = GeckoTerminal(http)
+    status["markets"] = len(markets)
+    _pull(markets, lambda m, a, b: gt.fetch(m.network, m.native, m.token_side, a, b, m.token_address),
+          state, status, C.DEX_BACKFILL_DAYS, now)
+    status.update(ok=bool(markets) and status["errors"] < len(markets), finished=_now_iso())
+
+
+def update_protocol(http, state, now):
+    status = {"started": _now_iso()}
+    state["sources"]["ondo-protocol"] = status
+    try:
+        days = ondo_protocol.protocol_days(http.get(ondo_protocol.URL, params={"dataType": "dailyVolume"}), now)
+        path = C.DATA / "ondo_protocol.csv"
+        if path.exists():
+            days = pd.concat([pd.read_csv(path), days]).drop_duplicates("utc_date", keep="last").sort_values("utc_date")
+        days.to_csv(path, index=False)
+        status.update(ok=True, days=len(days), last_date=days.utc_date.max())
+    except Exception as e:
+        status.update(ok=False, error=str(e)[:300])
+        log.warning("Ondo protocol series unavailable: %s", e)
+    status["finished"] = _now_iso()
 
 
 def update_stocks(http: HTTP, tickers: list[str], state: dict, now: float) -> None:
@@ -173,7 +221,10 @@ def run(only: list[str] | None = None, refresh_universe: bool = False, rediscove
         skip_dex: bool = False, skip_stocks: bool = False) -> None:
     http = HTTP()
     t0 = time.time()
-    uni = universe.load_or_build(http, force=refresh_universe)
+    uni = (universe.load_or_build(http, force=refresh_universe)
+           if not only or "dex" in only or refresh_universe else universe.load())
+    if uni is None:
+        uni = {"tokens": pd.DataFrame(), "addresses": pd.DataFrame()}
     tokens = uni["tokens"]
     state = store.load_state()
     state.setdefault("cursor", {})
@@ -188,6 +239,10 @@ def run(only: list[str] | None = None, refresh_universe: bool = False, rediscove
     if not skip_dex and (not only or "dex" in only):
         tracked += update_dex(http, uni, state, now, rediscover)
     store.save_markets(tracked)
+    if not skip_dex and (not only or "extra" in only):
+        update_additional(http, state, now, rediscover)
+    if not only or "ondo-protocol" in only:
+        update_protocol(http, state, now)
 
     if not skip_stocks and (not only or "stocks" in only):
         markets = store.load_markets()

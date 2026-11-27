@@ -65,15 +65,19 @@ def issuer_coverage(markets, state, end):
         output.unlink(missing_ok=True)
         return pd.DataFrame()
     catalog = pd.read_csv(catalog_file, dtype=str, keep_default_na=False)
+    catalog["family"] = catalog.network.map({"base": "coinbase", "eth": "ondo"})
+    extra = C.DATA / "extra_contracts.csv"
+    if extra.exists():
+        catalog = pd.concat([catalog, pd.read_csv(extra, dtype=str, keep_default_na=False)], ignore_index=True)
     pools = markets[markets.token_address != ""]
-    active = pools[pools.market_id.isin(state.get("dex_active", []))]
+    active = pools[pools.market_id.isin(state.get("dex_active", []) + state.get("extra_active", []))]
     keys = ["network", "token_address"]
     indexed = catalog.rename(columns={"address": "token_address"}).set_index(keys)
     indexed["tracked_pools"] = active.groupby(keys).size().reindex(indexed.index, fill_value=0)
     collected = active[active.market_id.isin(state.get("cursor", {}))]
     indexed["pools_collected"] = collected.groupby(keys).size().reindex(indexed.index, fill_value=0)
     facts = []
-    for _, _, path in store.bar_files(sources=["dex-base", "dex-eth"]):
+    for _, _, path in store.bar_files(sources=["dex-" + n for n in (*C.DEX_NETWORKS, *C.EXTRA_NETWORKS)]):
         bars = pd.read_parquet(path, columns=["market_id", "ts", "vol_usd"])
         bars = bars[bars.market_id.isin(pools.market_id) & (bars.vol_usd > 0)].copy()
         if len(bars):
@@ -92,6 +96,10 @@ def issuer_coverage(markets, state, end):
         ["Volume observed", "No eligible indexed pool found", "Pool history pending"],
         default="No positive volume returned in archive")
     indexed["catalog_checked_at"] = state.get("issuer_catalog_at", "")
+    indexed.loc[indexed.index.get_level_values("network").isin(C.EXTRA_NETWORKS), "catalog_checked_at"] = state.get("extra_discovered_at", "")
+    outside_sample = indexed.index.get_level_values("network").isin(C.EXTRA_NETWORKS) & (indexed.tracked_pools == 0) & indexed.observed_usd.isna()
+    indexed.loc[outside_sample, "status"] = "No pool selected in latest ranked sample"
+    indexed.loc[(indexed.tracked_pools == 0) & indexed.observed_usd.notna(), "status"] = "Historical volume; no current pool selected"
     indexed["archive_through"] = end.strftime("%Y-%m-%d")
     result = indexed.reset_index().sort_values(["network", "ticker", "token_address"])
     C.SITE_DATA.mkdir(parents=True, exist_ok=True)
@@ -103,6 +111,11 @@ def build(demo: bool = False, end_date: str | None = None) -> dict:
     """end_date pins the last market date (tests, backfills); by default it is yesterday in New York."""
     state = store.load_state()
     completed_date = last_full_date((state.get("last_run") or {}).get("finished"))
+    # A partial refresh cannot establish that the other feeds have finished a newer date.
+    for name in ("binance", "kraken", "dex", "stocks"):
+        finished = state.get("sources", {}).get(name, {}).get("finished")
+        if finished:
+            completed_date = min(completed_date, last_full_date(finished))
     markets = store.load_markets()
     tf = aggregate.token_facts(markets)
     sf = aggregate.stock_facts()
@@ -228,22 +241,24 @@ def build(demo: bool = False, end_date: str | None = None) -> dict:
                         coingecko_24h=float(umeta["coingecko_vol24"]))
     sources = []
     source_state = state.get("sources", {})
-    expected_sources = C.CEX_SOURCES + ["dex", "stocks"]
+    expected_sources = C.CEX_SOURCES + ["dex", "extra", "stocks"]
     for sid in expected_sources:
         st = source_state.get(sid, {})
         observed = sf if sid == "stocks" else tf[tf.source == sid]
         pool_groups = []
-        if sid == "dex":
-            observed = tf[tf.source.str.startswith("dex-")]
-            active = markets[markets.market_id.isin(state.get("dex_active", []))]
+        if sid in ("dex", "extra"):
+            networks = C.DEX_NETWORKS if sid == "dex" else C.EXTRA_NETWORKS
+            active_key = "dex_active" if sid == "dex" else "extra_active"
+            observed = tf[tf.source.isin(["dex-" + n for n in networks])]
+            active = markets[markets.market_id.isin(state.get(active_key, []))]
             active_counts = active.groupby(["source", "family"]).market_id.nunique()
             grouped = observed.groupby(["source", "family"])
-            catalog_groups = {("dex-" + n, "coinbase" if n == "base" else "ondo") for n in roster.network} if len(roster) else set()
+            catalog_groups = {("dex-" + r.network, r.family) for r in roster.itertuples() if r.network in networks} if len(roster) else set()
             for network, family in sorted(set(grouped.groups) | set(active_counts.index) | catalog_groups):
                 key = (network, family)
                 group = grouped.get_group(key) if key in grouped.groups else observed.iloc[:0]
-                count = int(active_counts.get(key, 0)) if "dex_active" in state and st.get("markets") is not None else None
-                listing = roster[roster.network == network.removeprefix("dex-")] if len(roster) else roster
+                count = int(active_counts.get(key, 0)) if active_key in state and st.get("markets") is not None else None
+                listing = roster[(roster.network == network.removeprefix("dex-")) & (roster.family == family)] if len(roster) else roster
                 pool_groups.append(dict(network=network, family=family, markets=count,
                                         listed=len(listing) if len(listing) else None,
                                         with_pool=int((listing.tracked_pools > 0).sum()) if len(listing) else None,
@@ -252,11 +267,23 @@ def build(demo: bool = False, end_date: str | None = None) -> dict:
                             label=C.VENUE_LABELS.get(sid, sid.title()),
                             type=st.get("type"), ok=st.get("ok"), markets=st.get("markets"),
                             errors=st.get("errors"), discovery_errors=st.get("discovery_errors"),
-                            pending_pools=len(set(state.get("dex_active", [])) - state.get("cursor", {}).keys()) if sid == "dex" else None,
+                            pending_pools=len(set(state.get(active_key, [])) - state.get("cursor", {}).keys()) if sid in ("dex", "extra") else None,
                             error=st.get("error") or st.get("last_error"),
                             started=st.get("started"), finished=st.get("finished")))
     check_file = C.DATA / "issuer_pool_check.json"
+    extra_check = C.DATA / "extra_pool_check.json"
+    protocol = C.DATA / "ondo_protocol.csv"
+    protocol_dest = C.SITE_DATA / "ondo_protocol.csv"
+    if protocol.exists():
+        C.SITE_DATA.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(protocol, protocol_dest)
+        days = pd.read_csv(protocol)
+        daily["ondo_protocol"] = _clean(days.to_dict("records"))
+    else:
+        protocol_dest.unlink(missing_ok=True)
     meta = dict(
+        protocol_status=state.get("sources", {}).get("ondo-protocol"),
+        extra_pool_check=json.loads(extra_check.read_text()) if extra_check.exists() else None,
         pool_volume_check=json.loads(check_file.read_text()) if check_file.exists() else None,
         generated_at=datetime.now(timezone.utc).isoformat(timespec="seconds"), demo=demo,
         first_date=daily["dates"][0] if daily["dates"] else None, last_date=daily["dates"][-1] if daily["dates"] else None,

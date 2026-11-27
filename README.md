@@ -2,11 +2,11 @@
 
 **Live website:** [tianhaoyin1120.github.io/offhours](https://tianhaoyin1120.github.io/offhours/)
 
-A daily tracker of tokenized US stock trading on Binance, Kraken and selected Base and Ethereum pools by US market session. Venue coverage starts on different dates, so product totals measure the trades observed by this dashboard. It answers three questions:
+A daily tracker of tokenized US stock trading on Binance, Kraken, Gate and selected pools on Base, Ethereum, Solana and BNB Chain by US market session. Venue coverage starts on different dates, so product totals measure the trades observed by this dashboard. It answers three questions:
 
 1. How much tokenized-stock volume trades outside regular hours, and how much while every US venue is shut?
 2. How does that compare with the stocks' own volume, session by session?
-3. How does trading volume compare across the four venues for the same securities on the same dates?
+3. How does trading volume compare across sources for the same securities on the same dates?
 
 Everything is free: public exchange APIs, GeckoTerminal, CoinGecko and Alpaca's free plan for data,
 GitHub Actions to run it daily, GitHub Pages to host the site.
@@ -103,7 +103,9 @@ tape uses with 23/5 trading. Weekends and holidays count under their own dates. 
 |---------------|----------------------------------------------|--------------------------------------------|----------------------|
 | Binance       | bStocks                                      | `data-api.binance.vision` klines           | 120 days |
 | Kraken        | xStocks                                      | OHLC with `asset_class=tokenized_asset`    | 15 days (the API keeps only the latest 720 bars) |
-| GeckoTerminal | Selected Coinbase stock tokens on Base and Ondo stock tokens on Ethereum | pool OHLCV, 15 minutes | up to 35 days per new pool |
+| Gate | Tagged xStocks and Ondo spot markets with a Gate underlying ticker | quote turnover, 30 minutes | up to the study backfill window |
+| DefiLlama | Ondo Global Markets issuer-protocol buys and redemptions across Ethereum, BSC and Solana | USD per UTC day, reported separately | available protocol history |
+| GeckoTerminal | Selected Coinbase, Ondo, bStocks and xStocks pools across four chains | pool OHLCV, 15 minutes | up to 35 days per new pool |
 | Alpaca        | the stocks, consolidated tape                | v2 `stocks/bars`, `feed=sip`               | 120 days (the free plan reaches back to 2016) |
 | CoinGecko     | token list, issuer, contract addresses       | categories, `coins/markets`, `coins/list`  | refreshed weekly |
 
@@ -128,7 +130,7 @@ stablecoins count one for one.
 
 ## Comparing venues
 
-The product and venue panel opens on all recorded trading. The [four-venue comparison](https://tianhaoyin1120.github.io/offhours/?sample=shared#venue-h) opens directly on shared tickers. Its shared sample counts an underlying once per New York market date when all four token venues report positive dollar volume for that security. All four venue totals use those exact ticker-date pairs, even when trades occur in different sessions. The selector shows each security’s matched-date count. Off-hours share is off-hours dollars divided by total dollars for the selected observations. The other dashboard sections keep their own stated samples.
+The product and venue panel opens on all recorded trading. The [four-venue comparison](https://tianhaoyin1120.github.io/offhours/?sample=shared#venue-h) opens directly on shared tickers. The [seven-source comparison](https://tianhaoyin1120.github.io/offhours/?sample=expanded#venue-h) also requires Gate, Solana and BNB Chain on the same ticker-date. The original shared sample counts an underlying once per New York market date when all four token venues report positive dollar volume for that security. All four venue totals use those exact ticker-date pairs, even when trades occur in different sessions. The selector shows each security’s matched-date count. Off-hours share is off-hours dollars divided by total dollars for the selected observations. The other dashboard sections keep their own stated samples.
 
 ## Volume crossovers and two-way price discovery
 
@@ -137,6 +139,10 @@ Calendar totals include token-only dates. Matched totals use dates with positive
 The lead–lag panel pairs consecutive half hours for each ticker within one regular, pre-market or after-hours session. Returns are log(close/open). Each USD or major-quoted token market contributes its own return weighted by that interval’s dollar volume. Both quarters are required for 15-minute markets. Both directions use the same pairs, with at least 30 observations. These are descriptive Pearson correlations. Shared news, sparse trades and asynchronous last prints can affect them.
 
 Weekly discovery checks the full Coinbase stock-token directory on Base and the Ondo stock and ETF directory on Ethereum. It queries DEX Screener for pairs of each contract and GeckoTerminal for top pools, then verifies the pool ID and both assets with GeckoTerminal. Pools against the configured stablecoin and major-asset addresses qualify regardless of daily volume. A pool counts once. The [issuer coverage CSV](https://tianhaoyin1120.github.io/offhours/data/issuer_coverage.csv) includes every listing, the pool count, observed dates and measured volume. Empty volume means no observation. The coverage table also compares tracked pools with all DEX Screener pools returning 24-hour volume for those issuer contracts. The numerator and denominator use the same index, network and weekly scan. Issuer creations, redemptions, other networks and unindexed venues are outside these totals.
+
+On Solana, xStocks mints come from the paginated xStocks issuer API. On BNB Chain, Ondo addresses come from its chain-56 token list and bStocks addresses come from Binance’s BSC deposit-network directory. These searches cover securities already present in the four original feeds. For each product/network group the weekly scan selects up to 50 eligible indexed pools by one-day turnover. The candle provider verifies the token mint, side and quote. Past selections stay in the archive. Retrospective pool selection favors pools still active today. A full-day match allows different sessions at different venues; it does not establish uninterrupted market coverage.
+
+The [Ondo protocol series](https://tianhaoyin1120.github.io/offhours/#ondo-h) reports executed issuer buy/redemption activity from DefiLlama’s open adapter. It has a different market scope and UTC clock from session-level secondary trading. Totals reconcile to the reported chains. Missing chain observations remain blank. Wallet transfers, circulating value, other exchanges and unindexed pools cannot be inferred from the session archive.
 
 ## Archived weekend-test data
 
@@ -184,7 +190,7 @@ To compare Monday opens for stocks with and without liquid tokens, add control t
 pipeline/
   calendar.py        session clock and closure windows
   universe.py        token list, issuer, ticker, contract addresses
-  sources/cex.py     Binance and Kraken
+  sources/cex.py     Binance, Kraken and Gate
   sources/dex.py     GeckoTerminal pools and candles
   sources/stocks.py  Alpaca consolidated-tape bars
   update.py          one fetch run, with per-source status

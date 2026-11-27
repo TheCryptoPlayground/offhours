@@ -8,6 +8,7 @@ on:
       - "pipeline/**"
       - "requirements.txt"
       - "config/**"
+      - "data/**"
       - "site/index.html"
       - "site/app.js"
       - "site/style.css"
