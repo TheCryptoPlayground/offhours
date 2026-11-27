@@ -291,3 +291,20 @@ def test_core_matches_survive_expansion_and_new_venues_require_the_same_ticker_d
     assert len(result["matched"]) == 8 and {r[1] for r in result["matched"]} == set(C.CORE_SOURCES)
     assert len(result["expanded"]) == 7 and {r[0] for r in result["expanded"]} == {"2026-11-23"}
     assert sum(r[3] for r in result["all"]) == len(rows)*100
+
+
+def test_ranking_window_changes_leader_and_sums_only_selected_dates():
+    dates = pd.date_range("2026-10-01", "2026-11-01")
+    facts = pd.DataFrame([
+        [dates[0], "A", "binance", "bstocks", "RTH", 200],
+        [dates[-1], "B", "gate", "ondo", "CLOSED", 12.34],
+        [dates[-1], "B", "gate", "xstocks", "PRE", 0.02],
+    ], columns=["market_date", "underlying", "source", "family", "session", "vol_usd"])
+    stocks = facts.iloc[:1]
+    windows = comparisons.ranking_windows(facts, stocks, dates)
+    assert windows["all"]["stock"] == {"A": 20000}
+    assert windows["30"]["stock"] == {}
+    assert windows["30"]["tokens"] == [["B", "gate", "ondo", 1234, 0, 1234],
+                                      ["B", "gate", "xstocks", 2, 0, 0]]
+    assert windows["1"]["start"] == "2026-11-01"
+    assert windows["all"]["tokens"][0] == ["A", "binance", "bstocks", 20000, 20000, 0]

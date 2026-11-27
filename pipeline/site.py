@@ -182,7 +182,7 @@ def build(demo: bool = False, end_date: str | None = None) -> dict:
     # tickers
     profiles = pd.read_csv(C.ROOT / "config/security_profiles.csv", keep_default_na=False).set_index("ticker").to_dict("index")
     roster = issuer_coverage(markets, state, end)
-    for entry in roster.itertuples():
+    for entry in sorted(roster.itertuples(), key=lambda r: r.network not in C.DEX_NETWORKS):
         profiles.setdefault(entry.ticker, {"name": entry.name.split(" (Ondo Tokenized")[0]})
     rows = []
     if len(head):
@@ -303,6 +303,7 @@ def build(demo: bool = False, end_date: str | None = None) -> dict:
     _dump("volume_history.json", comparisons.volume_history(head, sf))
     _dump("tickers.json", _clean(dict(window_days=len(dates), target_window_days=len(dates),
                                       start=kpis["start"], end=kpis["end"], rows=rows,
+                                      rankings=comparisons.ranking_windows(head, sf, dates),
                                       comparisons=comparisons.volume_views(head, sf),
                                       lead_lag=comparisons.lead_lag(markets, start, end))))
     _dump("closures.json", _clean(closures))

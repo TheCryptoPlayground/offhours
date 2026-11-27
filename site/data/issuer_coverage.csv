@@ -474,7 +474,7 @@ bsc,0x76682c454467b3a1150ad8b6a92fc5ee2c21d7ed,AVGO,AVGOB,Broadcom (bStocks),,bs
 bsc,0x0c50323af81d5c33822c6add256fb9093d42bc74,AXTI,AXTIon,AXT (Ondo Tokenized),,ondo,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
 bsc,0x9bdc8b470dbf89dbcb123587c6f5e49cca3463be,AXTI,AXTIB,AXT (bStocks),,bstocks,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
 bsc,0xf21132a811ad1a878e21af60f64d4e690c9daa42,BA,BAon,Boeing (Ondo Tokenized),,ondo,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
-bsc,0x4ef9d3062c7f6eba4aae4990c5036598c6eff4ec,BABA,BABAB,Alibaba (bStocks),,bstocks,1,0,,,,Pool history pending,2026-11-27T17:01:01+00:00,2026-11-26
+bsc,0x4ef9d3062c7f6eba4aae4990c5036598c6eff4ec,BABA,BABAB,Alibaba (bStocks),,bstocks,1,1,2026-10-22,2026-11-26,32744376.50,Volume observed,2026-11-27T17:01:01+00:00,2026-11-26
 bsc,0xd5964f3fcee8d649995ab88f04b8982539c282d2,BABA,BABAon,Alibaba (Ondo Tokenized),,ondo,2,0,,,,Pool history pending,2026-11-27T17:01:01+00:00,2026-11-26
 bsc,0xd615468088b19fb9d4f03cb3ce9e33876ff3db99,BAC,BACon,Bank of America (Ondo Tokenized),,ondo,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
 bsc,0xcbb733b3dccbb983e49baac52abe7bc3a8e85a4f,BB,BBB,Blackberry（bStocks）,,bstocks,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
@@ -521,7 +521,7 @@ bsc,0x087b5761b161429013d41ea54cd2fb6022a21564,DRAM,DRAMon,Roundhill Memory ETF 
 bsc,0x93862d63fd9fd488b1328e9b47717d75e994a84b,DRAM,DRAMB,Roundhill Memory ETF (bStocks),,bstocks,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
 bsc,0x00c81d35eddf44c75d4db9e07bdcdc236eb0ebcf,EEM,EEMon,iShares MSCI Emerging Markets ETF (Ondo Tokenized),,ondo,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
 bsc,0x4697b2a050f7b5a8e1ebc27c325f9d78d094f041,ETN,ETNon,Eaton (Ondo Tokenized),,ondo,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
-bsc,0x26e32dab9f844d7256db4195b3a43750272a51e9,EWJ,EWJB,iShares MSCI Japan ETF (bStocks),,bstocks,2,0,,,,Pool history pending,2026-11-27T17:01:01+00:00,2026-11-26
+bsc,0x26e32dab9f844d7256db4195b3a43750272a51e9,EWJ,EWJB,iShares MSCI Japan ETF (bStocks),,bstocks,2,1,2026-11-18,2026-11-26,5706230.46,Volume observed,2026-11-27T17:01:01+00:00,2026-11-26
 bsc,0x82715299f3f132fb85f3de1f7e8fafd3d79f3eb5,EWJ,EWJon,iShares MSCI Japan ETF (Ondo Tokenized),,ondo,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
 bsc,0x24824404bb9577697d11a07a5d88341191de6578,EWT,EWTB,iShares MSCI Taiwan ETF (bStocks),,bstocks,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
 bsc,0x12b7adc48416a103f63e7e6210f62c81dfb91fd0,EWY,EWYon,iShares MSCI South Korea ETF (Ondo Tokenized),,ondo,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
@@ -546,7 +546,7 @@ bsc,0xf98b89825233808cd37706a53d2b4ae3e359d442,GLXY,GLXYon,Galaxy Digital (Ondo 
 bsc,0x46ceefda28dd7207059ed19b0acdc026955bb15c,GME,GMEB,GameStop (bStocks),,bstocks,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
 bsc,0xdabb9aff4cf02f26d2014e4ca9f94ac6fe6572a3,GME,GMEon,GameStop (Ondo Tokenized),,ondo,1,0,,,,Pool history pending,2026-11-27T17:01:01+00:00,2026-11-26
 bsc,0x091fc7778e6932d4009b087b191d1ee3bac5729a,GOOGL,GOOGLon,Alphabet Class A (Ondo Tokenized),,ondo,2,0,,,,Pool history pending,2026-11-27T17:01:01+00:00,2026-11-26
-bsc,0x3f53de71c126bdabae20f9cd64848d317f6c3238,GOOGL,GOOGLB,Alphabet (bStocks),,bstocks,2,0,,,,Pool history pending,2026-11-27T17:01:01+00:00,2026-11-26
+bsc,0x3f53de71c126bdabae20f9cd64848d317f6c3238,GOOGL,GOOGLB,Alphabet (bStocks),,bstocks,2,1,2026-10-30,2026-11-26,8772375.07,Volume observed,2026-11-27T17:01:01+00:00,2026-11-26
 bsc,0x1ecfda023c46ca216b5c620ef357a6d0c03951e6,GPRO,GPROB,GoPro (bStocks),,bstocks,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
 bsc,0x0d4f9b25f81163fb4840ba4f434672543823000c,GS,GSon,Goldman Sachs (Ondo Tokenized),,ondo,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
 bsc,0x20cce6656e5f7f79f280e2d0f5db55b401bdbfce,GS,GSB,Goldman Sachs (bStocks),,bstocks,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
@@ -625,7 +625,7 @@ bsc,0x7c4d7a180d737dd5a70d8065a90e6746a69c37ea,NOK,NOKB,Nokia (bStocks),,bstocks
 bsc,0xe9518cb0010c717db69001f1418eff9e97330137,NOK,NOKon,Nokia (Ondo Tokenized),,ondo,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
 bsc,0xeb19c13c54b1cd48afc62f6503375e92d5f1e856,NOW,NOWon,ServiceNow (Ondo Tokenized),,ondo,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
 bsc,0x3cf7b2b634bac8c5e977e1576d79ea667e62f31c,NU,NUB,Nu Holdings (bStocks),,bstocks,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
-bsc,0x02fca66c1d1afb4e2a7884261eb00f63598a7436,NVDA,NVDAB,NVIDIA (bStocks),,bstocks,5,1,2026-10-22,2026-11-26,87118475.98,Volume observed,2026-11-27T17:01:01+00:00,2026-11-26
+bsc,0x02fca66c1d1afb4e2a7884261eb00f63598a7436,NVDA,NVDAB,NVIDIA (bStocks),,bstocks,5,2,2026-10-22,2026-11-26,181672678.15,Volume observed,2026-11-27T17:01:01+00:00,2026-11-26
 bsc,0xa9ee28c80f960b889dfbd1902055218cba016f75,NVDA,NVDAon,NVIDIA (Ondo Tokenized),,ondo,2,0,,,,Pool history pending,2026-11-27T17:01:01+00:00,2026-11-26
 bsc,0x08a513779f46ffb7a34f16094a94016d010128a8,NVO,NVOon,Novo Nordisk (Ondo Tokenized),,ondo,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
 bsc,0xb56b7c2f9988448790b0f78697f405ab5e8597e6,NVTS,NVTSon,Navitas Semiconductor (Ondo Tokenized),,ondo,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
@@ -656,7 +656,7 @@ bsc,0x5f7a56e877b9130608bf8be962621011182fefe1,QCOM,QCOMB,Qualcomm (bStocks),,bs
 bsc,0xfbd4d681c92ead6af0e49950c8b2e47eeacbb2db,QCOM,QCOMon,Qualcomm (Ondo Tokenized),,ondo,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
 bsc,0xd721c192d612db77621df57a9fab38418033c02e,QNT,QNTB,Quantinuum (bStocks),,bstocks,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
 bsc,0x0cde6936d305d5b34667fc46425e852efd73559a,QQQ,QQQon,Invesco QQQ (Ondo Tokenized),,ondo,1,0,,,,Pool history pending,2026-11-27T17:01:01+00:00,2026-11-26
-bsc,0x205812cdbed920aff76c6580abd681a46d11efc7,QQQ,QQQB,Invesco QQQ Trust (bStocks),,bstocks,4,2,2026-10-22,2026-11-26,141480004.55,Volume observed,2026-11-27T17:01:01+00:00,2026-11-26
+bsc,0x205812cdbed920aff76c6580abd681a46d11efc7,QQQ,QQQB,Invesco QQQ Trust (bStocks),,bstocks,4,4,2026-10-22,2026-11-26,237652763.62,Volume observed,2026-11-27T17:01:01+00:00,2026-11-26
 bsc,0x82e07c1017032cfd889b1ca81ebe722c4d4de825,QUBT,QUBTon,Quantum Computing (Ondo Tokenized),,ondo,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
 bsc,0x41622a9125a22767df8c1dc79fc17299bac4bd0b,RDDT,RDDTB,Reddit (bStocks),,bstocks,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
 bsc,0x4da12f47578ef89c76179b760c778e70b668f80b,RDDT,RDDTon,Reddit (Ondo Tokenized),,ondo,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
@@ -693,7 +693,7 @@ bsc,0x335dd4112704f108b5ddd8f8a44bd9ed68522a80,SOXS,SOXSon,Direxion Daily Semi B
 bsc,0xe28cd11c99af2df76bb8ada4cd0ef3904378280f,SOXS,SOXSB,Direxion Semiconductor Bear 3X ETF (bStocks),,bstocks,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
 bsc,0x2a3cbf64c8181db4a25d41d4d7a7db9984c59dac,SOXX,SOXXon,iShares Semiconductor ETF (Ondo Tokenized),,ondo,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
 bsc,0xcd1e9a6d7416674347c44e7a95b1f5954540fffd,SOXX,SOXXB,iShares Semiconductor ETF（bStocks）,,bstocks,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
-bsc,0xbe9d156892e55e7154bcd3cb0fea677f9d3103e1,SPCX,SPCXB,SpaceX (bStocks),,bstocks,8,4,2026-10-22,2026-11-26,180360942.89,Volume observed,2026-11-27T17:01:01+00:00,2026-11-26
+bsc,0xbe9d156892e55e7154bcd3cb0fea677f9d3103e1,SPCX,SPCXB,SpaceX (bStocks),,bstocks,8,6,2026-10-22,2026-11-26,201160381.27,Volume observed,2026-11-27T17:01:01+00:00,2026-11-26
 bsc,0xd0a58bc9d88d3ff48c0294cb7e45937d0e41a928,SPCX,SPCXon,SpaceX (Ondo Tokenized),,ondo,2,0,,,,Pool history pending,2026-11-27T17:01:01+00:00,2026-11-26
 bsc,0x55b370b704240a914f42b5bbb3195431c031f9f8,SPGI,SPGIon,S&P Global (Ondo Tokenized),,ondo,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
 bsc,0x6a708ead771238919d85930b5a0f10454e1c331a,SPY,SPYon,SPDR S&P 500 ETF (Ondo Tokenized),,ondo,1,0,,,,Pool history pending,2026-11-27T17:01:01+00:00,2026-11-26
@@ -1356,7 +1356,7 @@ solana,XsTSfxoQry8okZoGMN5t6mExibDq3gA2NDLJeLztX7E,NLR,NLRx,VanEck Uranium and N
 solana,XsWMMVGbNpxehYdonLXW2DuEtK4gXdC8Y1CNgKe5uuc,NNE,NNEx,Nano Nuclear Energy xStock,,xstocks,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
 solana,XsBnEFd2EtpwBRNVfN8qLZcVUnuqXRaGCSEEFChLfxL,NOW,NOWx,ServiceNow xStock,,xstocks,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
 solana,Xstn27LaCPFZashxd1eEn6NV4fVfuye1AM3MMsbuB97,NU,NUx,Nu xStock,,xstocks,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
-solana,Xsc9qvGR1efVDFGLrVsmkzv3qi45LTBjeUKSPmx9qEh,NVDA,NVDAx,NVIDIA xStock,,xstocks,8,3,2026-10-22,2026-11-26,277403181.26,Volume observed,2026-11-27T17:01:01+00:00,2026-11-26
+solana,Xsc9qvGR1efVDFGLrVsmkzv3qi45LTBjeUKSPmx9qEh,NVDA,NVDAx,NVIDIA xStock,,xstocks,8,5,2026-10-22,2026-11-26,316632972.21,Volume observed,2026-11-27T17:01:01+00:00,2026-11-26
 solana,XsfAzPzYrYjd4Dpa9BU3cusBsvWfVB9gBcyGC87S57n,NVO,NVOx,Novo Nordisk xStock,,xstocks,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
 solana,XsJb1p4Ks6VFggq68JyMz7S3kdRfkqh4wA6EMyxi4DD,OKLO,OKLOx,Oklo xStock,,xstocks,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
 solana,Xsgc9YTqdAH1GzDLBGQcScCMgkKsVBn4hBmqtNRospY,ONDS,ONDSx,Ondas xStock,,xstocks,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
@@ -1376,7 +1376,7 @@ solana,Xst6eFD4YT6sz9RLMysN9SyvaZWtraSdVJQGu5ZkAme,PPLT,PPLTx,abrdn Physical Pla
 solana,XsLR2VCGNzYVLfJGEwwNZsRYDZBGyBnoQH5rPGvwodA,PWR,PWRx,"Quanta Services, Inc. xStock",,xstocks,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
 solana,XshWQWYVp5ff8CrAEsGmLVKD47nBWi3Ygn5v8wXK27G,PYPL,PYPLx,PayPal xStock,,xstocks,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
 solana,XsUUG8bjFN2KvzLTpzavvEKdAjMAeLTZiTeAQJ9uhvB,QCOM,QCOMx,Qualcomm xStock,,xstocks,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
-solana,Xs8S1uUs1zvS2p7iwtsG3b6fkhpvmwz4GYU3gWAmWHZ,QQQ,QQQx,Nasdaq xStock,,xstocks,3,0,,,,Pool history pending,2026-11-27T17:01:01+00:00,2026-11-26
+solana,Xs8S1uUs1zvS2p7iwtsG3b6fkhpvmwz4GYU3gWAmWHZ,QQQ,QQQx,Nasdaq xStock,,xstocks,3,1,2026-10-22,2026-11-26,32076086.52,Volume observed,2026-11-27T17:01:01+00:00,2026-11-26
 solana,XsRJiWgqGJrDaidERfWfdZkaxdA4VPjVEqN6XFctpp3,QUBT,QUBTx,Quantum Computing xStock,,xstocks,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
 solana,XsuE5LvQcc9P67iWVqsysQ84DBDRWssbiKnwY8JtwpL,QURE,QUREx,uniQure xStock,,xstocks,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
 solana,Xss5RAku5EH6UViFdvW7ss9xQjwQLsrs2opPMhb3k43,RBLX,RBLXx,Roblox xStock,,xstocks,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
@@ -1408,7 +1408,7 @@ solana,XsEsHeiNZf88sABxu74TPuXbQThdaQGdzPVZUBicjtQ,SOXX,SOXXx,iShares Semiconduc
 solana,Xsgrm4D6VBTfDx5bs7GNdjtmWDgZ8V79r3YpsYwf5py,SPCE,SPCEx,Virgin Galactic xStock,,xstocks,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
 solana,Xs3oZwbHvqis4NYcf4YKWmEia2eC84wSiVrcYcTqpH8,SPCX,SPCXx,SpaceX xStock,,xstocks,2,0,,,,Pool history pending,2026-11-27T17:01:01+00:00,2026-11-26
 solana,XsTuW2zaiPbzgrnQ7b4Z99zeULMM7gPxppE61CtpyDj,SPGI,SPGIx,S&P Global xStock,,xstocks,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
-solana,XsoCS1TfEyfFhfvj8EtZ528L3CaKBDBRqRapnBbDF2W,SPY,SPYx,SP500 xStock,,xstocks,5,0,,,,Pool history pending,2026-11-27T17:01:01+00:00,2026-11-26
+solana,XsoCS1TfEyfFhfvj8EtZ528L3CaKBDBRqRapnBbDF2W,SPY,SPYx,SP500 xStock,,xstocks,5,1,2026-10-22,2026-11-26,80024694.45,Volume observed,2026-11-27T17:01:01+00:00,2026-11-26
 solana,XsSPkcE4GbHiBacr8awTTHpwFBuznazcwEKgdvBCkoz,SQQQ,SQQQx,ProShares UltraPro Short QQQ xStock,,xstocks,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26
 solana,Xs78JED6PFZxWc2wCEPspZW9kL3Se5J7L5TChKgsidH,STRC,STRCx,Strategy PP Variable xStock,,xstocks,1,0,,,,Pool history pending,2026-11-27T17:01:01+00:00,2026-11-26
 solana,XsqBC5tcVQLYt8wqGCHRnAUUecbRYXoJCReD6w7QEKp,TBLL,TBLLx,TBLL xStock,,xstocks,0,0,,,,No pool selected in latest ranked sample,2026-11-27T17:01:01+00:00,2026-11-26

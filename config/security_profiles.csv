@@ -5,6 +5,7 @@ ABBV,AbbVie Inc.,"Develops medicines for immune disorders, cancer and other cond
 ABT,Abbott Laboratories,"Makes medical devices, diagnostics, nutrition products and medicines."
 ACN,Accenture plc,"Provides technology consulting, outsourcing and business services."
 ADBE,Adobe Inc.,"Develops creative, document and digital marketing software."
+AGG,iShares Core U.S. Aggregate Bond ETF,Tracks the US investment-grade bond market.
 AGPU,Axe Compute Inc.,Provides access to computing capacity for AI workloads.
 ALAB,"Astera Labs, Inc.",Designs connectivity chips for cloud and AI servers.
 AMAT,"Applied Materials, Inc.",Makes equipment used to manufacture semiconductors and displays.
@@ -65,6 +66,7 @@ GME,GameStop Corporation,"Sells video games, hardware and collectibles."
 GOOGL,Alphabet Inc. (Class A),"Class A shares in the parent of Google, YouTube and Google Cloud."
 GPRO,"GoPro, Inc.",Makes action cameras and related software.
 GS,"The Goldman Sachs Group, Inc.","Provides investment banking, trading and asset management."
+HD,"The Home Depot, Inc.",Sells building materials and home improvement supplies.
 HIMS,"Hims & Hers Health, Inc.",Offers online healthcare consultations and treatments.
 HON,Honeywell International Inc.,Makes industrial automation and technology products.
 HOOD,"Robinhood Markets, Inc.","Operates a brokerage platform for stocks, options and digital assets."
@@ -85,6 +87,8 @@ KSTR,KraneShares China Technology & Semiconductor STAR 50 Index ETF,Fund trackin
 LIN,Linde plc,Supplies industrial gases and related engineering services.
 LITE,Lumentum Holdings Inc.,Makes optical and laser products for communications and manufacturing.
 LLY,Eli Lilly and Company,Develops medicines including diabetes and obesity treatments.
+LMT,Lockheed Martin Corporation,"Builds aircraft, spacecraft and defence systems."
+MA,Mastercard Incorporated,Operates a global payments network.
 MARA,"MARA Holdings, Inc.",Mines Bitcoin and operates energy and computing infrastructure.
 MCD,McDonald's Corporation,Operates and franchises fast-food restaurants.
 MDB,"MongoDB, Inc.",Develops database software and cloud database services.
@@ -126,6 +130,7 @@ RBLX,Roblox Corporation,Operates an online platform for user-created games and e
 RDDT,"Reddit, Inc.",Operates an online discussion and advertising platform.
 RIOT,"Riot Platforms, Inc.",Mines Bitcoin and operates computing infrastructure.
 RKLB,Rocket Lab Corporation,Builds spacecraft and provides satellite launch services.
+SBUX,Starbucks Corporation,Operates and licenses coffee shops.
 SCHF,Schwab International Equity ETF,Fund holding international developed-market equities outside the US.
 SECZ,Securitize Corp.,Provides infrastructure for issuing and managing tokenized securities.
 SHAZ,"SharonAI Holdings, Inc.",Provides cloud computing infrastructure for AI.

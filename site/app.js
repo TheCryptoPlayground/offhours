@@ -500,15 +500,37 @@
     { key: "venues", label: "Sources", get: (r) => r.venues.length, cell: (r) => `<td title="${esc(r.venues.map((v) => (D.meta.venue_labels || {})[v] || v).join(", "))}">${r.venues.length}</td>` },
   ];
 
+  function rankingRows(window, product, venue) {
+    const ranked = new Map();
+    for (const [ticker, source, family, cents, regular, closed] of window.tokens) {
+      if ((product && family !== product) || (venue && source !== venue)) continue;
+      if (!ranked.has(ticker)) ranked.set(ticker, {t:ticker, name:D.profiles.get(ticker)?.name,
+        description:D.profiles.get(ticker)?.description, token:0, rth:0, closed:0, sources:new Set()});
+      const row = ranked.get(ticker);
+      row.token += cents;
+      row.rth += regular;
+      row.closed += closed;
+      row.sources.add(source);
+    }
+    return [...ranked.values()].map(row => {
+      const stock = window.stock[row.t];
+      return {...row, token:row.token / 100, rth:row.rth / 100, closed:row.closed / 100,
+        venues:[...row.sources].sort(), stock: stock > 0 ? stock / 100 : null,
+        ratio_bp: stock > 0 ? 10000 * row.token / stock : null};
+    });
+  }
+
   function renderTickers(focusKey) {
     const T = D.tickers;
-    const allRows = (T.rows || []).slice();
+    const period = $("#rank-period").value;
+    const window = T.rankings?.[period];
+    const allRows = window ? rankingRows(window, $("#rank-product").value, $("#rank-source").value) : (T.rows || []).slice();
     const q = ui.query.trim().toUpperCase();
     const rows = q ? allRows.filter((r) => [r.t, r.name, r.description].some(value => value?.toUpperCase().includes(q))) : allRows;
     const col = COLS.find((c) => c.key === ui.sort.key) || COLS[1];
     rows.sort((a, b) => {
       const x = col.get(a), y = col.get(b);
-      return (typeof x === "string" ? x.localeCompare(y) : x - y) * ui.sort.dir;
+      return (typeof x === "string" ? x.localeCompare(y) : x - y) * ui.sort.dir || a.t.localeCompare(b.t);
     });
     const limit = ui.tickerLimit === "all" ? rows.length : Number(ui.tickerLimit);
     const shown = rows.slice(0, limit);
@@ -519,9 +541,9 @@
     const body = shown.map((r) => `<tr class="pick" tabindex="0" data-t="${esc(r.t)}" aria-selected="${r.t === ui.ticker}">${COLS.map((c) => c.cell(r)).join("")}</tr>`).join("");
     $("#ticker-table").innerHTML = rows.length
       ? `<thead><tr>${head}</tr></thead><tbody>${body}</tbody>`
-      : "<tbody><tr><td>No stock-level volume yet.</td></tr></tbody>";
-    if (T.start) $("#stocks-note").textContent = `All history · ${longDate(T.start)} to ${longDate(T.end)} (${T.window_days} day${T.window_days === 1 ? "" : "s"}). Select a row for its description and daily series.`;
-    const scope = q ? `${rows.length} of ${allRows.length} stocks match “${ui.query.trim()}”` : `${allRows.length} stocks across all history`;
+      : "<tbody><tr><td>No recorded trades match these filters.</td></tr></tbody>";
+    if (T.start) $("#stocks-note").textContent = `${longDate(window?.start || T.start)} to ${longDate(T.end)} · New York market dates, including weekends and holidays. Select a stock to see its full history.`;
+    const scope = q ? `${rows.length} of ${allRows.length} stocks match “${ui.query.trim()}”` : `${allRows.length} stocks with observed trades in this selection`;
     const shownLabel = shown.length === rows.length ? `all ${rows.length} stocks` : `the top ${shown.length}`;
     $("#ticker-count").textContent = `${scope}. Showing ${shownLabel} by ${col.label.toLowerCase()}.`;
     if (focusKey) { const b = $(`[data-sort="${focusKey}"]`); if (b) b.focus(); }
@@ -813,6 +835,21 @@
 
   function bind() {
     D.profiles = new Map(D.tickers.rows.map(row => [row.t, row]));
+    const selectedPeriod = new URLSearchParams(location.search).get("rank");
+    if (["1", "7", "30", "all"].includes(selectedPeriod)) $("#rank-period").value = selectedPeriod;
+    for (const family of Object.keys(D.daily.families)) $("#rank-product").add(new Option(FAMILY[family] || family, family));
+    for (const source of Object.keys(D.daily.venues)) $("#rank-source").add(new Option(D.meta.venue_labels[source] || source, source));
+    for (const id of ["rank-period", "rank-product", "rank-source"]) $("#"+id).addEventListener("change", () => {
+      if (id === "rank-period" && location.protocol !== "file:") {
+        const url = new URL(location.href);
+        if ($("#rank-period").value === "all") url.searchParams.delete("rank");
+        else url.searchParams.set("rank", $("#rank-period").value);
+        history.replaceState(null, "", url);
+      }
+      ui.ticker = null;
+      $("#ticker-detail").hidden = true;
+      renderTickers();
+    });
     for (const id of ["trend-range", "trend-stock"]) {
       $(`#${id}`).addEventListener("change", renderTrend);
     }

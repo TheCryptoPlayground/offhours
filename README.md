@@ -11,6 +11,8 @@ A daily tracker of tokenized US stock trading on Binance, Kraken, Gate and selec
 Everything is free: public exchange APIs, GeckoTerminal, CoinGecko and Alpaca's free plan for data,
 GitHub Actions to run it daily, GitHub Pages to host the site.
 
+The [stock ranking](https://tianhaoyin1120.github.io/offhours/#stocks-h) orders underlying securities by recorded trading dollars. Filter by period, token product and source. The [30-day ranking](https://tianhaoyin1120.github.io/offhours/?rank=30#stocks-h) uses the latest 30 complete market dates. RWA.xyz’s underlying-stock league table orders securities by outstanding token value.
+
 The [volume comparison](https://tianhaoyin1120.github.io/offhours/#compare-h) supports 7, 30 and 90 days,
 all archived history, and inclusive custom dates. Each ticker requires at least one date with volume on both sides.
 Matched-date and session views use only dates with positive volume on both sides. The default for every analysis is the full archive, including stock rankings, the weekly heatmap and the adjacent half-hour price comparison. The daily, product and individual stock charts have independent range controls.

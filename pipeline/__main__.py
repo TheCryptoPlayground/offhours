@@ -2,6 +2,7 @@
 
     update   pull new bars from every source (add --only binance,dex to limit)
     build    write site/data from what is on disk
+    verify   reconcile published charts with the token and stock CSVs
     all      update, then build
     demo     synthetic data for previewing the site (not market data)
     status   print per-source status from the last run
@@ -19,7 +20,7 @@ from . import config as C
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(prog="python -m pipeline", description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("command", choices=["update", "build", "all", "demo", "status"])
+    ap.add_argument("command", choices=["update", "build", "all", "demo", "status", "verify"])
     ap.add_argument("--only", default="", help="comma-separated sources, e.g. binance,kraken,dex,stocks")
     ap.add_argument("--refresh-universe", action="store_true", help="re-pull the token list from CoinGecko")
     ap.add_argument("--rediscover", action="store_true", help="re-scan DEX pools now")
@@ -44,6 +45,9 @@ def main(argv: list[str] | None = None) -> int:
     if a.command in ("build", "all"):
         from . import site
         site.build()
+    if a.command == "verify":
+        from .verify import verify
+        verify()
     if a.command == "status":
         from . import store
         st = store.load_state()

@@ -37,6 +37,28 @@ def venue_comparison(head):
                 core_sources=list(C.CORE_SOURCES), all_sources=venues)
 
 
+def ranking_windows(tokens, stocks, dates):
+    """Rank underlyings for complete market dates using the public CSV's cents."""
+    facts = tokens[tokens.underlying != ""].copy()
+    facts["total"] = _published_cents(facts)
+    facts["regular"] = facts.total.where(facts.session == "RTH", 0)
+    facts["closed"] = facts.total.where(facts.session == "CLOSED", 0)
+    us = stocks.assign(cents=_published_cents(stocks))
+    windows = {}
+    for period in ("all", "30", "7", "1"):
+        if not len(dates):
+            break
+        start = dates[0] if period == "all" else dates[-min(len(dates), int(period))]
+        grouped = facts[facts.market_date >= start].groupby(["underlying", "source", "family"])
+        volumes = grouped[["total", "regular", "closed"]].sum()
+        benchmark = us[us.market_date >= start].groupby("underlying").cents.sum()
+        windows[period] = dict(start=start.strftime("%Y-%m-%d"), stock=benchmark.to_dict(),
+                               tokens=[[ticker, source, family, int(total), int(regular), int(closed)]
+                                       for (ticker, source, family), (total, regular, closed)
+                                       in volumes.iterrows() if total > 0])
+    return windows
+
+
 def volume_history(tokens, stocks):
     """Published cents per ticker, trading date and session for arbitrary date ranges."""
     keys = ["market_date", "underlying", "session"]
