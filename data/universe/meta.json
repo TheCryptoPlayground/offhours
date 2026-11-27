@@ -1,5 +1,5 @@
 {
- "fetched_at": "2026-11-20T11:39:25+00:00",
+ "fetched_at": "2026-11-27T17:35:14+00:00",
  "categories": [
   "tokenized-stock",
   "xstocks-ecosystem",
@@ -8,8 +8,8 @@
   "four-meme-tokenized-stocks-4stock"
  ],
  "missing_categories": [],
- "tickers_checked": false,
- "tokens": 1917,
- "mapped": 1917,
- "coingecko_vol24": 1422569722.2657943
+ "tickers_checked": true,
+ "tokens": 1937,
+ "mapped": 1189,
+ "coingecko_vol24": 1236184090.387471
 }
